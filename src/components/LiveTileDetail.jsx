@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabaseClient'
-import { abbreviatePlayerName } from '../lib/format'
 import GameweekLeaderboard from './GameweekLeaderboard'
+import PitchField from './PitchField'
 import './LiveTileDetail.css'
 
 const BREAKDOWN_LABELS = {
@@ -31,23 +31,6 @@ const BREAKDOWN_LABELS = {
   goalkeeperMalus: 'Malus gol subiti',
   foulsMalus: 'Malus falli',
   noTacklesMalus: 'Malus 0 tackle',
-}
-
-// Read-only pitch: tile.players is already ordered POR -> DEF x3 -> OFF x3
-// (same convention as the Lineup page / MODULES slot layout).
-function pitchRows(players) {
-  return {
-    offense: players.slice(4, 7),
-    defense: players.slice(1, 4),
-    keeper: players.slice(0, 1),
-  }
-}
-
-function scoreClass(score) {
-  if (score == null) return ''
-  if (score > 0) return 'positive'
-  if (score < 0) return 'negative'
-  return 'neutral'
 }
 
 export default function LiveTileDetail({ tile, gameweek, userId, onClose }) {
@@ -80,38 +63,17 @@ export default function LiveTileDetail({ tile, gameweek, userId, onClose }) {
     }
   }, [tile.players, gameweek.id])
 
-  const { offense, defense, keeper } = pitchRows(tile.players)
+  const pitchSlots = tile.players.map((p) => ({
+    role: p.role,
+    label: p.role,
+    player: { name: p.name },
+    score: p.score,
+    isLive: p.is_live,
+    onClick: () => setExpandedPlayerId(expandedPlayerId === p.player_id ? null : p.player_id),
+  }))
 
-  function renderPlayer(p) {
-    const breakdown = breakdownByPlayerId[p.player_id]
-    const isExpanded = expandedPlayerId === p.player_id
-    return (
-      <div key={p.player_id} className="detail-slot-wrap">
-        <button
-          type="button"
-          className="detail-slot"
-          onClick={() => setExpandedPlayerId(isExpanded ? null : p.player_id)}
-        >
-          <span className="slot-role">{p.role}</span>
-          <span className="slot-player-name">{abbreviatePlayerName(p.name)}</span>
-          <span className={'slot-score ' + scoreClass(p.score)}>{p.score != null ? p.score.toFixed(1) : '—'}</span>
-        </button>
-        {isExpanded && breakdown && (
-          <ul className="breakdown-list">
-            {Object.entries(breakdown)
-              .filter(([, v]) => v !== 0)
-              .map(([key, value]) => (
-                <li key={key}>
-                  <span>{BREAKDOWN_LABELS[key] ?? key}</span>
-                  <span className={value > 0 ? 'positive' : 'negative'}>{value > 0 ? `+${value}` : value}</span>
-                </li>
-              ))}
-            {Object.values(breakdown).every((v) => v === 0) && <li className="status-text">Nessuna azione ancora.</li>}
-          </ul>
-        )}
-      </div>
-    )
-  }
+  const expandedPlayer = tile.players.find((p) => p.player_id === expandedPlayerId)
+  const expandedBreakdown = expandedPlayerId != null ? breakdownByPlayerId[expandedPlayerId] : null
 
   return (
     <div className="detail-backdrop" onClick={onClose}>
@@ -123,11 +85,27 @@ export default function LiveTileDetail({ tile, gameweek, userId, onClose }) {
           </button>
         </div>
 
-        <div className="detail-pitch">
-          <div className="pitch-row offense">{offense.map(renderPlayer)}</div>
-          <div className="pitch-row defense">{defense.map(renderPlayer)}</div>
-          <div className="pitch-row keeper">{keeper.map(renderPlayer)}</div>
-        </div>
+        <PitchField system="fantastats" slots={pitchSlots} />
+
+        {expandedPlayer && (
+          <div className="breakdown-panel">
+            <h3>{expandedPlayer.name}</h3>
+            {expandedBreakdown && Object.values(expandedBreakdown).some((v) => v !== 0) ? (
+              <ul className="breakdown-list">
+                {Object.entries(expandedBreakdown)
+                  .filter(([, v]) => v !== 0)
+                  .map(([key, value]) => (
+                    <li key={key}>
+                      <span>{BREAKDOWN_LABELS[key] ?? key}</span>
+                      <span className={value > 0 ? 'positive' : 'negative'}>{value > 0 ? `+${value}` : value}</span>
+                    </li>
+                  ))}
+              </ul>
+            ) : (
+              <p className="status-text">Nessuna azione ancora.</p>
+            )}
+          </div>
+        )}
 
         <section>
           <h3>Classifica {tile.category_name}</h3>

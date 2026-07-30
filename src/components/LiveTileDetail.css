@@ -45,70 +45,25 @@
   margin: 0;
 }
 
-.detail-pitch {
-  background: linear-gradient(180deg, #2f9e52 0%, #22803f 100%);
+.breakdown-panel {
+  padding: 12px;
+  background: var(--surface-hover);
   border-radius: var(--radius);
-  padding: 14px 6px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  border: 1px solid var(--border);
 }
 
-.detail-pitch .pitch-row {
-  display: flex;
-  justify-content: center;
-  gap: 6px;
-}
-
-.detail-slot-wrap {
-  flex: 1 1 0;
-  max-width: 110px;
-  display: flex;
-  flex-direction: column;
-}
-
-.detail-slot {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  padding: 6px 4px;
-  border-radius: 10px;
-  border: 1px solid transparent;
-  background: rgba(255, 255, 255, 0.92);
-  color: var(--text);
-  min-height: 66px;
-  justify-content: center;
-  text-align: center;
-}
-
-.slot-score {
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.slot-score.positive {
-  color: var(--success);
-}
-
-.slot-score.negative {
-  color: var(--danger);
-}
-
-.slot-score.neutral {
-  color: var(--text-muted);
+.breakdown-panel h3 {
+  margin: 0 0 8px;
 }
 
 .breakdown-list {
   list-style: none;
   margin: 4px 0 0;
-  padding: 6px;
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 8px;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 3px;
-  font-size: 11px;
+  gap: 4px;
+  font-size: 12px;
 }
 
 .breakdown-list li {

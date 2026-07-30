@@ -7,6 +7,7 @@ import { MODULES, DEFAULT_MODULE_ID, getModule, playerHasRole } from '../lib/mod
 import { getCurrentGameweek, isLineupLocked, formatDeadline } from '../lib/gameweek'
 import ConfirmDialog from '../components/ConfirmDialog'
 import PlayerPickerModal from '../components/PlayerPickerModal'
+import PitchField from '../components/PitchField'
 import { usePageTitle } from '../hooks/usePageTitle'
 import './Lineup.css'
 
@@ -188,11 +189,12 @@ export default function Lineup() {
   const pickerRole = pickerSlot != null ? activeModule.slots[pickerSlot] : null
   const pickerCurrentPlayerId = pickerSlot != null ? slots[pickerSlot] : null
 
-  const pickerPlayers = useMemo(() => {
+  function computePickerPlayers() {
     if (pickerRole == null) return []
     const excludeIds = new Set(slots.filter((id, idx) => id != null && idx !== pickerSlot))
     return eligibleRosterPlayers.filter((p) => playerHasRole(p, pickerRole) && !excludeIds.has(p.id))
-  }, [pickerRole, pickerSlot, eligibleRosterPlayers, slots])
+  }
+  const pickerPlayers = computePickerPlayers()
 
   function requestModuleChange(newModuleId) {
     if (newModuleId === moduleId || locked) return
@@ -292,30 +294,12 @@ export default function Lineup() {
   const missingSlots = slots.filter((s) => s == null).length
   const canSave = !locked && missingSlots === 0 && !saving
 
-  function renderSlot(idx) {
-    const role = activeModule.slots[idx]
-    const playerId = slots[idx]
-    const player = playerId ? playersById[playerId] : null
-    return (
-      <button
-        key={idx}
-        type="button"
-        className={'pitch-slot' + (player ? ' filled' : '')}
-        disabled={locked}
-        onClick={() => setPickerSlot(idx)}
-      >
-        <span className="slot-role">{role}</span>
-        {player ? (
-          <>
-            <span className="slot-player-name">{player.name}</span>
-            <span className="slot-player-team">{player.team}</span>
-          </>
-        ) : (
-          <span className="slot-empty">+</span>
-        )}
-      </button>
-    )
-  }
+  const pitchSlots = activeModule.slots.map((role, idx) => ({
+    role,
+    player: slots[idx] ? playersById[slots[idx]] : null,
+    locked,
+    onClick: () => setPickerSlot(idx),
+  }))
 
   return (
     <div className="lineup-page">
@@ -336,11 +320,7 @@ export default function Lineup() {
 
       {locked && <p className="error-text">Formazione bloccata — la giornata è in corso.</p>}
 
-      <div className="pitch">
-        <div className="pitch-row offense">{[4, 5, 6].map((idx) => renderSlot(idx))}</div>
-        <div className="pitch-row defense">{[1, 2, 3].map((idx) => renderSlot(idx))}</div>
-        <div className="pitch-row keeper">{renderSlot(0)}</div>
-      </div>
+      <PitchField system="fantastats" slots={pitchSlots} />
 
       <section className="module-selector">
         <h2>Modulo</h2>

@@ -1,0 +1,126 @@
+.pitch-field {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 0.68;
+  border-radius: 4px;
+  overflow: hidden;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.04) 0,
+      rgba(255, 255, 255, 0.04) 10%,
+      rgba(0, 0, 0, 0.04) 10%,
+      rgba(0, 0, 0, 0.04) 20%
+    ),
+    linear-gradient(180deg, #2d8a4e 0%, #3da35d 100%);
+}
+
+.pitch-lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  stroke: rgba(255, 255, 255, 0.75);
+  stroke-width: 2px;
+  fill: none;
+}
+
+.pitch-chip {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 68px;
+}
+
+.pitch-chip-fill,
+.pitch-chip-empty {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  padding: 6px 4px;
+  font: inherit;
+  transition: transform var(--transition), border-color var(--transition);
+}
+
+.pitch-chip-fill {
+  border-radius: 999px / 40%;
+  border: 1.5px solid var(--primary);
+  background: rgba(26, 39, 54, 0.85);
+  color: var(--text);
+  min-height: 58px;
+}
+
+.pitch-chip-fill:not(:disabled):hover {
+  transform: scale(1.05);
+  border-color: var(--secondary);
+}
+
+.pitch-chip-empty {
+  border-radius: 50%;
+  border: 2px dashed rgba(240, 244, 248, 0.5);
+  background: rgba(15, 25, 35, 0.35);
+  color: rgba(240, 244, 248, 0.7);
+  aspect-ratio: 1;
+  font-size: 20px;
+  font-weight: 300;
+}
+
+.pitch-chip-empty:not(:disabled):hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.pitch-chip-empty .pitch-chip-role {
+  font-size: 10px;
+  font-weight: 700;
+  color: inherit;
+}
+
+.pitch-chip-name {
+  font-size: 11px;
+  font-weight: 700;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pitch-chip-role {
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.pitch-chip-score {
+  font-size: 14px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.pitch-chip-score.positive {
+  color: var(--success);
+}
+
+.pitch-chip-score.negative {
+  color: var(--danger);
+}
+
+.pitch-chip-score.neutral {
+  color: var(--text-muted);
+}
+
+.pitch-chip-dot {
+  position: absolute;
+  top: 4px;
+  right: 8px;
+}
+
+@media (min-width: 480px) {
+  .pitch-chip {
+    width: 82px;
+  }
+}

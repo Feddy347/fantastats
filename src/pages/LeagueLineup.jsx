@@ -6,6 +6,7 @@ import { getCurrentGameweek, isLeagueLineupLocked, formatLeagueDeadline } from '
 import { getLeagueModuleSystem, getLeagueModule, playerFitsSlot, resolveSlotRole } from '../lib/leagueModules'
 import ConfirmDialog from '../components/ConfirmDialog'
 import PlayerPickerModal from '../components/PlayerPickerModal'
+import PitchField from '../components/PitchField'
 import { usePageTitle } from '../hooks/usePageTitle'
 import './Lineup.css'
 
@@ -273,35 +274,18 @@ export default function LeagueLineup() {
   const missingSlots = slots.filter((s) => s == null).length
   const canSave = !locked && missingSlots === 0 && !saving
 
-  function renderSlot(idx) {
-    const slotDef = activeModule.slots[idx]
+  const pitchSystem = league.formation_type === '7' ? 'fantastats' : league.role_system
+  const pitchSlots = activeModule.slots.map((slotDef, idx) => {
     const playerId = slots[idx]
     const player = playerId ? playersById[playerId] : null
-    return (
-      <button
-        key={idx}
-        type="button"
-        className={'pitch-slot' + (player ? ' filled' : '')}
-        disabled={locked}
-        onClick={() => setPickerSlot(idx)}
-      >
-        <span className="slot-role">{slotDef.roles.join('/')}</span>
-        {player ? (
-          <>
-            <span className="slot-player-name">{player.name}</span>
-            <span className="slot-player-team">{player.team}</span>
-          </>
-        ) : (
-          <span className="slot-empty">+</span>
-        )}
-      </button>
-    )
-  }
-
-  const starterCount = moduleSystem.starterCount
-  const defenseCount = Math.floor((starterCount - 1) / 2)
-  const offenseIndices = Array.from({ length: starterCount - 1 - defenseCount }, (_, i) => 1 + defenseCount + i)
-  const defenseIndices = Array.from({ length: defenseCount }, (_, i) => 1 + i)
+    return {
+      role: slotDef.roles[0],
+      label: player ? resolveSlotRole(player, moduleSystem.roleField, slotDef.roles) : slotDef.roles.join('/'),
+      player,
+      locked,
+      onClick: () => setPickerSlot(idx),
+    }
+  })
 
   return (
     <div className="lineup-page">
@@ -322,11 +306,7 @@ export default function LeagueLineup() {
 
       {locked && <p className="error-text">Formazione bloccata — la giornata è in corso.</p>}
 
-      <div className="pitch">
-        <div className="pitch-row offense">{offenseIndices.map((idx) => renderSlot(idx))}</div>
-        <div className="pitch-row defense">{defenseIndices.map((idx) => renderSlot(idx))}</div>
-        <div className="pitch-row keeper">{renderSlot(0)}</div>
-      </div>
+      <PitchField system={pitchSystem} slots={pitchSlots} />
 
       <section className="module-selector">
         <h2>Modulo</h2>

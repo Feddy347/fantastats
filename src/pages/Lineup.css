@@ -23,83 +23,6 @@
 }
 
 /* ---------------------------------------------------------------- */
-/* Pitch                                                              */
-/* ---------------------------------------------------------------- */
-
-.pitch {
-  background: linear-gradient(180deg, #2f9e52 0%, #22803f 100%);
-  border-radius: var(--radius);
-  padding: 16px 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.pitch-row {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-}
-
-.pitch-row.keeper {
-  justify-content: center;
-}
-
-.pitch-slot {
-  flex: 1 1 0;
-  max-width: 104px;
-  min-height: 72px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  padding: 6px 4px;
-  border-radius: 10px;
-  border: 2px dashed rgba(255, 255, 255, 0.6);
-  background: rgba(255, 255, 255, 0.12);
-  color: #fff;
-  text-align: center;
-}
-
-.pitch-slot.filled {
-  border-style: solid;
-  background: rgba(255, 255, 255, 0.92);
-  color: var(--text);
-}
-
-.pitch-slot:disabled {
-  cursor: default;
-}
-
-.slot-role {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  opacity: 0.85;
-}
-
-.slot-player-name {
-  font-size: 12px;
-  font-weight: 600;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
-}
-
-.slot-player-team {
-  font-size: 10px;
-  color: var(--text-muted);
-}
-
-.slot-empty {
-  font-size: 20px;
-  font-weight: 300;
-  line-height: 1;
-}
-
-/* ---------------------------------------------------------------- */
 /* Module selector                                                    */
 /* ---------------------------------------------------------------- */
 
@@ -113,7 +36,7 @@
   padding: 8px 12px;
   font-size: 13px;
   font-weight: 600;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: 1px solid var(--border);
   background: var(--surface);
   color: var(--text);
@@ -122,7 +45,7 @@
 .module-btn.active {
   background: var(--primary);
   border-color: var(--primary);
-  color: #fff;
+  color: var(--on-primary);
 }
 
 .module-btn:disabled {
