@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../lib/useAuth'
+import { usePageTitle } from '../hooks/usePageTitle'
 import './Profile.css'
 
 export default function Profile() {
+  usePageTitle('Profilo')
   const { user, profile, signOut } = useAuth()
   const navigate = useNavigate()
 

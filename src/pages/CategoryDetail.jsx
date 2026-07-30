@@ -8,6 +8,7 @@ import SeasonStandings from '../components/SeasonStandings'
 import { buildTeamsByName, computePool } from '../lib/categoryPool'
 import { getModule } from '../lib/modules'
 import { getCurrentGameweek, isLineupLocked, formatDeadline } from '../lib/gameweek'
+import { usePageTitle } from '../hooks/usePageTitle'
 import './Categories.css'
 import './CategoryDetail.css'
 
@@ -18,6 +19,7 @@ export default function CategoryDetail() {
   const { user } = useAuth()
 
   const [category, setCategory] = useState(null)
+  usePageTitle(category?.name ?? 'Categoria')
   const [teams, setTeams] = useState([])
   const [players, setPlayers] = useState([])
   const [rosterPlayerIds, setRosterPlayerIds] = useState([])

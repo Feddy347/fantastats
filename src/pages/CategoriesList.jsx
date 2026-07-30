@@ -5,9 +5,11 @@ import { useAuth } from '../lib/useAuth'
 import HomeTabs from '../components/HomeTabs'
 import RewardsBanner from '../components/RewardsBanner'
 import { buildTeamsByName, computePool } from '../lib/categoryPool'
+import { usePageTitle } from '../hooks/usePageTitle'
 import './Categories.css'
 
 export default function CategoriesList() {
+  usePageTitle('Categorie')
   const { user, profile } = useAuth()
   const [categories, setCategories] = useState([])
   const [teams, setTeams] = useState([])

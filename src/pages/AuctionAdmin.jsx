@@ -4,9 +4,11 @@ import { supabase } from '../lib/supabaseClient'
 import { useAuth } from '../lib/useAuth'
 import { getLeagueModuleSystem, playerRolesFor } from '../lib/leagueModules'
 import { isDeadlineFuture } from '../lib/gameweek'
+import { usePageTitle } from '../hooks/usePageTitle'
 import './AuctionAdmin.css'
 
 export default function AuctionAdmin() {
+  usePageTitle('Asta')
   const { id } = useParams()
   const { user } = useAuth()
 

@@ -4,12 +4,14 @@ import { supabase } from '../lib/supabaseClient'
 import { useAuth } from '../lib/useAuth'
 import HomeTabs from '../components/HomeTabs'
 import CreateLeagueModal from '../components/CreateLeagueModal'
+import { usePageTitle } from '../hooks/usePageTitle'
 import './Categories.css'
 import './LeaguesList.css'
 
 const STATUS_LABELS = { setup: 'In allestimento', active: 'In corso', completed: 'Conclusa' }
 
 export default function LeaguesList() {
+  usePageTitle('Leghe')
   const { user } = useAuth()
   const navigate = useNavigate()
 

@@ -4,11 +4,13 @@ import { useAuth } from '../lib/useAuth'
 import PlayerRow from '../components/PlayerRow'
 import ConfirmDialog from '../components/ConfirmDialog'
 import { buildTeamsByName, eligibleCategoriesForPlayer, isPlayerEligible } from '../lib/categoryPool'
+import { usePageTitle } from '../hooks/usePageTitle'
 import './Market.css'
 
 const PAGE_SIZE = 20
 
 export default function Market() {
+  usePageTitle('Mercato')
   const { user, profile, refreshProfile } = useAuth()
 
   const [tab, setTab] = useState('buy')

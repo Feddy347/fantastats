@@ -7,6 +7,7 @@ import { MODULES, DEFAULT_MODULE_ID, getModule, playerHasRole } from '../lib/mod
 import { getCurrentGameweek, isLineupLocked, formatDeadline } from '../lib/gameweek'
 import ConfirmDialog from '../components/ConfirmDialog'
 import PlayerPickerModal from '../components/PlayerPickerModal'
+import { usePageTitle } from '../hooks/usePageTitle'
 import './Lineup.css'
 
 const EMPTY_SLOTS = Array(7).fill(null)
@@ -14,6 +15,7 @@ const EMPTY_SLOTS = Array(7).fill(null)
 export default function Lineup() {
   const { slug } = useParams()
   const { user } = useAuth()
+  usePageTitle('Formazione')
 
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)

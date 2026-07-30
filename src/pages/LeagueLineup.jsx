@@ -6,11 +6,13 @@ import { getCurrentGameweek, isLeagueLineupLocked, formatLeagueDeadline } from '
 import { getLeagueModuleSystem, getLeagueModule, playerFitsSlot, resolveSlotRole } from '../lib/leagueModules'
 import ConfirmDialog from '../components/ConfirmDialog'
 import PlayerPickerModal from '../components/PlayerPickerModal'
+import { usePageTitle } from '../hooks/usePageTitle'
 import './Lineup.css'
 
 export default function LeagueLineup() {
   const { id } = useParams()
   const { user } = useAuth()
+  usePageTitle('Formazione')
 
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)

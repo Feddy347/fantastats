@@ -7,6 +7,7 @@ import { getLeagueModuleSystem, getLeagueModule, playerRolesFor } from '../lib/l
 import ConfirmDialog from '../components/ConfirmDialog'
 import LeagueCalendarTab from '../components/LeagueCalendarTab'
 import LeagueStandingsTab from '../components/LeagueStandingsTab'
+import { usePageTitle } from '../hooks/usePageTitle'
 import './Categories.css'
 import './CategoryDetail.css'
 import './LeagueDetail.css'
@@ -28,6 +29,7 @@ export default function LeagueDetail() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [league, setLeague] = useState(null)
+  usePageTitle(league?.name ?? 'Lega')
   const [members, setMembers] = useState([])
   const [roster, setRoster] = useState([])
   const [gameweek, setGameweek] = useState(null)

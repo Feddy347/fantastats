@@ -6,6 +6,7 @@ import PlayerRow from '../components/PlayerRow'
 import ConfirmDialog from '../components/ConfirmDialog'
 import SealedBidMarket from '../components/SealedBidMarket'
 import { getLeagueModuleSystem, playerRolesFor } from '../lib/leagueModules'
+import { usePageTitle } from '../hooks/usePageTitle'
 import './Market.css'
 
 const PAGE_SIZE = 20
@@ -16,6 +17,7 @@ export default function LeagueMarket() {
 
   const [tab, setTab] = useState('buy')
   const [league, setLeague] = useState(null)
+  usePageTitle(league?.name ? `Mercato — ${league.name}` : 'Mercato')
   const [membership, setMembership] = useState(null)
   const [players, setPlayers] = useState([])
   const [allRoster, setAllRoster] = useState([]) // [{ user_id, player_id, purchase_price }] across the whole league

@@ -3,11 +3,13 @@ import { supabase } from '../lib/supabaseClient'
 import { useAuth } from '../lib/useAuth'
 import PlayerRow from '../components/PlayerRow'
 import { buildTeamsByName, eligibleCategoriesForPlayer } from '../lib/categoryPool'
+import { usePageTitle } from '../hooks/usePageTitle'
 import './Roster.css'
 
 const ROLE_ORDER = ['POR', 'DC', 'T', 'C', 'ES', 'Tq', 'ATT']
 
 export default function Roster() {
+  usePageTitle('Rosa')
   const { user, profile } = useAuth()
   const [players, setPlayers] = useState([])
   const [teams, setTeams] = useState([])

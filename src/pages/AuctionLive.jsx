@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
+import { usePageTitle } from '../hooks/usePageTitle'
 import './AuctionAdmin.css'
 
 // Read-only spectator view. There's no persisted "currently up for bid"
@@ -8,6 +9,7 @@ import './AuctionAdmin.css'
 // auction_assign_player), so the closest live signal is "most recent
 // assignment" — everything else (budgets, roster progress) is exact.
 export default function AuctionLive() {
+  usePageTitle('Asta Live')
   const { id } = useParams()
 
   const [league, setLeague] = useState(null)

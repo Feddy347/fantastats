@@ -6,6 +6,7 @@ import { getCurrentGameweek } from '../lib/gameweek'
 import { abbreviatePlayerName } from '../lib/format'
 import LiveTileDetail from '../components/LiveTileDetail'
 import LiveLeagueTile from '../components/LiveLeagueTile'
+import { usePageTitle } from '../hooks/usePageTitle'
 import './Live.css'
 
 function deriveTileTotals(tile) {
@@ -71,6 +72,7 @@ function LiveTile({ tile, onOpen }) {
 }
 
 export default function Live() {
+  usePageTitle('Live')
   const { user } = useAuth()
   const [loading, setLoading] = useState(true)
   const [gameweek, setGameweek] = useState(null)
