@@ -16,3 +16,21 @@
   flex-direction: column;
   gap: 2px;
 }
+
+.profile-section {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.profile-divider {
+  height: 1px;
+  background: var(--border);
+}

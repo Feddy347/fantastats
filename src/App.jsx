@@ -1,4 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
+import { useAuth } from './lib/useAuth'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import CategoriesList from './pages/CategoriesList'
@@ -19,6 +20,12 @@ import Profile from './pages/Profile'
 import ProtectedRoute from './components/ProtectedRoute'
 import AppLayout from './components/AppLayout'
 
+function DefaultHomeRedirect() {
+  const { profile } = useAuth()
+  const target = profile?.default_home === 'leagues' ? '/leagues' : '/categories'
+  return <Navigate to={target} replace />
+}
+
 function App() {
   return (
     <Routes>
@@ -31,7 +38,7 @@ function App() {
           </ProtectedRoute>
         }
       >
-        <Route path="/" element={<Navigate to="/categories" replace />} />
+        <Route path="/" element={<DefaultHomeRedirect />} />
         <Route path="/categories" element={<CategoriesList />} />
         <Route path="/categories/:slug" element={<CategoryDetail />} />
         <Route path="/categories/:slug/lineup" element={<Lineup />} />
