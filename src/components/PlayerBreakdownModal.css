@@ -1,0 +1,84 @@
+.breakdown-modal-panel {
+  width: 100%;
+  max-width: 380px;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+
+@media (min-width: 640px) {
+  .breakdown-modal-panel {
+    border-radius: var(--radius);
+  }
+}
+
+.breakdown-modal-panel .picker-header {
+  align-items: flex-start;
+}
+
+.breakdown-modal-panel .picker-header h2 {
+  margin: 0 0 4px;
+}
+
+.breakdown-total {
+  text-align: center;
+  font-size: 36px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.breakdown-total.positive {
+  color: var(--success);
+}
+
+.breakdown-total.negative {
+  color: var(--danger);
+}
+
+.breakdown-total.neutral {
+  color: var(--text-muted);
+}
+
+.breakdown-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.breakdown-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+}
+
+.breakdown-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.breakdown-icon {
+  flex: 0 0 auto;
+}
+
+.breakdown-list .positive {
+  color: var(--success);
+  font-weight: 600;
+}
+
+.breakdown-list .negative {
+  color: var(--danger);
+  font-weight: 600;
+}

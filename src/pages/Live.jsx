@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../lib/useAuth'
 import { supabase } from '../lib/supabaseClient'
 import { useRealtimeScores } from '../hooks/useRealtimeScores'
 import { getCurrentGameweek } from '../lib/gameweek'
 import { abbreviatePlayerName } from '../lib/format'
-import LiveTileDetail from '../components/LiveTileDetail'
 import LiveLeagueTile from '../components/LiveLeagueTile'
 import FlashValue from '../components/FlashValue'
+import GlobalPlayerSearch from '../components/GlobalPlayerSearch'
 import { usePageTitle } from '../hooks/usePageTitle'
 import './Live.css'
 
@@ -79,11 +80,12 @@ function LiveTile({ tile, onOpen }) {
 export default function Live() {
   usePageTitle('Live')
   const { user } = useAuth()
+  const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
   const [gameweek, setGameweek] = useState(null)
   const [tiles, setTiles] = useState([])
+  const [categorySlugById, setCategorySlugById] = useState({})
   const [myLeagues, setMyLeagues] = useState([])
-  const [selectedCategoryId, setSelectedCategoryId] = useState(null)
   const [lastCompleted, setLastCompleted] = useState(null)
   const [lastCompletedMatches, setLastCompletedMatches] = useState([])
   const [now, setNow] = useState(() => Date.now())
@@ -117,12 +119,22 @@ export default function Live() {
       if (gw && gw.status === 'live') {
         await fetchTiles(gw)
 
-        const { data: leagueLineups } = await supabase
-          .from('league_lineups')
-          .select('league_id, leagues(*)')
-          .eq('user_id', user.id)
-          .eq('gameweek_id', gw.id)
-        if (!cancelled) setMyLeagues((leagueLineups ?? []).map((r) => r.leagues).filter(Boolean))
+        const [{ data: leagueLineups }, { data: categories }] = await Promise.all([
+          supabase
+            .from('league_lineups')
+            .select('league_id, leagues(*)')
+            .eq('user_id', user.id)
+            .eq('gameweek_id', gw.id),
+          supabase.from('categories').select('id, slug'),
+        ])
+        if (!cancelled) {
+          setMyLeagues((leagueLineups ?? []).map((r) => r.leagues).filter(Boolean))
+          const slugMap = {}
+          ;(categories ?? []).forEach((c) => {
+            slugMap[c.id] = c.slug
+          })
+          setCategorySlugById(slugMap)
+        }
       } else {
         setTiles([])
         setMyLeagues([])
@@ -196,14 +208,14 @@ export default function Live() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scoresMap, isLive])
 
-  const selectedTile = tiles.find((t) => t.category_id === selectedCategoryId) ?? null
-
   if (loading) return <p className="status-text">Caricamento…</p>
 
   if (!isLive) {
     return (
       <div className="live-page">
         <h1>Live</h1>
+
+        <GlobalPlayerSearch gameweekId={gameweek?.id} />
 
         <div className="live-empty card">
           <p className="status-text">Nessuna partita in corso</p>
@@ -243,26 +255,29 @@ export default function Live() {
     <div className="live-page">
       <h1>Live — Giornata {gameweek.number}</h1>
 
+      <GlobalPlayerSearch gameweekId={gameweek.id} />
+
       {tiles.length === 0 && myLeagues.length === 0 ? (
         <p className="status-text">Non hai formazioni schierate per questa giornata.</p>
       ) : (
         <div className="live-tiles">
           {tiles.map((tile) => (
-            <LiveTile key={tile.category_id} tile={tile} onOpen={() => setSelectedCategoryId(tile.category_id)} />
+            <LiveTile
+              key={tile.category_id}
+              tile={tile}
+              onOpen={() => navigate(`/live/${categorySlugById[tile.category_id] ?? tile.category_id}`)}
+            />
           ))}
           {myLeagues.map((league) => (
-            <LiveLeagueTile key={league.id} league={league} gameweek={gameweek} userId={user.id} />
+            <LiveLeagueTile
+              key={league.id}
+              league={league}
+              gameweek={gameweek}
+              userId={user.id}
+              onOpen={() => navigate(`/live/league/${league.id}`)}
+            />
           ))}
         </div>
-      )}
-
-      {selectedTile && (
-        <LiveTileDetail
-          tile={selectedTile}
-          gameweek={gameweek}
-          userId={user.id}
-          onClose={() => setSelectedCategoryId(null)}
-        />
       )}
     </div>
   )

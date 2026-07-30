@@ -11,6 +11,8 @@ import AuctionLive from './pages/AuctionLive'
 import CategoryDetail from './pages/CategoryDetail'
 import Lineup from './pages/Lineup'
 import Live from './pages/Live'
+import LiveCategoryDetail from './pages/LiveCategoryDetail'
+import LiveLeagueDetail from './pages/LiveLeagueDetail'
 import Market from './pages/Market'
 import Roster from './pages/Roster'
 import Profile from './pages/Profile'
@@ -34,6 +36,8 @@ function App() {
         <Route path="/categories/:slug" element={<CategoryDetail />} />
         <Route path="/categories/:slug/lineup" element={<Lineup />} />
         <Route path="/live" element={<Live />} />
+        <Route path="/live/league/:leagueId" element={<LiveLeagueDetail />} />
+        <Route path="/live/:categorySlug" element={<LiveCategoryDetail />} />
         <Route path="/leagues" element={<LeaguesList />} />
         <Route path="/leagues/:id" element={<LeagueDetail />} />
         <Route path="/leagues/:id/lineup" element={<LeagueLineup />} />

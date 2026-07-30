@@ -15,7 +15,7 @@ function scoreClass(score) {
 // Live tile for a league (alongside the category tiles in Live.jsx). Scores
 // are computed client-side via calculateScore/leagueScoring.js rather than
 // through a DB function — see that module's header comment for why.
-export default function LiveLeagueTile({ league, gameweek, userId }) {
+export default function LiveLeagueTile({ league, gameweek, userId, onOpen }) {
   const [loading, setLoading] = useState(true)
   const [myResult, setMyResult] = useState(null)
   const [badge, setBadge] = useState(null)
@@ -114,7 +114,7 @@ export default function LiveLeagueTile({ league, gameweek, userId }) {
   const isLiveNow = myResult.players.some((p) => p.isLive)
 
   return (
-    <div className={'live-tile card' + (isLiveNow ? ' live-now' : '')}>
+    <button type="button" className={'live-tile card' + (isLiveNow ? ' live-now' : '')} onClick={onOpen}>
       <div className="live-tile-header">
         <h2>{league.name}</h2>
         {badge && <span className="live-tile-rank">{badge.text}</span>}
@@ -136,6 +136,6 @@ export default function LiveLeagueTile({ league, gameweek, userId }) {
           </li>
         ))}
       </ul>
-    </div>
+    </button>
   )
 }

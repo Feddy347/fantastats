@@ -80,7 +80,25 @@
 .leaderboard-detail li {
   display: flex;
   align-items: center;
+}
+
+.leaderboard-detail-player {
+  display: flex;
+  align-items: center;
   gap: 8px;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 4px 0;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition);
+}
+
+.leaderboard-detail-player:hover {
+  background: var(--surface-hover);
 }
 
 .leaderboard-detail-score {

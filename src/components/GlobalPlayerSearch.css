@@ -1,0 +1,36 @@
+.global-search {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.global-search-form {
+  display: flex;
+  gap: 8px;
+}
+
+.global-search-result {
+  padding: 0;
+  overflow: hidden;
+}
+
+.global-search-result-btn {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px;
+  background: none;
+  border: none;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+}
+
+@media (min-width: 640px) {
+  .global-search-result-btn {
+    flex-direction: row;
+    align-items: center;
+  }
+}

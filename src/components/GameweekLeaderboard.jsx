@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabaseClient'
 import { useRealtimeScores } from '../hooks/useRealtimeScores'
+import PlayerBreakdownModal from './PlayerBreakdownModal'
 import './Leaderboard.css'
 
 // Gameweek leaderboard for a category. Once the gameweek is consolidated
@@ -13,6 +14,7 @@ export default function GameweekLeaderboard({ categoryId, gameweek, currentUserI
   const [loading, setLoading] = useState(true)
   const [rows, setRows] = useState([])
   const [expandedUserId, setExpandedUserId] = useState(null)
+  const [selectedPlayer, setSelectedPlayer] = useState(null)
 
   const isFinal = gameweek?.status === 'completed'
   const scoresMap = useRealtimeScores(!isFinal ? gameweek?.id : null)
@@ -226,7 +228,8 @@ export default function GameweekLeaderboard({ categoryId, gameweek, currentUserI
   if (rows.length === 0) return <p className="status-text">Nessun iscritto.</p>
 
   return (
-    <ul className="leaderboard">
+    <>
+      <ul className="leaderboard">
       {rows.map((row) => (
         <li key={row.userId} className={'leaderboard-row card' + (row.userId === currentUserId ? ' own' : '')}>
           <button type="button" className="leaderboard-summary" onClick={() => toggleExpand(row)}>
@@ -249,15 +252,29 @@ export default function GameweekLeaderboard({ categoryId, gameweek, currentUserI
             <ul className="leaderboard-detail">
               {(row.players ?? []).map((p) => (
                 <li key={p.playerId}>
-                  <span className="role-tag">{p.role}</span> {p.name}
-                  <span className="leaderboard-detail-score">{p.score != null ? p.score.toFixed(1) : '—'}</span>
+                  <button type="button" className="leaderboard-detail-player" onClick={() => setSelectedPlayer(p)}>
+                    <span className="role-tag">{p.role}</span> {p.name}
+                    <span className="leaderboard-detail-score">{p.score != null ? p.score.toFixed(1) : '—'}</span>
+                  </button>
                 </li>
               ))}
             </ul>
           )}
         </li>
       ))}
-    </ul>
+      </ul>
+
+      {selectedPlayer && (
+        <PlayerBreakdownModal
+          playerId={selectedPlayer.playerId}
+          gameweekId={gameweek.id}
+          playerName={selectedPlayer.name}
+          role={selectedPlayer.role}
+          totalScore={selectedPlayer.score}
+          onClose={() => setSelectedPlayer(null)}
+        />
+      )}
+    </>
   )
 }
 

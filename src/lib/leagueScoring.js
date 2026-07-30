@@ -48,6 +48,8 @@ export async function computeLeagueMemberScore(supabase, { leagueId, userId, gam
     let score = null
     let isLive = false
 
+    let breakdown = null
+
     if (matchId) {
       const { data: stats } = await supabase
         .from('player_match_stats')
@@ -57,13 +59,15 @@ export async function computeLeagueMemberScore(supabase, { leagueId, userId, gam
         .maybeSingle()
 
       if (stats) {
-        score = calculateScore(stats, player[roleField], starter.slot_role).totalScore
+        const result = calculateScore(stats, player[roleField], starter.slot_role)
+        score = result.totalScore
+        breakdown = result.breakdown
         isLive = Boolean(stats.is_live)
         total += score
       }
     }
 
-    rows.push({ playerId: starter.player_id, name: player.name, role: starter.slot_role, score, isLive })
+    rows.push({ playerId: starter.player_id, name: player.name, role: starter.slot_role, score, isLive, breakdown })
   }
 
   return { total, players: rows }
