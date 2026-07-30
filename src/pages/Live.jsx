@@ -6,6 +6,7 @@ import { getCurrentGameweek } from '../lib/gameweek'
 import { abbreviatePlayerName } from '../lib/format'
 import LiveTileDetail from '../components/LiveTileDetail'
 import LiveLeagueTile from '../components/LiveLeagueTile'
+import FlashValue from '../components/FlashValue'
 import { usePageTitle } from '../hooks/usePageTitle'
 import './Live.css'
 
@@ -34,14 +35,18 @@ function scoreClass(score) {
 }
 
 function LiveTile({ tile, onOpen }) {
+  const isLiveNow = tile.players.some((p) => p.is_live)
+
   return (
-    <button type="button" className="live-tile card" onClick={onOpen}>
+    <button type="button" className={'live-tile card' + (isLiveNow ? ' live-now' : '')} onClick={onOpen}>
       <div className="live-tile-header">
         <h2>{tile.category_name}</h2>
         <span className="live-tile-rank">{tile.rank}°</span>
       </div>
 
-      <div className="live-tile-total">{tile.total_score.toFixed(1)}</div>
+      <FlashValue as="div" value={tile.total_score} className="live-tile-total">
+        {tile.total_score.toFixed(1)}
+      </FlashValue>
 
       <ul className="live-tile-players">
         {tile.players.map((p) => (
@@ -49,9 +54,9 @@ function LiveTile({ tile, onOpen }) {
             <span className="role-tag">{p.role}</span>
             <span className="live-tile-player-name">{abbreviatePlayerName(p.name)}</span>
             {p.is_live && <span className="live-dot" aria-label="In corso" />}
-            <span className={'live-tile-score ' + scoreClass(p.score)}>
+            <FlashValue value={p.score} className={'live-tile-score ' + scoreClass(p.score)}>
               {p.score != null ? p.score.toFixed(1) : '—'}
-            </span>
+            </FlashValue>
           </li>
         ))}
       </ul>

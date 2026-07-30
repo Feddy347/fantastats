@@ -3,6 +3,7 @@ import { supabase } from '../lib/supabaseClient'
 import { getLeagueModuleSystem } from '../lib/leagueModules'
 import { getMatchByTeamMap, computeLeagueMemberScore } from '../lib/leagueScoring'
 import { abbreviatePlayerName } from '../lib/format'
+import FlashValue from './FlashValue'
 
 function scoreClass(score) {
   if (score == null) return ''
@@ -110,14 +111,18 @@ export default function LiveLeagueTile({ league, gameweek, userId }) {
 
   if (loading || !myResult) return null
 
+  const isLiveNow = myResult.players.some((p) => p.isLive)
+
   return (
-    <div className="live-tile card">
+    <div className={'live-tile card' + (isLiveNow ? ' live-now' : '')}>
       <div className="live-tile-header">
         <h2>{league.name}</h2>
         {badge && <span className="live-tile-rank">{badge.text}</span>}
       </div>
 
-      <div className="live-tile-total">{myResult.total.toFixed(1)}</div>
+      <FlashValue as="div" value={myResult.total} className="live-tile-total">
+        {myResult.total.toFixed(1)}
+      </FlashValue>
 
       <ul className="live-tile-players">
         {myResult.players.map((p) => (
@@ -125,9 +130,9 @@ export default function LiveLeagueTile({ league, gameweek, userId }) {
             <span className="role-tag">{p.role}</span>
             <span className="live-tile-player-name">{abbreviatePlayerName(p.name)}</span>
             {p.isLive && <span className="live-dot" aria-label="In corso" />}
-            <span className={'live-tile-score ' + scoreClass(p.score)}>
+            <FlashValue value={p.score} className={'live-tile-score ' + scoreClass(p.score)}>
               {p.score != null ? p.score.toFixed(1) : '—'}
-            </span>
+            </FlashValue>
           </li>
         ))}
       </ul>

@@ -298,3 +298,38 @@ select:focus {
     filter: drop-shadow(0 0 0 transparent);
   }
 }
+
+/* A live score just changed: flash its background green/red, fading out. */
+.score-flash-up {
+  border-radius: var(--radius-sm);
+  animation: score-flash-up 500ms ease-out;
+}
+
+.score-flash-down {
+  border-radius: var(--radius-sm);
+  animation: score-flash-down 500ms ease-out;
+}
+
+@keyframes score-flash-up {
+  from {
+    background-color: rgba(0, 245, 160, 0.35);
+  }
+  to {
+    background-color: transparent;
+  }
+}
+
+@keyframes score-flash-down {
+  from {
+    background-color: rgba(255, 77, 106, 0.35);
+  }
+  to {
+    background-color: transparent;
+  }
+}
+
+/* A tile whose match is currently in progress gets a glowing accent border. */
+.live-now {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 10px rgba(0, 245, 160, 0.2);
+}
