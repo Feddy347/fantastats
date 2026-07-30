@@ -15,7 +15,8 @@
     "simulate:match": "node scripts/simulate-match.js",
     "consolidate:gameweek": "node scripts/consolidate-gameweek.js",
     "resolve:sealed-bids": "node scripts/resolve-sealed-bids.js",
-    "consolidate:league-gameweek": "node scripts/consolidate-league-gameweek.js"
+    "consolidate:league-gameweek": "node scripts/consolidate-league-gameweek.js",
+    "enrich:players": "node scripts/enrich-players.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.111.0",

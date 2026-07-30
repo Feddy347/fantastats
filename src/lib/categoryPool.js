@@ -29,9 +29,15 @@ export function isPlayerEligible(player, team, category, totalTeams) {
       const teams = config.teams ?? []
       return teams.includes(player.team)
     }
+    case 'age': {
+      const minBirthYear = config.min_birth_year ?? 0
+      return player.birth_year != null && player.birth_year >= minBirthYear
+    }
+    case 'nationality': {
+      const nationalityCode = config.nationality_code ?? 'IT'
+      return player.nationality === nationalityCode
+    }
     case 'top_scorers':
-    case 'age':
-    case 'nationality':
       return true
     default:
       return false
