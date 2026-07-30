@@ -1,0 +1,107 @@
+.player-rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.player-row {
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.player-main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.player-name {
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.player-team {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.player-roles {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.role-tag {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+.player-badges {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.badge-tag {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--primary);
+  color: #fff;
+}
+
+.player-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.player-meta strong {
+  color: var(--text);
+}
+
+.player-meta .positive {
+  color: #1e8e3e;
+  font-weight: 600;
+}
+
+.player-meta .negative {
+  color: var(--danger);
+  font-weight: 600;
+}
+
+.player-actions {
+  display: flex;
+  gap: 8px;
+}
+
+@media (min-width: 640px) {
+  .player-row {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .player-main {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .player-actions {
+    margin-left: auto;
+  }
+}

@@ -1,0 +1,207 @@
+.lineup-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-bottom: 24px;
+}
+
+.lineup-header {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.lineup-header h1 {
+  font-size: 18px;
+  margin: 0;
+}
+
+.deadline-locked {
+  align-self: flex-start;
+  background: var(--danger);
+}
+
+/* ---------------------------------------------------------------- */
+/* Pitch                                                              */
+/* ---------------------------------------------------------------- */
+
+.pitch {
+  background: linear-gradient(180deg, #2f9e52 0%, #22803f 100%);
+  border-radius: var(--radius);
+  padding: 16px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.pitch-row {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.pitch-row.keeper {
+  justify-content: center;
+}
+
+.pitch-slot {
+  flex: 1 1 0;
+  max-width: 104px;
+  min-height: 72px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 6px 4px;
+  border-radius: 10px;
+  border: 2px dashed rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  text-align: center;
+}
+
+.pitch-slot.filled {
+  border-style: solid;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--text);
+}
+
+.pitch-slot:disabled {
+  cursor: default;
+}
+
+.slot-role {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  opacity: 0.85;
+}
+
+.slot-player-name {
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.slot-player-team {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.slot-empty {
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 1;
+}
+
+/* ---------------------------------------------------------------- */
+/* Module selector                                                    */
+/* ---------------------------------------------------------------- */
+
+.module-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.module-btn {
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+}
+
+.module-btn.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+.module-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ---------------------------------------------------------------- */
+/* Bench                                                              */
+/* ---------------------------------------------------------------- */
+
+.bench-hint {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+.bench-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bench-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+}
+
+.bench-order {
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--bg);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.bench-main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.bench-arrows {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.bench-arrows button {
+  padding: 2px 8px;
+  font-size: 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.bench-arrows button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* ---------------------------------------------------------------- */
+/* Save bar                                                           */
+/* ---------------------------------------------------------------- */
+
+.lineup-save-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

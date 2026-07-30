@@ -1,0 +1,36 @@
+.league-calendar-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.league-calendar-row {
+  padding: 0;
+  overflow: hidden;
+}
+
+.league-calendar-row.current {
+  border-color: var(--primary);
+}
+
+.league-calendar-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 12px 14px;
+  background: none;
+  border: none;
+  font: inherit;
+  font-weight: 600;
+  color: var(--text);
+  text-align: left;
+}
+
+.league-calendar-body {
+  padding: 0 14px 14px;
+}

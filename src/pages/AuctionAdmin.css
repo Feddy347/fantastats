@@ -1,0 +1,48 @@
+.auction-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-bottom: 24px;
+}
+
+.auction-budgets {
+  padding: 14px;
+}
+
+.auction-budget-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.auction-budget-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.auction-budget-credits {
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.auction-card {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.auction-card-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.auction-card-actions .btn {
+  flex: 1;
+}

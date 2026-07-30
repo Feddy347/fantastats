@@ -1,0 +1,25 @@
+.roster-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.roster-stats {
+  display: flex;
+  gap: 24px;
+  padding: 16px;
+  flex-wrap: wrap;
+}
+
+.roster-group h2 {
+  font-size: 15px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.roster-group-count {
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: normal;
+}

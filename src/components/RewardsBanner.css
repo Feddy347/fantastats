@@ -1,0 +1,37 @@
+.rewards-banner {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: linear-gradient(135deg, #fff8e1, #ffecb3);
+  color: var(--text);
+  font-weight: 700;
+  font-size: 14px;
+  text-align: left;
+}
+
+.rewards-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+.rewards-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+
+.rewards-list-category {
+  font-size: 12px;
+  color: var(--text-muted);
+}

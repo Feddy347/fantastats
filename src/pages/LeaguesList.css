@@ -1,0 +1,29 @@
+.join-league {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.join-league-form {
+  display: flex;
+  gap: 8px;
+}
+
+.join-league-form input {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.league-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+.league-preview-name {
+  font-weight: 700;
+  font-size: 16px;
+}

@@ -7,18 +7,29 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "seed:players": "node scripts/seed-players.js",
+    "map:sorare-players": "node scripts/map-sorare-players.js",
+    "fetch:sorare-games": "node scripts/fetch-sorare-games.js",
+    "poll:sorare": "node scripts/poll-sorare.js",
+    "simulate:match": "node scripts/simulate-match.js",
+    "consolidate:gameweek": "node scripts/consolidate-gameweek.js",
+    "resolve:sealed-bids": "node scripts/resolve-sealed-bids.js",
+    "consolidate:league-gameweek": "node scripts/consolidate-league-gameweek.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.111.0",
     "react": "^19.2.7",
-    "react-dom": "^19.2.7"
+    "react-dom": "^19.2.7",
+    "react-router-dom": "^7.18.2",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.3",
+    "dotenv": "^17.4.2",
     "eslint": "^10.6.0",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.3",

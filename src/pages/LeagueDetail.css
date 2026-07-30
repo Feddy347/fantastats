@@ -1,0 +1,42 @@
+.roster-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.league-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.league-settings-card {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.settings-row span:first-child {
+  color: var(--text-muted);
+}
+
+.invite-code-chip {
+  font-family: monospace;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1px dashed var(--primary);
+  background: var(--bg);
+  color: var(--primary);
+}
