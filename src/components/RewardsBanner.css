@@ -2,8 +2,8 @@
   width: 100%;
   padding: 12px 16px;
   border-radius: var(--radius);
-  border: 1px solid var(--border);
-  background: linear-gradient(135deg, #fff8e1, #ffecb3);
+  border: 1px solid var(--warning);
+  background: linear-gradient(135deg, var(--warning-bg), rgba(255, 167, 38, 0.05));
   color: var(--text);
   font-weight: 700;
   font-size: 14px;

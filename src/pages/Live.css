@@ -44,9 +44,9 @@
   font-size: 12px;
   font-weight: 700;
   padding: 2px 10px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--primary);
-  color: #fff;
+  color: var(--on-primary);
 }
 
 .live-tile-total {
@@ -87,7 +87,7 @@
 }
 
 .live-tile-score.positive {
-  color: #1e8e3e;
+  color: var(--success);
 }
 
 .live-tile-score.negative {
@@ -102,7 +102,7 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #1e8e3e;
+  background: var(--success);
   flex: 0 0 auto;
   animation: live-pulse 1.4s ease-in-out infinite;
 }
