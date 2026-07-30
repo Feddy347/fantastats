@@ -1,34 +1,4 @@
 :root {
-  --bg: #0f1923;
-  --surface: #1a2736;
-  --surface-hover: #243447;
-  --border: #2a3a4e;
-
-  --text: #f0f4f8;
-  --text-muted: #8899aa;
-  --text-subtle: #5a6a7a;
-
-  --primary: #00f5a0;
-  --primary-hover: #00d98c;
-  --on-primary: #0f1923;
-  --secondary: #00d4ff;
-
-  --danger: #ff4d6a;
-  --danger-bg: rgba(255, 77, 106, 0.14);
-  --warning: #ffa726;
-  --warning-bg: rgba(255, 167, 38, 0.14);
-  --success: #00f5a0;
-  --success-bg: rgba(0, 245, 160, 0.14);
-  --overlay: rgba(0, 0, 0, 0.6);
-
-  --radius: 12px;
-  --radius-sm: 8px;
-  --radius-pill: 20px;
-  --shadow: none;
-
-  --sans: 'Inter', system-ui, 'Segoe UI', Roboto, sans-serif;
-  --transition: 200ms ease;
-
   font-family: var(--sans);
   color-scheme: dark;
   color: var(--text);
