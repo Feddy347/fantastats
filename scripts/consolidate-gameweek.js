@@ -7,6 +7,12 @@
 import { getSupabaseAdmin } from './lib/env.js'
 import { resolveLineupScore } from './lib/lineupResolver.js'
 import { isPlayerEligible } from '../src/lib/categoryPool.js'
+import { getLeagueModuleSystem } from '../src/lib/leagueModules.js'
+
+// Categories are always the Fantastats (7-a-side) system; reuse
+// getLeagueModuleSystem's normalization ({slots: [{roles:[role]}]}) so
+// resolveLineupScore's module-validity check works off one consistent shape.
+const FANTASTATS_MODULES = getLeagueModuleSystem({ formation_type: '7' }).modules
 
 const REWARD_TIERS = [
   { minRank: 1, maxRank: 1, credits: 100, player: true },
@@ -105,7 +111,13 @@ async function consolidateCategory(supabase, category, gameweek) {
 
     if (lineup) {
       const { starters, bench } = toStartersAndBench(lineup.lineup_players ?? [])
-      const resolved = await resolveLineupScore(supabase, { starters, bench, gameweekId: gameweek.id })
+      const resolved = await resolveLineupScore(supabase, {
+        starters,
+        bench,
+        gameweekId: gameweek.id,
+        roleField: 'role_fantastats',
+        modules: FANTASTATS_MODULES,
+      })
       totalScore = resolved.totalScore
     }
 

@@ -1,30 +1,28 @@
 // Consolidates one gameweek for every active league: computes each
-// member's total_score, updates matchups/standings per the league's
-// competition_format, and recomputes rank.
+// member's total_score (with automatic substitutions, same rule as
+// categories — see lineupResolver.js), updates matchups/standings per the
+// league's competition_format, and recomputes rank.
 //
-// Scores are computed FRESH here (via calculateScore) rather than reused
-// from player_match_scores, because that table holds one row per
-// player+match computed with whatever slot_role the CATEGORIES lineup used
-// — a league lineup can field the same player in a different slot/module,
-// which changes the scoring multiplier. So league scoring re-derives the
-// number from raw player_match_stats every time.
+// Scores are computed FRESH here (via resolveLineupScore/calculateScore)
+// rather than reused from player_match_scores, because that table holds one
+// row per player+match computed with whatever slot_role the CATEGORIES
+// lineup used — a league lineup can field the same player in a different
+// slot/module, which changes the scoring multiplier. So league scoring
+// re-derives the number from raw player_match_stats every time
+// (useStoredScores: false below).
 //
 // Usage: node scripts/consolidate-league-gameweek.js
 
 import { getSupabaseAdmin } from './lib/env.js'
-import { calculateScore } from '../src/lib/scoreEngine.js'
+import { resolveLineupScore } from './lib/lineupResolver.js'
+import { getLeagueModuleSystem } from '../src/lib/leagueModules.js'
 
-const ROLE_FIELD_BY_SYSTEM = { fantastats: 'role_fantastats', mantra: 'role_mantra', classic: 'role_classic' }
 const F1_POINTS = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1]
 
 function resultPoints(myScore, otherScore) {
   if (myScore > otherScore) return 3
   if (myScore === otherScore) return 1
   return 0
-}
-
-function roleFieldFor(league) {
-  return ROLE_FIELD_BY_SYSTEM[league.formation_type === '7' ? 'fantastats' : league.role_system]
 }
 
 async function findTargetGameweek(supabase) {
@@ -47,19 +45,21 @@ async function findTargetGameweek(supabase) {
   return completed ?? null
 }
 
-async function getMatchByTeam(supabase, gameweekId, cache) {
-  if (cache.has(gameweekId)) return cache.get(gameweekId)
-  const { data } = await supabase.from('matches').select('id, home_team, away_team').eq('gameweek_id', gameweekId)
-  const map = new Map()
-  ;(data ?? []).forEach((m) => {
-    map.set(m.home_team, m.id)
-    map.set(m.away_team, m.id)
-  })
-  cache.set(gameweekId, map)
-  return map
+function toStartersAndBench(lineupPlayers) {
+  const starters = lineupPlayers
+    .filter((lp) => lp.slot_type === 'starter')
+    .map((lp) => ({ slotIndex: (lp.slot_position ?? 1) - 1, slotRole: lp.slot_role, playerId: lp.player_id }))
+    .sort((a, b) => a.slotIndex - b.slotIndex)
+
+  const bench = lineupPlayers
+    .filter((lp) => lp.slot_type === 'bench')
+    .sort((a, b) => (a.slot_position ?? 0) - (b.slot_position ?? 0))
+    .map((lp) => ({ playerId: lp.player_id }))
+
+  return { starters, bench }
 }
 
-async function computeUserTotalScore(supabase, { userId, leagueId, gameweekId, roleField, matchByTeam, statsCache }) {
+async function computeUserTotalScore(supabase, { userId, leagueId, gameweekId, roleField, modules }) {
   const { data: lineup } = await supabase
     .from('league_lineups')
     .select('*, league_lineup_players(*)')
@@ -68,40 +68,21 @@ async function computeUserTotalScore(supabase, { userId, leagueId, gameweekId, r
     .eq('gameweek_id', gameweekId)
     .maybeSingle()
 
-  const starters = (lineup?.league_lineup_players ?? []).filter((lp) => lp.slot_type === 'starter')
+  if (!lineup) return 0
+
+  const { starters, bench } = toStartersAndBench(lineup.league_lineup_players ?? [])
   if (starters.length === 0) return 0
 
-  const playerIds = starters.map((s) => s.player_id)
-  const { data: players } = await supabase.from('players').select(`id, team, ${roleField}`).in('id', playerIds)
-  const playerById = new Map((players ?? []).map((p) => [p.id, p]))
+  const resolved = await resolveLineupScore(supabase, {
+    starters,
+    bench,
+    gameweekId,
+    roleField,
+    modules,
+    useStoredScores: false,
+  })
 
-  let total = 0
-  for (const starter of starters) {
-    const player = playerById.get(starter.player_id)
-    if (!player) continue
-
-    const matchId = matchByTeam.get(player.team)
-    if (!matchId) continue
-
-    const cacheKey = `${matchId}:${starter.player_id}`
-    let statsRow = statsCache.get(cacheKey)
-    if (statsRow === undefined) {
-      const { data: stats } = await supabase
-        .from('player_match_stats')
-        .select('*')
-        .eq('match_id', matchId)
-        .eq('player_id', starter.player_id)
-        .maybeSingle()
-      statsRow = stats ?? null
-      statsCache.set(cacheKey, statsRow)
-    }
-    if (!statsRow) continue
-
-    const result = calculateScore(statsRow, player[roleField], starter.slot_role)
-    total += result.totalScore
-  }
-
-  return total
+  return resolved.totalScore
 }
 
 function rankByPointsThenScore(rows) {
@@ -143,10 +124,7 @@ async function upsertStanding(supabase, leagueId, userId, delta) {
 }
 
 async function consolidateLeague(supabase, league, gameweek) {
-  const roleField = roleFieldFor(league)
-  const matchByTeamCache = new Map()
-  const statsCache = new Map()
-  const matchByTeam = await getMatchByTeam(supabase, gameweek.id, matchByTeamCache)
+  const moduleSystem = getLeagueModuleSystem(league)
 
   const { data: members } = await supabase.from('league_members').select('user_id').eq('league_id', league.id)
   if (!members || members.length === 0) return
@@ -159,9 +137,8 @@ async function consolidateLeague(supabase, league, gameweek) {
       userId: m.user_id,
       leagueId: league.id,
       gameweekId: gameweek.id,
-      roleField,
-      matchByTeam,
-      statsCache,
+      roleField: moduleSystem.roleField,
+      modules: moduleSystem.modules,
     })
     totalsByUser.set(m.user_id, total)
   }
