@@ -8,6 +8,7 @@ export default function Register() {
   const { user, loading: authLoading } = useAuth()
   const navigate = useNavigate()
   const [username, setUsername] = useState('')
+  const [teamName, setTeamName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState(null)
@@ -24,7 +25,7 @@ export default function Register() {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      options: { data: { username } },
+      options: { data: { username, team_name: teamName } },
     })
 
     setSubmitting(false)
@@ -68,6 +69,17 @@ export default function Register() {
                   minLength={3}
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
+                />
+              </div>
+              <div className="auth-field">
+                <label htmlFor="team-name">Nome squadra</label>
+                <input
+                  id="team-name"
+                  type="text"
+                  required
+                  minLength={2}
+                  value={teamName}
+                  onChange={(e) => setTeamName(e.target.value)}
                 />
               </div>
               <div className="auth-field">

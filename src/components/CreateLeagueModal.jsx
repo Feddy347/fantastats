@@ -15,7 +15,7 @@ const COMPETITION_FORMATS = [
 ]
 
 export default function CreateLeagueModal({ onClose }) {
-  const { user } = useAuth()
+  const { user, profile } = useAuth()
   const navigate = useNavigate()
 
   const [gameweeks, setGameweeks] = useState([])
@@ -27,7 +27,6 @@ export default function CreateLeagueModal({ onClose }) {
   const [rosterSize, setRosterSize] = useState(18)
   const [startingCredits, setStartingCredits] = useState(500)
   const [seasonStartGameweek, setSeasonStartGameweek] = useState('')
-  const [teamName, setTeamName] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState(null)
 
@@ -60,7 +59,7 @@ export default function CreateLeagueModal({ onClose }) {
 
   async function handleSubmit(e) {
     e.preventDefault()
-    if (!name.trim() || !teamName.trim() || !seasonStartGameweek) return
+    if (!name.trim() || !seasonStartGameweek) return
 
     setSubmitting(true)
     setError(null)
@@ -105,8 +104,9 @@ export default function CreateLeagueModal({ onClose }) {
     const { error: memberError } = await supabase.from('league_members').insert({
       league_id: league.id,
       user_id: user.id,
-      team_name: teamName.trim(),
+      team_name: profile?.team_name || profile?.username,
       league_credits: startingCredits,
+      is_admin: true,
     })
 
     setSubmitting(false)
@@ -249,17 +249,6 @@ export default function CreateLeagueModal({ onClose }) {
                 </option>
               ))}
             </select>
-          </div>
-
-          <div className="form-field">
-            <label htmlFor="team-name">Nome della tua squadra</label>
-            <input
-              id="team-name"
-              type="text"
-              required
-              value={teamName}
-              onChange={(e) => setTeamName(e.target.value)}
-            />
           </div>
 
           {error && <p className="error-text">{error}</p>}

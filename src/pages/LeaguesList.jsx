@@ -12,7 +12,7 @@ const STATUS_LABELS = { setup: 'In allestimento', active: 'In corso', completed:
 
 export default function LeaguesList() {
   usePageTitle('Leghe')
-  const { user } = useAuth()
+  const { user, profile } = useAuth()
   const navigate = useNavigate()
 
   const [leagues, setLeagues] = useState([])
@@ -23,7 +23,6 @@ export default function LeaguesList() {
   const [preview, setPreview] = useState(null)
   const [previewError, setPreviewError] = useState(null)
   const [searching, setSearching] = useState(false)
-  const [teamName, setTeamName] = useState('')
   const [joining, setJoining] = useState(false)
   const [joinError, setJoinError] = useState(null)
 
@@ -31,7 +30,7 @@ export default function LeaguesList() {
     setLoading(true)
     const { data } = await supabase
       .from('league_members')
-      .select('league_id, team_name, leagues(*)')
+      .select('league_id, team_name, is_admin, leagues(*)')
       .eq('user_id', user.id)
 
     const rows = data ?? []
@@ -48,7 +47,12 @@ export default function LeaguesList() {
     setLeagues(
       rows
         .filter((r) => r.leagues)
-        .map((r) => ({ ...r.leagues, myTeamName: r.team_name, memberCount: counts[r.league_id] ?? 0 }))
+        .map((r) => ({
+          ...r.leagues,
+          myTeamName: r.team_name,
+          isAdmin: r.is_admin,
+          memberCount: counts[r.league_id] ?? 0,
+        }))
     )
     setLoading(false)
   }
@@ -82,14 +86,14 @@ export default function LeaguesList() {
   }
 
   async function handleJoin() {
-    if (!preview || !teamName.trim()) return
+    if (!preview) return
     setJoining(true)
     setJoinError(null)
 
     const { error } = await supabase.from('league_members').insert({
       league_id: preview.league_id,
       user_id: user.id,
-      team_name: teamName.trim(),
+      team_name: profile?.team_name || profile?.username,
       league_credits: preview.starting_credits,
     })
 
@@ -140,24 +144,9 @@ export default function LeaguesList() {
               <span>{preview.market_type === 'auction' ? 'Asta in presenza' : 'Crediti'}</span>
             </div>
 
-            <div className="form-field">
-              <label htmlFor="join-team-name">Nome della tua squadra</label>
-              <input
-                id="join-team-name"
-                type="text"
-                value={teamName}
-                onChange={(e) => setTeamName(e.target.value)}
-              />
-            </div>
-
             {joinError && <p className="error-text">{joinError}</p>}
 
-            <button
-              type="button"
-              className="btn btn-primary btn-block"
-              disabled={joining || !teamName.trim()}
-              onClick={handleJoin}
-            >
+            <button type="button" className="btn btn-primary btn-block" disabled={joining} onClick={handleJoin}>
               {joining ? 'Iscrizione…' : 'Unisciti'}
             </button>
           </div>
@@ -174,7 +163,7 @@ export default function LeaguesList() {
             <Link key={league.id} to={`/leagues/${league.id}`} className="category-card card category-card-link">
               <div className="category-card-header">
                 <h2>{league.name}</h2>
-                {league.admin_id === user.id && <span className="badge-tag">Admin</span>}
+                {(league.isAdmin || league.admin_id === user.id) && <span className="badge-tag">Admin</span>}
               </div>
               <p className="category-description">{league.myTeamName}</p>
               <div className="category-stats">

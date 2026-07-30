@@ -137,7 +137,9 @@ export default function AuctionAdmin() {
   if (loading) return <p className="status-text">Caricamento…</p>
   if (error) return <p className="error-text">{error}</p>
 
-  if (league.admin_id !== user.id) {
+  const isAdmin = members.some((m) => m.user_id === user.id && m.is_admin) || league.admin_id === user.id
+
+  if (!isAdmin) {
     return (
       <div className="auction-page">
         <Link to={`/leagues/${id}`} className="back-link">

@@ -96,8 +96,8 @@ export default function LeagueDetail() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, user.id])
 
-  const isAdmin = league?.admin_id === user.id
   const myMembership = members.find((m) => m.user_id === user.id)
+  const isAdmin = Boolean(myMembership?.is_admin) || league?.admin_id === user.id
   const isMember = Boolean(myMembership)
   const locked = isLineupLocked(gameweek)
 
@@ -131,6 +131,20 @@ export default function LeagueDetail() {
     setRemoveTarget(null)
     if (removeError) {
       setActionError('Impossibile rimuovere il partecipante.')
+      return
+    }
+    await loadAll()
+  }
+
+  async function handlePromote(member) {
+    setActionError(null)
+    const { error: promoteError } = await supabase.rpc('set_league_admin', {
+      p_league_id: Number(id),
+      p_target_user_id: member.user_id,
+      p_is_admin: !member.is_admin,
+    })
+    if (promoteError) {
+      setActionError('Impossibile aggiornare i permessi di amministratore.')
       return
     }
     await loadAll()
@@ -386,7 +400,10 @@ export default function LeagueDetail() {
               {members.map((m) => (
                 <li key={m.id} className="player-row card">
                   <div className="player-main">
-                    <span className="player-name">{m.profiles?.username ?? '—'}</span>
+                    <span className="player-name">
+                      {m.profiles?.username ?? '—'}
+                      {(m.is_admin || m.user_id === league.admin_id) && <span className="badge-tag"> Admin</span>}
+                    </span>
                     <span className="player-team">{m.team_name}</span>
                   </div>
                   <div className="player-meta">
@@ -397,11 +414,18 @@ export default function LeagueDetail() {
                       Crediti: <strong>{m.league_credits}</strong>
                     </span>
                   </div>
-                  {isAdmin && league.status === 'setup' && m.user_id !== user.id && (
+                  {isAdmin && m.user_id !== user.id && (
                     <div className="player-actions">
-                      <button type="button" className="btn btn-secondary" onClick={() => setRemoveTarget(m)}>
-                        Rimuovi
-                      </button>
+                      {m.user_id !== league.admin_id && (
+                        <button type="button" className="btn btn-secondary" onClick={() => handlePromote(m)}>
+                          {m.is_admin ? 'Rimuovi admin' : 'Rendi admin'}
+                        </button>
+                      )}
+                      {league.status === 'setup' && (
+                        <button type="button" className="btn btn-secondary" onClick={() => setRemoveTarget(m)}>
+                          Rimuovi
+                        </button>
+                      )}
                     </div>
                   )}
                 </li>
