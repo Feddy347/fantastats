@@ -80,19 +80,28 @@ export function calculateScore(stats, playerRole, slotRole) {
   const penaltySave = (s.penalty_save ?? 0) * 5
   const goalsConceded = (s.goals_conceded ?? 0) * -1
 
-  // 3.6 discipline & errors — neutral
-  let cardMalus = 0
+  // 3.6 discipline & errors — neutral. Kept as individually-named terms
+  // (rather than one combined bucket) purely so the UI can show a distinct
+  // icon per action; the math is unchanged.
+  const foulsBase = (s.fouls ?? 0) * -0.2
+  const yellowCardMalus = (s.yellow_card ?? 0) * -1
+  let redCardMalus = 0
   if ((s.red_card ?? 0) >= 1) {
-    cardMalus = (s.yellow_card ?? 0) >= 2 ? -3 : -4
+    redCardMalus = (s.yellow_card ?? 0) >= 2 ? -3 : -4
   }
+  const ownGoalMalus = (s.own_goals ?? 0) * -4
+  const errorLeadToGoalMalus = (s.error_lead_to_goal ?? 0) * -3
+  const errorLeadToShotMalus = (s.error_lead_to_shot ?? 0) * -1
+  const penaltyConcededMalus = (s.penalty_conceded ?? 0) * -2
+
   const discipline =
-    (s.fouls ?? 0) * -0.2 +
-    (s.yellow_card ?? 0) * -1 +
-    cardMalus +
-    (s.own_goals ?? 0) * -4 +
-    (s.error_lead_to_goal ?? 0) * -3 +
-    (s.error_lead_to_shot ?? 0) * -1 +
-    (s.penalty_conceded ?? 0) * -2
+    foulsBase +
+    yellowCardMalus +
+    redCardMalus +
+    ownGoalMalus +
+    errorLeadToGoalMalus +
+    errorLeadToShotMalus +
+    penaltyConcededMalus
 
   const baseScore =
     participation +
@@ -163,7 +172,13 @@ export function calculateScore(stats, playerRole, slotRole) {
       keeperSaves: round2(keeperSaves),
       penaltySave: round2(penaltySave),
       goalsConceded: round2(goalsConceded),
-      discipline: round2(discipline),
+      fouls: round2(foulsBase),
+      yellowCard: round2(yellowCardMalus),
+      redCard: round2(redCardMalus),
+      ownGoals: round2(ownGoalMalus),
+      errorLeadToGoal: round2(errorLeadToGoalMalus),
+      errorLeadToShot: round2(errorLeadToShotMalus),
+      penaltyConceded: round2(penaltyConcededMalus),
       cleanSheetBonus: round2(cleanSheetBonus),
       passAccuracyBonus: round2(passAccuracyBonus),
       dribbleBonus: round2(dribbleBonus),

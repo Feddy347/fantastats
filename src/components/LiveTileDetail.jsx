@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabaseClient'
+import { BREAKDOWN_ICONS } from '../lib/breakdownIcons'
 import GameweekLeaderboard from './GameweekLeaderboard'
 import PitchField from './PitchField'
 import './LiveTileDetail.css'
@@ -23,7 +24,13 @@ const BREAKDOWN_LABELS = {
   keeperSaves: 'Parate',
   penaltySave: 'Rigore parato',
   goalsConceded: 'Gol subiti',
-  discipline: 'Disciplina/errori',
+  fouls: 'Falli commessi',
+  yellowCard: 'Cartellino giallo',
+  redCard: 'Cartellino rosso',
+  ownGoals: 'Autogol',
+  errorLeadToGoal: 'Errore che porta a gol',
+  errorLeadToShot: 'Errore che porta a tiro',
+  penaltyConceded: 'Rigore causato',
   cleanSheetBonus: 'Bonus clean sheet',
   passAccuracyBonus: 'Bonus precisione passaggi',
   dribbleBonus: 'Bonus dribbling',
@@ -94,12 +101,27 @@ export default function LiveTileDetail({ tile, gameweek, userId, onClose }) {
               <ul className="breakdown-list">
                 {Object.entries(expandedBreakdown)
                   .filter(([, v]) => v !== 0)
-                  .map(([key, value]) => (
-                    <li key={key}>
-                      <span>{BREAKDOWN_LABELS[key] ?? key}</span>
-                      <span className={value > 0 ? 'positive' : 'negative'}>{value > 0 ? `+${value}` : value}</span>
-                    </li>
-                  ))}
+                  .map(([key, value]) => {
+                    const iconDef = BREAKDOWN_ICONS[key]
+                    const Icon = iconDef?.icon
+                    return (
+                      <li key={key}>
+                        <span className="breakdown-label">
+                          {Icon && (
+                            <Icon
+                              className="breakdown-icon icon-flash-in"
+                              size={14}
+                              color={iconDef.color}
+                              fill={iconDef.fill ?? 'none'}
+                              style={{ color: iconDef.color }}
+                            />
+                          )}
+                          {BREAKDOWN_LABELS[key] ?? key}
+                        </span>
+                        <span className={value > 0 ? 'positive' : 'negative'}>{value > 0 ? `+${value}` : value}</span>
+                      </li>
+                    )
+                  })}
               </ul>
             ) : (
               <p className="status-text">Nessuna azione ancora.</p>

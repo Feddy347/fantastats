@@ -73,6 +73,16 @@
   color: var(--text);
 }
 
+.breakdown-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.breakdown-icon {
+  flex: 0 0 auto;
+}
+
 .breakdown-list .positive {
   color: var(--success);
   font-weight: 600;

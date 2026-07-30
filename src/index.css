@@ -282,3 +282,19 @@ select:focus {
     opacity: 1;
   }
 }
+
+/* Bonus/malus icons flash in (scale + glow) when they first appear. */
+.icon-flash-in {
+  animation: icon-flash-in 300ms ease-out;
+}
+
+@keyframes icon-flash-in {
+  from {
+    transform: scale(0);
+    filter: drop-shadow(0 0 6px currentColor);
+  }
+  to {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0 transparent);
+  }
+}
