@@ -29,7 +29,7 @@
 .auth-title .subtitle {
   display: block;
   margin-top: 4px;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-size: 14px;
 }
 
@@ -47,7 +47,7 @@
 .auth-footer {
   text-align: center;
   font-size: 14px;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .auth-success {

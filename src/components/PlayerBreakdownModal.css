@@ -40,7 +40,7 @@
 }
 
 .breakdown-total.neutral {
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .breakdown-list {

@@ -13,7 +13,7 @@
 
 .roster-group h2 {
   font-size: 15px;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }

@@ -95,7 +95,7 @@
 }
 
 .live-tile-score.neutral {
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .live-dot {
@@ -123,7 +123,7 @@
   align-items: center;
   gap: 8px;
   font-size: 12px;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .live-tile-progress-bar {

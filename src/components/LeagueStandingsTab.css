@@ -23,7 +23,7 @@
 }
 
 .standings-table thead th {
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-weight: 600;
   font-size: 12px;
 }

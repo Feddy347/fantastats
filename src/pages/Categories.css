@@ -50,14 +50,14 @@
 
 .category-description {
   font-size: 13px;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .category-stats {
   display: flex;
   gap: 16px;
   font-size: 13px;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .category-warning {
@@ -69,5 +69,5 @@
 .coming-soon {
   padding: 40px 20px;
   text-align: center;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }

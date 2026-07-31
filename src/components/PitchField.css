@@ -91,7 +91,7 @@
 .pitch-chip-role {
   font-size: 9px;
   font-weight: 600;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   text-transform: uppercase;
 }
 
@@ -110,7 +110,7 @@
 }
 
 .pitch-chip-score.neutral {
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .pitch-chip-dot {

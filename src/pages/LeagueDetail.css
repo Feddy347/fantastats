@@ -26,7 +26,7 @@
 }
 
 .settings-row span:first-child {
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .invite-code-chip {

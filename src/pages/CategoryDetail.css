@@ -5,7 +5,7 @@
 }
 
 .back-link {
-  color: var(--text-muted);
+  color: var(--text-secondary);
   text-decoration: none;
   font-size: 14px;
   font-weight: 600;
@@ -31,7 +31,7 @@
 
 .lineup-summary-module {
   font-size: 13px;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-weight: 600;
 }
 
@@ -58,7 +58,7 @@
   border-bottom: 2px solid transparent;
   font-weight: 600;
   font-size: 14px;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .category-tab.active {

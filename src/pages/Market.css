@@ -22,7 +22,7 @@
   background: transparent;
   font-size: 14px;
   font-weight: 600;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .market-tab.active {

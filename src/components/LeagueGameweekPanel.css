@@ -44,7 +44,7 @@
   flex: 0 0 auto;
   font-weight: 700;
   font-size: 13px;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .gw-league-points {

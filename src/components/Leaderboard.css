@@ -35,7 +35,7 @@
   flex: 0 0 auto;
   min-width: 28px;
   font-weight: 700;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .leaderboard-username {
@@ -57,7 +57,7 @@
   display: flex;
   gap: 16px;
   font-size: 12px;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .leaderboard-rewards {
