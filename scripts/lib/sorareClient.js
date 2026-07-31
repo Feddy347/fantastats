@@ -12,10 +12,16 @@ export function sleep(ms) {
 
 export async function sorareQuery(query, variables) {
   const headers = { 'Content-Type': 'application/json' }
-  // Public search/read queries generally work unauthenticated; set
-  // SORARE_API_KEY in .env if Sorare starts requiring a bearer token for you.
+  // Public search/read queries generally work unauthenticated. Sorare API
+  // keys go in a plain `APIKEY` header, NOT `Authorization: Bearer` — that
+  // was tried and Sorare rejects it outright ("Unauthorized: Not enough or
+  // too many segments", a JWT-parsing error), which broke every call
+  // (even otherwise-public ones) as soon as a key was set. An API key does
+  // raise the query complexity budget (500 -> 30000) but does not improve
+  // searchPlayers' own match relevance — confirmed by testing known-missing
+  // players (e.g. "Bremer") both with and without the key.
   if (process.env.SORARE_API_KEY) {
-    headers.Authorization = `Bearer ${process.env.SORARE_API_KEY}`
+    headers.APIKEY = process.env.SORARE_API_KEY
   }
 
   const res = await fetch(SORARE_API_URL, {
