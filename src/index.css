@@ -282,7 +282,7 @@ select:focus {
 
 @keyframes score-flash-up {
   from {
-    background-color: rgba(0, 245, 160, 0.35);
+    background-color: rgba(22, 163, 74, 0.25);
   }
   to {
     background-color: transparent;
@@ -291,7 +291,7 @@ select:focus {
 
 @keyframes score-flash-down {
   from {
-    background-color: rgba(255, 77, 106, 0.35);
+    background-color: rgba(239, 68, 68, 0.25);
   }
   to {
     background-color: transparent;
@@ -301,5 +301,5 @@ select:focus {
 /* A tile whose match is currently in progress gets a glowing accent border. */
 .live-now {
   border-color: var(--primary) !important;
-  box-shadow: 0 0 10px rgba(0, 245, 160, 0.2);
+  box-shadow: 0 0 8px rgba(22, 163, 74, 0.15);
 }
