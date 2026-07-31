@@ -4,10 +4,30 @@
   gap: 16px;
 }
 
+.home-team-name {
+  margin: -8px 0 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
 .summary-bar {
   display: flex;
-  gap: 24px;
   padding: 16px;
+}
+
+.summary-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0 12px;
+  border-left: 1px solid var(--border);
+}
+
+.summary-item:first-child {
+  border-left: none;
+  padding-left: 0;
 }
 
 .category-cards {
@@ -23,10 +43,10 @@
 }
 
 .category-card {
-  padding: 16px;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  overflow: hidden;
 }
 
 .category-card-link {
@@ -34,7 +54,6 @@
   color: inherit;
   display: flex;
   flex-direction: column;
-  gap: 6px;
 }
 
 .category-card-header {
@@ -64,6 +83,102 @@
   font-size: 13px;
   color: var(--danger);
   margin: 0;
+}
+
+.category-card-footer {
+  padding: 0 14px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ---------------------------------------------------------------- */
+/* Colored category card (A4)                                        */
+/* ---------------------------------------------------------------- */
+
+.category-card-colorhead {
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--text-on-color);
+}
+
+.category-card-name {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.category-card-gw {
+  font-size: 12px;
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+.category-card-body {
+  padding: 14px 14px 10px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.category-card-score-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.category-card-score {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.category-card-score-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.category-card-rank {
+  font-size: 13px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-muted);
+  color: var(--text-primary);
+}
+
+.category-card-activity {
+  padding: 0 14px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.activity-bar {
+  display: flex;
+  gap: 3px;
+}
+
+.activity-segment {
+  flex: 1;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--bg-muted);
+}
+
+.activity-segment.filled {
+  background: var(--color-accent);
+}
+
+.activity-caption {
+  font-size: 12px;
+  color: var(--text-secondary);
 }
 
 .coming-soon {

@@ -27,3 +27,40 @@
   font-weight: 700;
   font-size: 16px;
 }
+
+/* ---------------------------------------------------------------- */
+/* League card (A5) — same shell as category cards, muted header      */
+/* ---------------------------------------------------------------- */
+
+.category-card-mutedhead {
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  background: var(--bg-muted);
+  border-bottom: 1px solid var(--border);
+}
+
+.category-card-mutedhead .category-card-name {
+  color: var(--text-primary);
+}
+
+.league-card-meta {
+  padding: 0 14px 14px;
+}
+
+.league-card-opponent {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 14px 14px;
+  border-top: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.league-card-opponent strong {
+  color: var(--text-primary);
+  font-size: 14px;
+}
