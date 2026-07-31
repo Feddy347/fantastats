@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { Repeat, Users } from 'lucide-react'
 import { supabase } from '../lib/supabaseClient'
 import { useAuth } from '../lib/useAuth'
 import HomeTabs from '../components/HomeTabs'
@@ -155,6 +156,17 @@ export default function CategoriesList() {
           <span className="summary-label">Categorie attive</span>
           <span className="summary-value">{enrolledIds.length}</span>
         </div>
+      </div>
+
+      <div className="quick-actions">
+        <Link to="/market" className="quick-action-link">
+          <Repeat size={18} strokeWidth={2} />
+          Mercato
+        </Link>
+        <Link to="/roster" className="quick-action-link">
+          <Users size={18} strokeWidth={2} />
+          Rosa
+        </Link>
       </div>
 
       {loading && <p className="status-text">Caricamento…</p>}

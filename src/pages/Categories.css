@@ -30,6 +30,27 @@
   padding-left: 0;
 }
 
+.quick-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.quick-action-link {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 14px;
+  text-decoration: none;
+}
+
 .category-cards {
   display: grid;
   grid-template-columns: 1fr;
