@@ -1,5 +1,5 @@
 // Mirrors the eligibility rules enforced server-side in
-// count_eligible_players() (supabase/migrations/20260729010000_categories_market.sql).
+// count_eligible_players() (supabase/migrations/20260808000000_nationality_three_letter.sql).
 // This copy is for display/filtering only — the database function is the
 // authoritative check for enrollment.
 
@@ -30,12 +30,11 @@ export function isPlayerEligible(player, team, category, totalTeams) {
       return teams.includes(player.team)
     }
     case 'age': {
-      const minBirthYear = config.min_birth_year ?? 0
+      const minBirthYear = config.min_birth_year ?? 2003
       return player.birth_year != null && player.birth_year >= minBirthYear
     }
     case 'nationality': {
-      const nationalityCode = config.nationality_code ?? 'IT'
-      return player.nationality === nationalityCode
+      return player.nationality === 'ITA'
     }
     case 'top_scorers':
       return true

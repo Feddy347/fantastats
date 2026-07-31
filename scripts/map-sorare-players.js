@@ -8,28 +8,26 @@ import { getSupabaseAdmin } from './lib/env.js'
 import { sorareQuery, sleep, teamNamesMatch, SORARE_REQUEST_DELAY_MS } from './lib/sorareClient.js'
 
 const SEARCH_PLAYER_QUERY = `
-query SearchPlayer($name: String!) {
-  football {
-    players(search: $name, first: 5) {
-      nodes {
-        slug
-        displayName
-        activeClub {
-          name
-          domesticLeague {
-            slug
-          }
+query SearchPlayer($query: String!) {
+  searchPlayers(query: $query, pageSize: 5) {
+    hits {
+      slug
+      displayName
+      activeClub {
+        name
+        domesticLeague {
+          slug
         }
-        position
       }
+      position
     }
   }
 }
 `
 
-function pickBestMatch(nodes, player) {
-  const candidates = (nodes ?? []).filter(
-    (n) => n.activeClub?.domesticLeague?.slug === 'serie-a' && teamNamesMatch(n.activeClub?.name, player.team)
+function pickBestMatch(hits, player) {
+  const candidates = (hits ?? []).filter(
+    (h) => h.activeClub?.domesticLeague?.slug === 'serie-a' && teamNamesMatch(h.activeClub?.name, player.team)
   )
   if (candidates.length === 0) return null
   if (candidates.length === 1) return candidates[0]
@@ -57,9 +55,9 @@ async function main() {
 
   for (const player of players) {
     try {
-      const data = await sorareQuery(SEARCH_PLAYER_QUERY, { name: player.name })
-      const nodes = data?.football?.players?.nodes ?? []
-      const best = pickBestMatch(nodes, player)
+      const data = await sorareQuery(SEARCH_PLAYER_QUERY, { query: player.name })
+      const hits = data?.searchPlayers?.hits ?? []
+      const best = pickBestMatch(hits, player)
 
       if (!best) {
         console.warn(`[unmatched] ${player.name} (${player.team})`)
