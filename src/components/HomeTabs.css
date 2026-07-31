@@ -1,6 +1,6 @@
 .home-tabs {
   display: flex;
-  background: var(--bg);
+  background: var(--bg-muted);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 4px;
@@ -20,7 +20,7 @@
 }
 
 .home-tab.active {
-  background: var(--surface);
-  color: var(--primary);
-  box-shadow: var(--shadow);
+  background: var(--bg-card);
+  color: var(--color-accent);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }

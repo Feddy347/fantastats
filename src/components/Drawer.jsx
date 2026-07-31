@@ -1,16 +1,13 @@
 import { useRef } from 'react'
 import { NavLink } from 'react-router-dom'
+import { Home, Zap, User, LogOut } from 'lucide-react'
 import { useAuth } from '../lib/useAuth'
 import './Drawer.css'
 
 const NAV_ITEMS = [
-  { to: '/', label: 'Home', icon: '🏠', end: true },
-  { to: '/categories', label: 'Categorie', icon: '📂' },
-  { to: '/leagues', label: 'Leghe', icon: '🏆' },
-  { to: '/live', label: 'Live', icon: '⚡' },
-  { to: '/market', label: 'Mercato', icon: '🔄' },
-  { to: '/roster', label: 'Rosa', icon: '👤' },
-  { to: '/profile', label: 'Profilo', icon: '⚙️' },
+  { to: '/', label: 'Home', icon: Home, end: true },
+  { to: '/live', label: 'Live', icon: Zap },
+  { to: '/profile', label: 'Profilo', icon: User },
 ]
 
 // Swipe-right-to-close, since a drawer sliding in from the right is closed
@@ -18,8 +15,13 @@ const NAV_ITEMS = [
 const SWIPE_CLOSE_THRESHOLD = 60
 
 export default function Drawer({ open, onClose }) {
-  const { profile } = useAuth()
+  const { profile, signOut } = useAuth()
   const touchStartX = useRef(null)
+
+  async function handleSignOut() {
+    onClose()
+    await signOut()
+  }
 
   function handleTouchStart(e) {
     touchStartX.current = e.touches[0].clientX
@@ -58,17 +60,26 @@ export default function Drawer({ open, onClose }) {
                 onClick={onClose}
               >
                 <span className="drawer-nav-icon" aria-hidden="true">
-                  {item.icon}
+                  <item.icon size={20} strokeWidth={2} />
                 </span>
                 {item.label}
               </NavLink>
             </li>
           ))}
+          <li>
+            <button type="button" className="drawer-nav-item drawer-nav-signout" onClick={handleSignOut}>
+              <span className="drawer-nav-icon" aria-hidden="true">
+                <LogOut size={20} strokeWidth={2} />
+              </span>
+              Esci
+            </button>
+          </li>
         </ul>
 
         <div className="drawer-footer">
           <div className="drawer-footer-username">{profile?.username ?? '—'}</div>
-          <div className="drawer-footer-credits">{profile?.credits ?? 0} crediti</div>
+          {profile?.team_name && <div className="drawer-footer-team">{profile.team_name}</div>}
+          <div className="drawer-footer-credits">{profile?.credits ?? 0} / 500</div>
         </div>
       </nav>
     </>

@@ -19,7 +19,7 @@
   right: 0;
   bottom: 0;
   width: min(80vw, 320px);
-  background: var(--surface);
+  background: var(--bg-card);
   border-left: 1px solid var(--border);
   display: flex;
   flex-direction: column;
@@ -47,7 +47,7 @@
 .drawer-close {
   background: none;
   border: none;
-  color: var(--text);
+  color: var(--text-primary);
   font-size: 24px;
   line-height: 1;
   padding: 4px 8px;
@@ -68,29 +68,40 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  width: 100%;
   padding: 12px 12px;
   border-radius: var(--radius-sm);
-  color: var(--text);
+  border: none;
+  background: none;
+  color: var(--text-primary);
   text-decoration: none;
+  font-family: inherit;
   font-weight: 500;
   font-size: 15px;
+  text-align: left;
+  cursor: pointer;
   transition: background-color var(--transition);
 }
 
 .drawer-nav-item:hover {
-  background: var(--surface-hover);
+  background: var(--bg-muted);
 }
 
 .drawer-nav-item.active {
-  background: var(--surface-hover);
-  color: var(--primary);
+  background: var(--bg-muted);
+  color: var(--color-accent);
   font-weight: 600;
 }
 
+.drawer-nav-signout {
+  color: var(--color-danger);
+}
+
 .drawer-nav-icon {
-  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 24px;
-  text-align: center;
 }
 
 .drawer-footer {
@@ -103,11 +114,17 @@
 
 .drawer-footer-username {
   font-weight: 600;
-  color: var(--text);
+  color: var(--text-primary);
+}
+
+.drawer-footer-team {
+  font-size: 13px;
+  color: var(--text-secondary);
 }
 
 .drawer-footer-credits {
   font-size: 13px;
-  color: var(--primary);
+  color: var(--color-accent);
   font-weight: 700;
+  font-variant-numeric: tabular-nums;
 }
