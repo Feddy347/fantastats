@@ -7,28 +7,39 @@
 import { getSupabaseAdmin } from './lib/env.js'
 import { sorareQuery, sleep, teamNamesMatch, SORARE_REQUEST_DELAY_MS } from './lib/sorareClient.js'
 
+// searchPlayers.hits is typed as an interface (ComposeTeamBenchObjectInterface);
+// player hits come back as ComposeTeamBenchCommonPlayer with the actual
+// player fields nested one level deeper under `player`. Serie A's domestic
+// league slug is "serie-a-it", not "serie-a". See enrich-players.js's header
+// comment for how this was confirmed (introspection is disabled on Sorare's API).
+const SERIE_A_SLUG = 'serie-a-it'
+
 const SEARCH_PLAYER_QUERY = `
 query SearchPlayer($query: String!) {
   searchPlayers(query: $query, pageSize: 5) {
     hits {
-      slug
-      displayName
-      activeClub {
-        name
-        domesticLeague {
+      ... on ComposeTeamBenchCommonPlayer {
+        player {
           slug
+          displayName
+          activeClub {
+            name
+            domesticLeague {
+              slug
+            }
+          }
+          position
         }
       }
-      position
     }
   }
 }
 `
 
 function pickBestMatch(hits, player) {
-  const candidates = (hits ?? []).filter(
-    (h) => h.activeClub?.domesticLeague?.slug === 'serie-a' && teamNamesMatch(h.activeClub?.name, player.team)
-  )
+  const candidates = (hits ?? [])
+    .map((h) => h.player)
+    .filter((h) => h && h.activeClub?.domesticLeague?.slug === SERIE_A_SLUG && teamNamesMatch(h.activeClub?.name, player.team))
   if (candidates.length === 0) return null
   if (candidates.length === 1) return candidates[0]
 

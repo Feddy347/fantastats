@@ -4,17 +4,26 @@
 //
 // Uses Sorare's root-level searchPlayers query (NOT football { players }),
 // which is what previously made this fail — that field doesn't exist in
-// Sorare's schema:
+// Sorare's schema. searchPlayers.hits is itself typed as an interface
+// (ComposeTeamBenchObjectInterface); confirmed live against Sorare's API
+// (introspection is disabled, so this was found by trial and error) that
+// player hits come back as the concrete type ComposeTeamBenchCommonPlayer,
+// and the actual player fields sit one level deeper under a `player` field:
 //
 //   query SearchPlayer($query: String!) {
 //     searchPlayers(query: $query, pageSize: 5) {
-//       hits { slug displayName birthDate age country { code threeLetterCode name } activeClub { name domesticLeague { slug } } position }
+//       hits {
+//         ... on ComposeTeamBenchCommonPlayer {
+//           player { slug displayName birthDate age country { code threeLetterCode name } activeClub { name domesticLeague { slug } } position }
+//         }
+//       }
 //     }
 //   }
 //
 // birth_year comes from birthDate's year; nationality is the three-letter
-// ISO code (country.threeLetterCode, e.g. "ITA") — the pool filters match on
-// this three-letter form, not the two-letter country.code.
+// ISO code (country.threeLetterCode) uppercased — Sorare returns it
+// lowercase ("ita"), but the pool filters compare against "ITA".
+// activeClub.domesticLeague.slug for Serie A is "serie-a-it", not "serie-a".
 //
 // Usage: node scripts/enrich-players.js
 
@@ -23,40 +32,47 @@ import { sorareQuery, sleep, teamNamesMatch } from './lib/sorareClient.js'
 
 // B8 asks for 1 request every 2 seconds specifically for this script.
 const REQUEST_DELAY_MS = 2000
+const SERIE_A_SLUG = 'serie-a-it'
 
 const SEARCH_PLAYER_QUERY = `
 query SearchPlayer($query: String!) {
   searchPlayers(query: $query, pageSize: 5) {
     hits {
-      slug
-      displayName
-      birthDate
-      age
-      country {
-        code
-        threeLetterCode
-        name
-      }
-      activeClub {
-        name
-        domesticLeague {
+      ... on ComposeTeamBenchCommonPlayer {
+        player {
           slug
+          displayName
+          birthDate
+          age
+          country {
+            code
+            threeLetterCode
+            name
+          }
+          activeClub {
+            name
+            domesticLeague {
+              slug
+            }
+          }
+          position
         }
       }
-      position
     }
   }
 }
 `
 
 function pickCandidate(hits, player, knownSlug) {
+  const candidatesAll = (hits ?? []).map((h) => h.player).filter(Boolean)
+
   if (knownSlug) {
-    const bySlug = (hits ?? []).find((h) => h.slug === knownSlug)
+    const bySlug = candidatesAll.find((h) => h.slug === knownSlug)
     if (bySlug) return bySlug
   }
 
-  const candidates = (hits ?? []).filter(
-    (h) => h.activeClub?.domesticLeague?.slug === 'serie-a' && teamNamesMatch(h.activeClub?.name, player.team)
+  const candidates = candidatesAll.filter(
+    (h) => h.activeClub?.domesticLeague?.slug === SERIE_A_SLUG && teamNamesMatch(h.activeClub?.name, player.team)
   )
   if (candidates.length === 0) return null
   if (candidates.length === 1) return candidates[0]
@@ -113,7 +129,7 @@ async function main() {
           .from('players')
           .update({
             birth_year: birthYearFrom(best.birthDate),
-            nationality: best.country?.threeLetterCode ?? null,
+            nationality: best.country?.threeLetterCode?.toUpperCase() ?? null,
           })
           .eq('id', player.id)
         if (updateError) throw updateError
