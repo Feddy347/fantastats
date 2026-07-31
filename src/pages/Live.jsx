@@ -265,7 +265,7 @@ export default function Live() {
             <LiveTile
               key={tile.category_id}
               tile={tile}
-              onOpen={() => navigate(`/live/${categorySlugById[tile.category_id] ?? tile.category_id}`)}
+              onOpen={() => navigate(`/live/category/${categorySlugById[tile.category_id] ?? tile.category_id}`)}
             />
           ))}
           {myLeagues.map((league) => (

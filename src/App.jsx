@@ -44,7 +44,7 @@ function App() {
         <Route path="/categories/:slug/lineup" element={<Lineup />} />
         <Route path="/live" element={<Live />} />
         <Route path="/live/league/:leagueId" element={<LiveLeagueDetail />} />
-        <Route path="/live/:categorySlug" element={<LiveCategoryDetail />} />
+        <Route path="/live/category/:categorySlug" element={<LiveCategoryDetail />} />
         <Route path="/leagues" element={<LeaguesList />} />
         <Route path="/leagues/:id" element={<LeagueDetail />} />
         <Route path="/leagues/:id/lineup" element={<LeagueLineup />} />
