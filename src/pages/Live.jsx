@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../lib/useAuth'
 import { supabase } from '../lib/supabaseClient'
 import { useRealtimeScores } from '../hooks/useRealtimeScores'
@@ -128,7 +128,9 @@ export default function Live() {
           supabase.from('categories').select('id, slug'),
         ])
         if (!cancelled) {
-          setMyLeagues((leagueLineups ?? []).map((r) => r.leagues).filter(Boolean))
+          setMyLeagues(
+            (leagueLineups ?? []).map((r) => r.leagues).filter((l) => l && l.status !== 'archived')
+          )
           const slugMap = {}
           ;(categories ?? []).forEach((c) => {
             slugMap[c.id] = c.slug
@@ -236,11 +238,11 @@ export default function Live() {
               <ul className="live-results">
                 {lastCompletedMatches.map((m) => (
                   <li key={m.id}>
-                    <span>{m.home_team}</span>
+                    <Link to={`/teams/${encodeURIComponent(m.home_team)}`}>{m.home_team}</Link>
                     <span className="live-results-score">
                       {m.home_score ?? '-'} : {m.away_score ?? '-'}
                     </span>
-                    <span>{m.away_team}</span>
+                    <Link to={`/teams/${encodeURIComponent(m.away_team)}`}>{m.away_team}</Link>
                   </li>
                 ))}
               </ul>

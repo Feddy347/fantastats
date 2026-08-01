@@ -1,12 +1,14 @@
 import { useRef } from 'react'
 import { NavLink } from 'react-router-dom'
-import { Home, Zap, User, LogOut } from 'lucide-react'
+import { Home, Zap, Goal, BarChart3, User, LogOut } from 'lucide-react'
 import { useAuth } from '../lib/useAuth'
 import './Drawer.css'
 
 const NAV_ITEMS = [
   { to: '/', label: 'Home', icon: Home, end: true },
   { to: '/live', label: 'Live', icon: Zap },
+  { to: '/serie-a', label: 'Serie A', icon: Goal },
+  { to: '/statistiche', label: 'Statistiche', icon: BarChart3 },
   { to: '/profile', label: 'Profilo', icon: User },
 ]
 

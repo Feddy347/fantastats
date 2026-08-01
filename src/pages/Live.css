@@ -177,6 +177,15 @@
   font-size: 14px;
 }
 
+.live-results li a {
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.live-results li a:hover {
+  text-decoration: underline;
+}
+
 .live-results-score {
   font-weight: 700;
   color: var(--primary);

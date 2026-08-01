@@ -5,6 +5,7 @@ import { useAuth } from '../lib/useAuth'
 import PlayerRow from '../components/PlayerRow'
 import GameweekLeaderboard from '../components/GameweekLeaderboard'
 import SeasonStandings from '../components/SeasonStandings'
+import PlayerBreakdownModal from '../components/PlayerBreakdownModal'
 import { buildTeamsByName, computePool } from '../lib/categoryPool'
 import { getModule } from '../lib/modules'
 import { getCurrentGameweek, isLineupLocked, formatDeadline } from '../lib/gameweek'
@@ -13,6 +14,13 @@ import './Categories.css'
 import './CategoryDetail.css'
 
 const PAGE_SIZE = 20
+
+function scoreClass(score) {
+  if (score == null) return ''
+  if (score > 0) return 'positive'
+  if (score < 0) return 'negative'
+  return 'neutral'
+}
 
 export default function CategoryDetail() {
   const { slug } = useParams()
@@ -33,6 +41,8 @@ export default function CategoryDetail() {
   const [gameweek, setGameweek] = useState(null)
   const [lineup, setLineup] = useState(null)
   const [tab, setTab] = useState('roster')
+  const [scoresByPlayerId, setScoresByPlayerId] = useState({})
+  const [selectedPlayer, setSelectedPlayer] = useState(null)
 
   useEffect(() => {
     let cancelled = false
@@ -95,6 +105,39 @@ export default function CategoryDetail() {
       cancelled = true
     }
   }, [slug, user.id])
+
+  // Per-player scores for the fielded starters, once the lineup + gameweek
+  // are known (kept separate from the main load since it depends on data
+  // that only exists after that first load resolves).
+  useEffect(() => {
+    let cancelled = false
+
+    async function loadScores() {
+      const starters = (lineup?.lineup_players ?? []).filter((lp) => lp.slot_type === 'starter')
+      if (!gameweek || starters.length === 0) {
+        if (!cancelled) setScoresByPlayerId({})
+        return
+      }
+
+      const { data } = await supabase
+        .from('player_match_scores')
+        .select('player_id, total_score, is_final, score_breakdown')
+        .eq('gameweek_id', gameweek.id)
+        .in('player_id', starters.map((lp) => lp.player_id))
+
+      if (cancelled) return
+      const map = {}
+      ;(data ?? []).forEach((row) => {
+        map[row.player_id] = row
+      })
+      setScoresByPlayerId(map)
+    }
+
+    loadScores()
+    return () => {
+      cancelled = true
+    }
+  }, [lineup, gameweek])
 
   const teamsByName = useMemo(() => buildTeamsByName(teams), [teams])
   const totalTeams = teams.length
@@ -196,11 +239,35 @@ export default function CategoryDetail() {
                 {(lineup.lineup_players ?? [])
                   .filter((lp) => lp.slot_type === 'starter')
                   .sort((a, b) => (a.slot_position ?? 0) - (b.slot_position ?? 0))
-                  .map((lp) => (
-                    <li key={lp.id}>
-                      <span className="role-tag">{lp.slot_role}</span> {lp.players?.name}
-                    </li>
-                  ))}
+                  .map((lp) => {
+                    const scoreRow = scoresByPlayerId[lp.player_id]
+                    return (
+                      <li key={lp.id}>
+                        <button
+                          type="button"
+                          className="lineup-summary-player-btn"
+                          onClick={() =>
+                            setSelectedPlayer({
+                              playerId: lp.player_id,
+                              name: lp.players?.name,
+                              role: lp.slot_role,
+                              totalScore: scoreRow?.total_score ?? null,
+                              breakdown: scoreRow?.score_breakdown ?? {},
+                            })
+                          }
+                        >
+                          <span className="role-tag">{lp.slot_role}</span>
+                          <span className="lineup-summary-player-name">{lp.players?.name}</span>
+                          {scoreRow && !scoreRow.is_final && <span className="live-dot" aria-label="In corso" />}
+                          {scoreRow && (
+                            <span className={'lineup-summary-player-score ' + scoreClass(scoreRow.total_score)}>
+                              {scoreRow.total_score.toFixed(1)}
+                            </span>
+                          )}
+                        </button>
+                      </li>
+                    )
+                  })}
               </ul>
               {!locked && (
                 <Link to={`/categories/${slug}/lineup`} className="btn btn-secondary btn-block">
@@ -309,6 +376,16 @@ export default function CategoryDetail() {
         <section>
           <SeasonStandings categoryId={category.id} currentUserId={user.id} />
         </section>
+      )}
+
+      {selectedPlayer && (
+        <PlayerBreakdownModal
+          playerName={selectedPlayer.name}
+          role={selectedPlayer.role}
+          totalScore={selectedPlayer.totalScore}
+          breakdown={selectedPlayer.breakdown}
+          onClose={() => setSelectedPlayer(null)}
+        />
       )}
     </div>
   )

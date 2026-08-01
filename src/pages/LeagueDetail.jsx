@@ -39,6 +39,8 @@ export default function LeagueDetail() {
   const [removeTarget, setRemoveTarget] = useState(null)
   const [actionError, setActionError] = useState(null)
   const [starting, setStarting] = useState(false)
+  const [archiveConfirmOpen, setArchiveConfirmOpen] = useState(false)
+  const [archiving, setArchiving] = useState(false)
 
   async function loadAll() {
     setLoading(true)
@@ -174,8 +176,34 @@ export default function LeagueDetail() {
     await loadAll()
   }
 
+  async function handleArchive() {
+    setArchiving(true)
+    setActionError(null)
+
+    const { error: archiveError } = await supabase.from('leagues').update({ status: 'archived' }).eq('id', id)
+
+    setArchiving(false)
+    setArchiveConfirmOpen(false)
+    if (archiveError) {
+      setActionError('Impossibile eliminare la lega.')
+      return
+    }
+    navigate('/leagues')
+  }
+
   if (loading) return <p className="status-text">Caricamento…</p>
   if (error) return <p className="error-text">{error}</p>
+
+  if (league?.status === 'archived') {
+    return (
+      <div className="category-detail">
+        <Link to="/leagues" className="back-link">
+          ‹ Leghe
+        </Link>
+        <p className="status-text">Questa lega è stata eliminata.</p>
+      </div>
+    )
+  }
 
   if (!isMember) {
     return (
@@ -391,6 +419,10 @@ export default function LeagueDetail() {
               {league.status === 'setup' && !allRostersComplete && (
                 <p className="category-warning">Non tutti i partecipanti hanno completato la rosa.</p>
               )}
+
+              <button type="button" className="btn btn-danger btn-block" onClick={() => setArchiveConfirmOpen(true)}>
+                Elimina lega
+              </button>
             </div>
           )}
 
@@ -443,6 +475,21 @@ export default function LeagueDetail() {
         onCancel={() => setRemoveTarget(null)}
       >
         {removeTarget && <span>{removeTarget.profiles?.username} verrà rimosso dalla lega.</span>}
+      </ConfirmDialog>
+
+      <ConfirmDialog
+        open={archiveConfirmOpen}
+        title="Eliminare la lega?"
+        confirmLabel={archiving ? 'Eliminazione…' : 'Elimina'}
+        confirmDisabled={archiving}
+        onConfirm={handleArchive}
+        onCancel={() => setArchiveConfirmOpen(false)}
+      >
+        <span>
+          "{league.name}" verrà archiviata e non sarà più visibile a nessuno. I dati restano nel database ma la lega
+          non sarà più accessibile.
+        </span>
+        {actionError && <span className="error-text">{actionError}</span>}
       </ConfirmDialog>
     </div>
   )

@@ -66,6 +66,10 @@ export default function Login() {
         </form>
 
         <div className="auth-footer">
+          <Link to="/forgot-password">Password dimenticata?</Link>
+        </div>
+
+        <div className="auth-footer">
           Non hai un account? <Link to="/register">Registrati</Link>
         </div>
       </div>

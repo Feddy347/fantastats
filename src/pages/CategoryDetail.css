@@ -45,6 +45,49 @@
   font-size: 14px;
 }
 
+.lineup-summary-player-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  background: var(--bg-muted);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  text-align: left;
+  transition: border-color var(--transition), background-color var(--transition);
+}
+
+.lineup-summary-player-btn:hover {
+  border-color: var(--border);
+  background: var(--surface-hover);
+}
+
+.lineup-summary-player-name {
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lineup-summary-player-score {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  flex: 0 0 auto;
+}
+
+.lineup-summary-player-score.positive {
+  color: var(--score-positive);
+}
+
+.lineup-summary-player-score.negative {
+  color: var(--score-negative);
+}
+
+.lineup-summary-player-score.neutral {
+  color: var(--score-neutral);
+}
+
 .category-tabs {
   display: flex;
   gap: 8px;

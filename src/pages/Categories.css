@@ -170,8 +170,8 @@
   font-weight: 700;
   padding: 3px 10px;
   border-radius: var(--radius-pill);
-  background: var(--bg-muted);
-  color: var(--text-primary);
+  background: #f0fdf4;
+  color: #16a34a;
 }
 
 .category-card-activity {

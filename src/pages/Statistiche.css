@@ -1,0 +1,109 @@
+.statistiche-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Horizontally-scrollable variant of the shared .category-tabs pill row —
+   this page can have more categories than fit on a 375px screen, so let
+   them scroll sideways instead of wrapping into a grid. */
+.stat-tabs {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.stat-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.stat-tabs .category-tab {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.stat-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.stat-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+}
+
+.stat-rank {
+  flex: 0 0 auto;
+  width: 24px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-row-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat-name {
+  font-weight: 600;
+  color: var(--text-primary);
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stat-name:hover {
+  text-decoration: underline;
+}
+
+.stat-row-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.stat-team {
+  font-size: 13px;
+  color: var(--text-secondary);
+  text-decoration: none;
+}
+
+.stat-team:hover {
+  text-decoration: underline;
+}
+
+.stat-row-value {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.stat-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-matches {
+  font-size: 12px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}

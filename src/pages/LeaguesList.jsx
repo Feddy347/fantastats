@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
 import { useAuth } from '../lib/useAuth'
 import HomeTabs from '../components/HomeTabs'
+import HomeSearch from '../components/HomeSearch'
 import CreateLeagueModal from '../components/CreateLeagueModal'
 import { getCurrentGameweek } from '../lib/gameweek'
 import { usePageTitle } from '../hooks/usePageTitle'
@@ -41,7 +42,7 @@ export default function LeaguesList() {
       .select('league_id, team_name, is_admin, leagues(*)')
       .eq('user_id', user.id)
 
-    const rows = data ?? []
+    const rows = (data ?? []).filter((r) => r.leagues?.status !== 'archived')
     const leagueIds = rows.map((r) => r.league_id)
 
     let counts = {}
@@ -187,6 +188,8 @@ export default function LeaguesList() {
   return (
     <div className="categories-page">
       <HomeTabs />
+
+      <HomeSearch />
 
       <button type="button" className="btn btn-primary btn-block" onClick={() => setShowCreate(true)}>
         Crea lega

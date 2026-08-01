@@ -1,0 +1,106 @@
+.team-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-bottom: 24px;
+}
+
+.team-page-header {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.team-page-header h1 {
+  margin: 0;
+}
+
+.team-page-position {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.team-page-next-match {
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.team-page-next-match-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.team-page-next-match-opponent {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.team-page-next-match-date {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.team-page-roster {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.team-page-role-group h2 {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin: 0 0 8px;
+}
+
+.team-page-players {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.team-page-player-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+  padding: 10px 14px;
+  text-decoration: none;
+  color: var(--text);
+}
+
+.team-page-player-name {
+  font-weight: 600;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nationality-tag {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-hover);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+
+.team-page-player-age {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.team-page-player-price {
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}

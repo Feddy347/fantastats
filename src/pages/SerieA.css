@@ -1,0 +1,178 @@
+.serie-a-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.serie-a-tabs {
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.serie-a-tab {
+  padding: 10px 4px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.serie-a-tab.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
+.serie-a-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ---------------------------------------------------------------- */
+/* Classifica                                                        */
+/* ---------------------------------------------------------------- */
+
+.serie-a-table-wrap {
+  overflow-x: auto;
+}
+
+.serie-a-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.serie-a-table th,
+.serie-a-table td {
+  padding: 8px 6px;
+  text-align: center;
+}
+
+.serie-a-table th:nth-child(2),
+.serie-a-table td:nth-child(2) {
+  text-align: left;
+}
+
+.serie-a-table thead th {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border);
+}
+
+.serie-a-table tbody tr {
+  background: var(--bg-card);
+}
+
+.serie-a-table tbody tr:nth-child(even) {
+  background: var(--bg-muted);
+}
+
+.serie-a-table tbody td:first-child {
+  border-left: 4px solid transparent;
+}
+
+.serie-a-table tbody tr.zone-champions td:first-child {
+  border-left-color: var(--color-info);
+}
+
+.serie-a-table tbody tr.zone-europa td:first-child {
+  border-left-color: var(--color-warning);
+}
+
+.serie-a-table tbody tr.zone-relegation td:first-child {
+  border-left-color: var(--danger);
+}
+
+.serie-a-table a {
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.serie-a-table a:hover {
+  text-decoration: underline;
+}
+
+.serie-a-points {
+  font-weight: 700;
+}
+
+/* ---------------------------------------------------------------- */
+/* Calendario                                                        */
+/* ---------------------------------------------------------------- */
+
+.serie-a-gameweek-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.serie-a-gameweek-label {
+  font-weight: 700;
+  font-size: 15px;
+  min-width: 110px;
+  text-align: center;
+}
+
+.serie-a-fixtures {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.serie-a-fixture-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.serie-a-fixture-row:last-child {
+  border-bottom: none;
+}
+
+.serie-a-fixture-teams {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  font-size: 14px;
+}
+
+.serie-a-fixture-teams a {
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.serie-a-fixture-teams a:hover {
+  text-decoration: underline;
+}
+
+.serie-a-fixture-sep {
+  color: var(--text-secondary);
+}
+
+.serie-a-fixture-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.serie-a-fixture-score {
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: 14px;
+}

@@ -1,0 +1,283 @@
+.player-profile-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-bottom: 24px;
+}
+
+.player-profile-back {
+  align-self: flex-start;
+}
+
+.player-profile-header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+}
+
+.player-profile-header-gradient {
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.player-profile-header-gradient .player-profile-meta {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.player-profile-header-gradient .player-profile-team {
+  color: #fff;
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.5);
+}
+
+.player-profile-header-gradient .player-profile-team:hover {
+  text-decoration-color: #fff;
+}
+
+.player-profile-header-gradient .nationality-tag {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #fff;
+}
+
+.player-profile-header-gradient .role-tag {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #fff;
+}
+
+.player-profile-header-gradient .summary-label {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.player-profile-header-gradient .summary-value {
+  color: #fff;
+}
+
+.player-profile-header-gradient .success-text {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.player-profile-header-gradient .btn.btn-primary {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.player-profile-header-gradient .btn.btn-primary:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.player-profile-heading h1 {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+
+.player-profile-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.player-profile-team {
+  color: var(--secondary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.player-profile-team:hover {
+  text-decoration: underline;
+}
+
+.nationality-tag {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-hover);
+  border: 1px solid var(--border);
+}
+
+.player-profile-roles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.player-profile-owned {
+  align-self: flex-start;
+}
+
+.player-profile-section {
+  padding: 16px;
+}
+
+.player-games-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.player-game-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+}
+
+.player-game-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.player-game-date {
+  color: var(--text-secondary);
+  flex: 0 0 auto;
+}
+
+.player-game-opponent {
+  font-weight: 600;
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.player-game-result {
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.player-game-score {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  flex: 0 0 auto;
+}
+
+.player-game-score.positive {
+  color: var(--score-positive);
+}
+
+.player-game-score.negative {
+  color: var(--score-negative);
+}
+
+.player-game-score.neutral {
+  color: var(--score-neutral);
+}
+
+/* Mirrors PlayerBreakdownModal.css's .breakdown-list look, scoped locally
+   so this page doesn't reach into another component's stylesheet. */
+.breakdown-list {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 8px 0 0;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.breakdown-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+}
+
+.breakdown-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-secondary);
+}
+
+.player-averages {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.player-average-bar {
+  display: grid;
+  grid-template-columns: 100px 1fr 40px;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.player-average-label {
+  color: var(--text-secondary);
+}
+
+.player-average-track {
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-hover);
+  overflow: hidden;
+}
+
+.player-average-fill {
+  height: 100%;
+  background: var(--primary);
+  border-radius: var(--radius-pill);
+  transition: width var(--transition);
+}
+
+.player-average-value {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.player-average-total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 6px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.eligibility-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.eligibility-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  padding: 4px 0;
+}
+
+.eligibility-list li.eligible span:last-child {
+  color: var(--score-positive);
+  font-weight: 700;
+}
+
+.eligibility-list li.not-eligible span:last-child {
+  color: var(--text-muted);
+}
+
+.eligibility-list li.not-eligible span:first-child {
+  color: var(--text-secondary);
+}

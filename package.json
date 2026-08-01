@@ -12,11 +12,15 @@
     "map:sorare-players": "node scripts/map-sorare-players.js",
     "fetch:sorare-games": "node scripts/fetch-sorare-games.js",
     "poll:sorare": "node scripts/poll-sorare.js",
+    "poll:sorare-live": "node scripts/poll-sorare-live.js",
     "simulate:match": "node scripts/simulate-match.js",
     "consolidate:gameweek": "node scripts/consolidate-gameweek.js",
     "resolve:sealed-bids": "node scripts/resolve-sealed-bids.js",
     "consolidate:league-gameweek": "node scripts/consolidate-league-gameweek.js",
-    "enrich:players": "node scripts/enrich-players.js"
+    "enrich:players": "node scripts/enrich-players.js",
+    "list:unmapped-players": "node scripts/list-unmapped-players.js",
+    "import:disambiguated": "node scripts/import-disambiguated.js",
+    "update:serie-a-data": "node scripts/update-serie-a-data.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.111.0",

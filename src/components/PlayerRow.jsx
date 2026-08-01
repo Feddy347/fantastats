@@ -1,11 +1,16 @@
+import { Link } from 'react-router-dom'
 import './PlayerRow.css'
 
 export default function PlayerRow({ player, badges, meta, actions }) {
   return (
     <li className="player-row card">
       <div className="player-main">
-        <span className="player-name">{player.name}</span>
-        <span className="player-team">{player.team}</span>
+        <Link to={`/players/${player.id}`} className="player-name">
+          {player.name}
+        </Link>
+        <Link to={`/teams/${encodeURIComponent(player.team)}`} className="player-team">
+          {player.team}
+        </Link>
       </div>
 
       <div className="player-roles">

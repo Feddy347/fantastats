@@ -25,11 +25,23 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.player-name:hover {
+  text-decoration: underline;
 }
 
 .player-team {
   font-size: 13px;
   color: var(--text-secondary);
+  text-decoration: none;
+  align-self: flex-start;
+}
+
+.player-team:hover {
+  text-decoration: underline;
 }
 
 .player-roles {
