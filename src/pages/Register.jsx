@@ -45,6 +45,8 @@ export default function Register() {
   return (
     <div className="auth-page">
       <div className="auth-card card">
+        <img src="/logo-splash.png" alt="Fantastats" className="auth-logo" />
+
         <div className="auth-title">
           <span className="brand">Fantastats</span>
           <span className="subtitle">Crea un nuovo account</span>

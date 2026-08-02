@@ -15,6 +15,13 @@
   gap: 16px;
 }
 
+.auth-logo {
+  display: block;
+  max-width: 120px;
+  max-height: 80px;
+  margin: 0 auto;
+}
+
 .auth-title {
   text-align: center;
 }

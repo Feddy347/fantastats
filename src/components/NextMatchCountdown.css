@@ -1,0 +1,98 @@
+.next-match-countdown {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 16px 20px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-hover));
+  color: var(--text-on-color);
+  box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.5);
+  animation: next-match-countdown-pulse 2.4s ease-out infinite;
+}
+
+.next-match-countdown-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.next-match-countdown-icon {
+  display: flex;
+  animation: next-match-countdown-tick 2.4s ease-in-out infinite;
+}
+
+.next-match-countdown-label {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  opacity: 0.92;
+}
+
+.next-match-countdown-digits {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.next-match-countdown-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 56px;
+  padding: 6px 4px;
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.next-match-countdown-number {
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.next-match-countdown-unit-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+.next-match-countdown-sep {
+  font-size: 26px;
+  font-weight: 800;
+  opacity: 0.7;
+  padding-bottom: 16px;
+}
+
+@keyframes next-match-countdown-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.45);
+  }
+  70% {
+    box-shadow: 0 0 0 14px rgba(22, 163, 74, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(22, 163, 74, 0);
+  }
+}
+
+@keyframes next-match-countdown-tick {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.18);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .next-match-countdown,
+  .next-match-countdown-icon {
+    animation: none;
+  }
+}

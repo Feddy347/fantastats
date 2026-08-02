@@ -6,8 +6,7 @@ export default function Header({ title, onMenuClick }) {
   return (
     <header className="app-header">
       <Link to="/" className="app-header-brand">
-        <span className="app-header-brand-fanta">Fanta</span>
-        <span className="app-header-brand-stats">stats</span>
+        <img src="/logo-splash.png" alt="Fantastats" style={{ height: '40px', width: 'auto' }} />
       </Link>
       <h1 className="app-header-title">{title}</h1>
       <button type="button" className="app-header-menu" onClick={onMenuClick} aria-label="Apri menu">

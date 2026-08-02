@@ -5,6 +5,7 @@ import { supabase } from '../lib/supabaseClient'
 import { useAuth } from '../lib/useAuth'
 import HomeTabs from '../components/HomeTabs'
 import HomeSearch from '../components/HomeSearch'
+import NextMatchCountdown from '../components/NextMatchCountdown'
 import RewardsBanner from '../components/RewardsBanner'
 import { buildTeamsByName, computePool } from '../lib/categoryPool'
 import { getCategoryColorVar } from '../lib/categoryColors'
@@ -137,10 +138,12 @@ export default function CategoriesList() {
   }
 
   return (
-    <div className="categories-page">
+    <div className="categories-page home-background">
       <HomeTabs />
 
       <HomeSearch />
+
+      <NextMatchCountdown />
 
       {profile?.team_name && <p className="home-team-name">{profile.team_name}</p>}
 

@@ -4,6 +4,7 @@ import { supabase } from '../lib/supabaseClient'
 import { useAuth } from '../lib/useAuth'
 import HomeTabs from '../components/HomeTabs'
 import HomeSearch from '../components/HomeSearch'
+import NextMatchCountdown from '../components/NextMatchCountdown'
 import CreateLeagueModal from '../components/CreateLeagueModal'
 import { getCurrentGameweek } from '../lib/gameweek'
 import { usePageTitle } from '../hooks/usePageTitle'
@@ -186,10 +187,12 @@ export default function LeaguesList() {
   }
 
   return (
-    <div className="categories-page">
+    <div className="categories-page home-background">
       <HomeTabs />
 
       <HomeSearch />
+
+      <NextMatchCountdown />
 
       <button type="button" className="btn btn-primary btn-block" onClick={() => setShowCreate(true)}>
         Crea lega

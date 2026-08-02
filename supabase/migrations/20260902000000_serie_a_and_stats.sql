@@ -1,7 +1,7 @@
 -- Fantastats: Serie A standings/fixtures cache (populated by
--- scripts/update-serie-a-data.js, which aggregates Sorare's own
--- club.games data — no external scraping) plus a stat-leaders RPC for the
--- new Statistiche section, aggregated from our own player_match_stats.
+-- scripts/update-serie-a-data.js from football-data.org) plus a
+-- stat-leaders RPC for the new Statistiche section, aggregated from our own
+-- player_match_stats.
 
 -- ============================================================
 -- serie_a_standings

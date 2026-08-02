@@ -6,7 +6,7 @@
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 8px;
-  height: 52px;
+  height: 60px;
   padding: env(safe-area-inset-top, 0) 16px 0;
   background: var(--bg-card);
   border-bottom: 1px solid var(--border);
@@ -14,18 +14,16 @@
 
 .app-header-brand {
   justify-self: start;
-  font-weight: 700;
-  font-size: 17px;
+  display: flex;
+  align-items: center;
   text-decoration: none;
   white-space: nowrap;
 }
 
-.app-header-brand-fanta {
-  color: var(--text-primary);
-}
-
-.app-header-brand-stats {
-  color: var(--color-accent);
+.app-header-brand img {
+  display: block;
+  height: 40px;
+  width: auto;
 }
 
 .app-header-title {

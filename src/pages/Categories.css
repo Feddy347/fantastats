@@ -4,6 +4,28 @@
   gap: 16px;
 }
 
+.home-background {
+  position: relative;
+  background-image: url('/sfondo-home.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  margin: -16px;
+  padding: 16px;
+}
+
+.home-background::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.home-background > * {
+  position: relative;
+  z-index: 1;
+}
+
 .home-team-name {
   margin: -8px 0 0;
   font-size: 15px;
