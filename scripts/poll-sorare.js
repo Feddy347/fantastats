@@ -2,111 +2,86 @@
 // player_match_stats, and computes/upserts player_match_scores for every
 // starter fielded that gameweek.
 //
+// SUPERSEDED by scripts/poll-sorare-live.js: this script fetches stats
+// per-match via football.game(id).playerGameScores, which — confirmed live
+// against Sorare's API — returns an empty list for every real, finished,
+// "scored: true" game tried, regardless of API key. poll-sorare-live.js
+// fetches per-player instead (anyPlayer(slug).anyGameStats), which does
+// return real data. Kept here for reference; prefer the new script.
+//
 // Manual for now: `node scripts/poll-sorare.js`. Becomes a scheduled Edge
 // Function in Phase 5.
 
 import { getSupabaseAdmin } from './lib/env.js'
-import { sorareQuery, sleep, SORARE_REQUEST_DELAY_MS } from './lib/sorareClient.js'
+import { sorareQuery, sleep, SORARE_REQUEST_DELAY_MS, statsRowFromSorare, mapMatchStatus } from './lib/sorareClient.js'
 import { calculateScore } from '../src/lib/scoreEngine.js'
 
+// Game.playerGameStats doesn't exist (confirmed live). Stats live under
+// playerGameScores, which is typed as an interface (PlayerGameScoreInterface);
+// the actual per-stat fields sit under anyPlayerGameStats, itself an interface
+// (AnyPlayerGameStatsInterface) resolved by football games as the concrete
+// type PlayerGameStats. Game.status doesn't exist either — it's statusTyped
+// (enum GameStatus: scheduled/playing/played/postponed/suspended/cancelled).
+// Confirmed live via Sorare's first-party GraphQL Playground
+// (api.sorare.com/graphql/playground), which allows introspection unlike the
+// public API.
 const GAME_STATS_QUERY = `
 query GameStats($gameId: ID!) {
   football {
     game(id: $gameId) {
       id
-      status
+      statusTyped
       homeTeam { name }
       awayTeam { name }
       homeScore
       awayScore
-      playerGameStats {
-        player {
+      playerGameScores {
+        anyPlayer {
           slug
           displayName
         }
-        minsPlayed
-        goals
-        attPenGoal
-        goalAssist
-        ontargetScoringAtt
-        bigChanceCreated
-        assistPenaltyWon
-        attPenMiss
-        accuratePass
-        totalPass
-        passAccuracy
-        wonTackle
-        totalTackle
-        interceptionWon
-        effectiveClearance
-        duelWon
-        clearanceOffLine
-        lastManTackle
-        saves
-        penaltySave
-        goalsConceded
-        cleanSheet
-        fouls
-        yellowCard
-        redCard
-        ownGoals
-        errorLeadToGoal
-        errorLeadToShot
-        penaltyConceded
-        wonContest
-        threeGoalsConceded
-        gameStarted
-        live
+        anyPlayerGameStats {
+          ... on PlayerGameStats {
+            minsPlayed
+            goals
+            attPenGoal
+            goalAssist
+            ontargetScoringAtt
+            bigChanceCreated
+            assistPenaltyWon
+            attPenMiss
+            accuratePass
+            totalPass
+            passAccuracy
+            wonTackle
+            totalTackle
+            interceptionWon
+            effectiveClearance
+            duelWon
+            clearanceOffLine
+            lastManTackle
+            saves
+            penaltySave
+            goalsConceded
+            cleanSheet
+            fouls
+            yellowCard
+            redCard
+            ownGoals
+            errorLeadToGoal
+            errorLeadToShot
+            penaltyConceded
+            wonContest
+            threeGoalsConceded
+            gameStarted
+            live
+          }
+        }
       }
     }
   }
 }
 `
-
-function statsRowFromSorare(stat, playerId, matchId) {
-  return {
-    player_id: playerId,
-    match_id: matchId,
-    mins_played: stat.minsPlayed ?? 0,
-    goals: stat.goals ?? 0,
-    att_pen_goal: stat.attPenGoal ?? 0,
-    goal_assist: stat.goalAssist ?? 0,
-    ontarget_scoring_att: stat.ontargetScoringAtt ?? 0,
-    big_chance_created: stat.bigChanceCreated ?? 0,
-    assist_penalty_won: stat.assistPenaltyWon ?? 0,
-    att_pen_miss: stat.attPenMiss ?? 0,
-    accurate_pass: stat.accuratePass ?? 0,
-    total_pass: stat.totalPass ?? 0,
-    pass_accuracy: stat.passAccuracy ?? 0,
-    won_tackle: stat.wonTackle ?? 0,
-    total_tackle: stat.totalTackle ?? 0,
-    interception_won: stat.interceptionWon ?? 0,
-    effective_clearance: stat.effectiveClearance ?? 0,
-    duel_won: stat.duelWon ?? 0,
-    clearance_off_line: stat.clearanceOffLine ?? 0,
-    last_man_tackle: stat.lastManTackle ?? 0,
-    saves: stat.saves ?? 0,
-    penalty_save: stat.penaltySave ?? 0,
-    goals_conceded: stat.goalsConceded ?? 0,
-    clean_sheet: Boolean(stat.cleanSheet),
-    fouls: stat.fouls ?? 0,
-    yellow_card: stat.yellowCard ?? 0,
-    red_card: stat.redCard ?? 0,
-    own_goals: stat.ownGoals ?? 0,
-    error_lead_to_goal: stat.errorLeadToGoal ?? 0,
-    error_lead_to_shot: stat.errorLeadToShot ?? 0,
-    penalty_conceded: stat.penaltyConceded ?? 0,
-    won_contest: stat.wonContest ?? 0,
-    three_goals_conceded: Boolean(stat.threeGoalsConceded),
-    game_started: Boolean(stat.gameStarted),
-    is_live: Boolean(stat.live),
-    updated_at: new Date().toISOString(),
-  }
-}
-
-function mapMatchStatus(sorareStatus) {
-  return /fin|end/i.test(sorareStatus ?? '') ? 'finished' : 'live'
-}
 
 async function main() {
   const supabase = getSupabaseAdmin()
@@ -154,21 +129,21 @@ async function main() {
       continue
     }
 
-    const newStatus = mapMatchStatus(game.status)
+    const newStatus = mapMatchStatus(game.statusTyped)
     await supabase
       .from('matches')
       .update({ home_score: game.homeScore, away_score: game.awayScore, status: newStatus })
       .eq('id', match.id)
 
     const statsRowByPlayerId = new Map()
-    for (const stat of game.playerGameStats ?? []) {
-      const playerId = playerIdBySlug.get(stat.player?.slug)
+    for (const entry of game.playerGameScores ?? []) {
+      const playerId = playerIdBySlug.get(entry.anyPlayer?.slug)
       if (!playerId) {
-        console.warn(`[unmapped] ${stat.player?.displayName} (${stat.player?.slug})`)
+        console.warn(`[unmapped] ${entry.anyPlayer?.displayName} (${entry.anyPlayer?.slug})`)
         unmappedCount += 1
         continue
       }
-      const row = statsRowFromSorare(stat, playerId, match.id)
+      const row = statsRowFromSorare(entry.anyPlayerGameStats ?? {}, playerId, match.id)
       statsRowByPlayerId.set(playerId, row)
     }
 
