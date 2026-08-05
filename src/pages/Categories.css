@@ -31,6 +31,18 @@
   z-index: 1;
 }
 
+/* The rule above gives every direct child its own stacking context (same
+   z-index: 1), so paint order between them falls back to DOM order — the
+   "Prossima Gameweek" banner (NextMatchCountdown), which sits right after
+   HomeSearch in the page, was painting over HomeSearch's results dropdown
+   regardless of the dropdown's own z-index, since that z-index is scoped
+   inside HomeSearch's stacking context and can't escape it. Raising
+   HomeSearch itself above its siblings lets its whole subtree (dropdown
+   included) win. */
+.home-background > .home-search {
+  z-index: 30;
+}
+
 .home-team-name {
   margin: -8px 0 0;
   font-size: 15px;
