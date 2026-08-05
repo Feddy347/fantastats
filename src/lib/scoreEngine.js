@@ -32,7 +32,7 @@ function slotPhase(slotRole) {
   return null
 }
 
-export function calculateScore(stats, playerRole, slotRole) {
+export function calculateScore(stats, playerRole, slotRole, isReverse = false) {
   const s = stats ?? {}
   const phase = slotPhase(slotRole)
   const multiplierEligible = phase !== 'gk' && phase !== null && !isMultiRole(playerRole)
@@ -147,45 +147,63 @@ export function calculateScore(stats, playerRole, slotRole) {
 
   const totalScore = baseScore + bonusScore + malusScore
 
+  const rawBreakdown = {
+    participation: round2(participation),
+    goals: round2(goals),
+    penaltyGoals: round2(penaltyGoals),
+    assists: round2(assists),
+    shotsOnTarget: round2(shotsOnTarget),
+    bigChances: round2(bigChances),
+    penaltyWon: round2(penaltyWon),
+    penaltyMissed: round2(penaltyMissed),
+    passing: round2(passing),
+    tackles: round2(tackles),
+    interceptions: round2(interceptions),
+    clearances: round2(clearances),
+    duels: round2(duels),
+    lineClearance: round2(lineClearance),
+    lastManTackle: round2(lastManTackle),
+    keeperSaves: round2(keeperSaves),
+    penaltySave: round2(penaltySave),
+    goalsConceded: round2(goalsConceded),
+    fouls: round2(foulsBase),
+    yellowCard: round2(yellowCardMalus),
+    redCard: round2(redCardMalus),
+    ownGoals: round2(ownGoalMalus),
+    errorLeadToGoal: round2(errorLeadToGoalMalus),
+    errorLeadToShot: round2(errorLeadToShotMalus),
+    penaltyConceded: round2(penaltyConcededMalus),
+    cleanSheetBonus: round2(cleanSheetBonus),
+    passAccuracyBonus: round2(passAccuracyBonus),
+    dribbleBonus: round2(dribbleBonus),
+    bigChanceBonus: round2(bigChanceBonus),
+    goalkeeperMalus: round2(goalkeeperMalus),
+    foulsMalus: round2(foulsMalus),
+    noTacklesMalus: round2(noTacklesMalus),
+  }
+
+  // "Flop XI" reverse-scoring mode: every term flips sign except
+  // participation (staying positive is what stops "bench everyone" from
+  // being optimal). baseScore includes participation, so flipping just the
+  // rest of it algebraically works out to 2*participation - baseScore.
+  if (!isReverse) {
+    return { baseScore: round2(baseScore), multiplier, bonusScore: round2(bonusScore), malusScore: round2(malusScore), totalScore: round2(totalScore), breakdown: rawBreakdown }
+  }
+
+  const reversedBaseScore = 2 * participation - baseScore
+  const reversedBonusScore = -bonusScore
+  const reversedMalusScore = -malusScore
+  const reversedTotalScore = reversedBaseScore + reversedBonusScore + reversedMalusScore
+  const reversedBreakdown = Object.fromEntries(
+    Object.entries(rawBreakdown).map(([key, value]) => [key, key === 'participation' ? value : round2(-value)])
+  )
+
   return {
-    baseScore: round2(baseScore),
+    baseScore: round2(reversedBaseScore),
     multiplier,
-    bonusScore: round2(bonusScore),
-    malusScore: round2(malusScore),
-    totalScore: round2(totalScore),
-    breakdown: {
-      participation: round2(participation),
-      goals: round2(goals),
-      penaltyGoals: round2(penaltyGoals),
-      assists: round2(assists),
-      shotsOnTarget: round2(shotsOnTarget),
-      bigChances: round2(bigChances),
-      penaltyWon: round2(penaltyWon),
-      penaltyMissed: round2(penaltyMissed),
-      passing: round2(passing),
-      tackles: round2(tackles),
-      interceptions: round2(interceptions),
-      clearances: round2(clearances),
-      duels: round2(duels),
-      lineClearance: round2(lineClearance),
-      lastManTackle: round2(lastManTackle),
-      keeperSaves: round2(keeperSaves),
-      penaltySave: round2(penaltySave),
-      goalsConceded: round2(goalsConceded),
-      fouls: round2(foulsBase),
-      yellowCard: round2(yellowCardMalus),
-      redCard: round2(redCardMalus),
-      ownGoals: round2(ownGoalMalus),
-      errorLeadToGoal: round2(errorLeadToGoalMalus),
-      errorLeadToShot: round2(errorLeadToShotMalus),
-      penaltyConceded: round2(penaltyConcededMalus),
-      cleanSheetBonus: round2(cleanSheetBonus),
-      passAccuracyBonus: round2(passAccuracyBonus),
-      dribbleBonus: round2(dribbleBonus),
-      bigChanceBonus: round2(bigChanceBonus),
-      goalkeeperMalus: round2(goalkeeperMalus),
-      foulsMalus: round2(foulsMalus),
-      noTacklesMalus: round2(noTacklesMalus),
-    },
+    bonusScore: round2(reversedBonusScore),
+    malusScore: round2(reversedMalusScore),
+    totalScore: round2(reversedTotalScore),
+    breakdown: reversedBreakdown,
   }
 }

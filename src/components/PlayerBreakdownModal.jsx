@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabaseClient'
-import { BREAKDOWN_ICONS, BREAKDOWN_LABELS } from '../lib/breakdownIcons'
+import { BREAKDOWN_ICONS, BREAKDOWN_LABELS, getIconColor } from '../lib/breakdownIcons'
 import './PlayerBreakdownModal.css'
 
 function scoreClass(score) {
@@ -10,7 +10,7 @@ function scoreClass(score) {
   return 'neutral'
 }
 
-function BreakdownList({ breakdown }) {
+function BreakdownList({ breakdown, isReverse }) {
   const entries = Object.entries(breakdown ?? {}).filter(([, v]) => v !== 0)
 
   if (entries.length === 0) {
@@ -22,6 +22,7 @@ function BreakdownList({ breakdown }) {
       {entries.map(([key, value]) => {
         const iconDef = BREAKDOWN_ICONS[key]
         const Icon = iconDef?.icon
+        const color = getIconColor(key, value, isReverse)
         return (
           <li key={key}>
             <span className="breakdown-label">
@@ -29,9 +30,9 @@ function BreakdownList({ breakdown }) {
                 <Icon
                   className="breakdown-icon icon-flash-in"
                   size={14}
-                  color={iconDef.color}
+                  color={color}
                   fill={iconDef.fill ?? 'none'}
-                  style={{ color: iconDef.color }}
+                  style={{ color }}
                 />
               )}
               {BREAKDOWN_LABELS[key] ?? key}
@@ -58,6 +59,7 @@ export default function PlayerBreakdownModal({
   role,
   totalScore,
   breakdown: providedBreakdown,
+  isReverse = false,
   onClose,
 }) {
   const [fetchedBreakdown, setFetchedBreakdown] = useState(null)
@@ -102,6 +104,7 @@ export default function PlayerBreakdownModal({
           <div>
             <h2>{playerName}</h2>
             {role && <span className="role-tag">{role}</span>}
+            {isReverse && <span className="badge-tag reverse">🔄 Flop XI</span>}
           </div>
           <button type="button" className="picker-close" onClick={onClose} aria-label="Chiudi">
             ×
@@ -112,7 +115,11 @@ export default function PlayerBreakdownModal({
           <div className={'breakdown-total ' + scoreClass(totalScore)}>{totalScore.toFixed(1)}</div>
         )}
 
-        {loading ? <p className="status-text">Caricamento…</p> : <BreakdownList breakdown={breakdown} />}
+        {loading ? (
+          <p className="status-text">Caricamento…</p>
+        ) : (
+          <BreakdownList breakdown={breakdown} isReverse={isReverse} />
+        )}
       </div>
     </div>
   )

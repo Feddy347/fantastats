@@ -35,13 +35,20 @@ function scoreClass(score) {
   return 'neutral'
 }
 
-function LiveTile({ tile, onOpen }) {
+function LiveTile({ tile, isReverse, onOpen }) {
   const isLiveNow = tile.players.some((p) => p.is_live)
 
   return (
-    <button type="button" className={'live-tile card' + (isLiveNow ? ' live-now' : '')} onClick={onOpen}>
+    <button
+      type="button"
+      className={'live-tile card' + (isLiveNow ? ' live-now' : '') + (isReverse ? ' reverse' : '')}
+      onClick={onOpen}
+    >
       <div className="live-tile-header">
-        <h2>{tile.category_name}</h2>
+        <h2>
+          {isReverse && <span aria-hidden="true">🔄 </span>}
+          {tile.category_name}
+        </h2>
         <span className="live-tile-rank">{tile.rank}°</span>
       </div>
 
@@ -85,6 +92,7 @@ export default function Live() {
   const [gameweek, setGameweek] = useState(null)
   const [tiles, setTiles] = useState([])
   const [categorySlugById, setCategorySlugById] = useState({})
+  const [categoryReverseById, setCategoryReverseById] = useState({})
   const [myLeagues, setMyLeagues] = useState([])
   const [lastCompleted, setLastCompleted] = useState(null)
   const [lastCompletedMatches, setLastCompletedMatches] = useState([])
@@ -125,17 +133,20 @@ export default function Live() {
             .select('league_id, leagues(*)')
             .eq('user_id', user.id)
             .eq('gameweek_id', gw.id),
-          supabase.from('categories').select('id, slug'),
+          supabase.from('categories').select('id, slug, is_reverse_scoring'),
         ])
         if (!cancelled) {
           setMyLeagues(
             (leagueLineups ?? []).map((r) => r.leagues).filter((l) => l && l.status !== 'archived')
           )
           const slugMap = {}
+          const reverseMap = {}
           ;(categories ?? []).forEach((c) => {
             slugMap[c.id] = c.slug
+            reverseMap[c.id] = c.is_reverse_scoring
           })
           setCategorySlugById(slugMap)
+          setCategoryReverseById(reverseMap)
         }
       } else {
         setTiles([])
@@ -267,6 +278,7 @@ export default function Live() {
             <LiveTile
               key={tile.category_id}
               tile={tile}
+              isReverse={categoryReverseById[tile.category_id]}
               onOpen={() => navigate(`/live/category/${categorySlugById[tile.category_id] ?? tile.category_id}`)}
             />
           ))}

@@ -18,7 +18,10 @@ export async function getMatchByTeamMap(supabase, gameweekId) {
   return map
 }
 
-export async function computeLeagueMemberScore(supabase, { leagueId, userId, gameweekId, roleField, matchByTeam }) {
+export async function computeLeagueMemberScore(
+  supabase,
+  { leagueId, userId, gameweekId, roleField, matchByTeam, isReverse = false }
+) {
   const { data: lineup } = await supabase
     .from('league_lineups')
     .select('*, league_lineup_players(*)')
@@ -59,7 +62,7 @@ export async function computeLeagueMemberScore(supabase, { leagueId, userId, gam
         .maybeSingle()
 
       if (stats) {
-        const result = calculateScore(stats, player[roleField], starter.slot_role)
+        const result = calculateScore(stats, player[roleField], starter.slot_role, isReverse)
         score = result.totalScore
         breakdown = result.breakdown
         isLive = Boolean(stats.is_live)

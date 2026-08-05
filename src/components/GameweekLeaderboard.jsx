@@ -10,7 +10,7 @@ import './Leaderboard.css'
 // a live approximation client-side from lineups + player_match_scores and
 // keeps it fresh via useRealtimeScores. Used both by CategoryDetail's
 // "Classifica" tab and the Live tile detail view.
-export default function GameweekLeaderboard({ categoryId, gameweek, currentUserId }) {
+export default function GameweekLeaderboard({ categoryId, gameweek, currentUserId, isReverse = false }) {
   const [loading, setLoading] = useState(true)
   const [rows, setRows] = useState([])
   const [expandedUserId, setExpandedUserId] = useState(null)
@@ -271,6 +271,7 @@ export default function GameweekLeaderboard({ categoryId, gameweek, currentUserI
           playerName={selectedPlayer.name}
           role={selectedPlayer.role}
           totalScore={selectedPlayer.score}
+          isReverse={isReverse}
           onClose={() => setSelectedPlayer(null)}
         />
       )}

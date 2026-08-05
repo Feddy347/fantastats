@@ -196,6 +196,7 @@ export default function CategoryDetail() {
       <div className="category-detail-header card">
         <div className="category-card-header">
           <h1>{category.name}</h1>
+          {category.is_reverse_scoring && <span className="badge-tag reverse">🔄 Flop XI</span>}
           {isEnrolled && <span className="badge-tag">Iscritto</span>}
         </div>
         <p className="category-description">{category.description}</p>
@@ -365,7 +366,12 @@ export default function CategoryDetail() {
       {tab === 'gameweek' && (
         <section>
           {gameweek ? (
-            <GameweekLeaderboard categoryId={category.id} gameweek={gameweek} currentUserId={user.id} />
+            <GameweekLeaderboard
+              categoryId={category.id}
+              gameweek={gameweek}
+              currentUserId={user.id}
+              isReverse={category.is_reverse_scoring}
+            />
           ) : (
             <p className="status-text">Nessuna giornata disponibile.</p>
           )}
@@ -384,6 +390,7 @@ export default function CategoryDetail() {
           role={selectedPlayer.role}
           totalScore={selectedPlayer.totalScore}
           breakdown={selectedPlayer.breakdown}
+          isReverse={category.is_reverse_scoring}
           onClose={() => setSelectedPlayer(null)}
         />
       )}

@@ -65,6 +65,7 @@ export default function LiveLeagueDetail() {
             gameweekId: gw.id,
             roleField,
             matchByTeam,
+            isReverse: leagueData.is_reverse_scoring,
           })
           totals.push({ userId: m.user_id, total: result.total })
         }
@@ -98,7 +99,11 @@ export default function LiveLeagueDetail() {
       </Link>
 
       <div className="live-detail-header card">
-        <h1>{league.name}</h1>
+        <h1>
+          {league.is_reverse_scoring && <span aria-hidden="true">🔄 </span>}
+          {league.name}
+        </h1>
+        {league.is_reverse_scoring && <span className="badge-tag reverse">Flop XI</span>}
         <div className="live-detail-stats">
           <div className="summary-item">
             <span className="summary-label">Punteggio</span>

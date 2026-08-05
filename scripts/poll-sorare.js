@@ -160,26 +160,32 @@ async function main() {
 
     const playerIds = [...statsRowByPlayerId.keys()]
     if (playerIds.length > 0) {
-      const [{ data: lineupPlayers, error: lineupError }, { data: rosterPlayers, error: playersError }] =
-        await Promise.all([
-          supabase
-            .from('lineup_players')
-            .select('player_id, slot_role, lineups!inner(gameweek_id)')
-            .eq('slot_type', 'starter')
-            .eq('lineups.gameweek_id', match.gameweek_id)
-            .in('player_id', playerIds),
-          supabase.from('players').select('id, role_fantastats').in('id', playerIds),
-        ])
+      const [
+        { data: lineupPlayers, error: lineupError },
+        { data: rosterPlayers, error: playersError },
+        { data: categories },
+      ] = await Promise.all([
+        supabase
+          .from('lineup_players')
+          .select('player_id, slot_role, lineups!inner(gameweek_id, category_id)')
+          .eq('slot_type', 'starter')
+          .eq('lineups.gameweek_id', match.gameweek_id)
+          .in('player_id', playerIds),
+        supabase.from('players').select('id, role_fantastats').in('id', playerIds),
+        supabase.from('categories').select('id, is_reverse_scoring'),
+      ])
 
       if (lineupError) console.error(`[error] fetching lineups: ${lineupError.message}`)
       if (playersError) console.error(`[error] fetching players: ${playersError.message}`)
 
       const roleByPlayerId = new Map((rosterPlayers ?? []).map((p) => [p.id, p.role_fantastats]))
+      const reverseByCategoryId = new Map((categories ?? []).map((c) => [c.id, c.is_reverse_scoring]))
 
       const scoreRows = (lineupPlayers ?? []).map((lp) => {
         const stats = statsRowByPlayerId.get(lp.player_id)
         const role = roleByPlayerId.get(lp.player_id)
-        const score = calculateScore(stats, role, lp.slot_role)
+        const isReverse = reverseByCategoryId.get(lp.lineups.category_id) ?? false
+        const score = calculateScore(stats, role, lp.slot_role, isReverse)
         return {
           player_id: lp.player_id,
           match_id: match.id,

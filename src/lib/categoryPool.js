@@ -38,6 +38,8 @@ export function isPlayerEligible(player, team, category, totalTeams) {
     }
     case 'top_scorers':
       return true
+    case 'all':
+      return true
     default:
       return false
   }

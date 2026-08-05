@@ -21,7 +21,12 @@
   background: rgba(255, 255, 255, 0.85);
 }
 
-.home-background > * {
+/* Modals (CreateLeagueModal, PlayerBreakdownModal, ConfirmDialog...) render
+   their .confirm-backdrop directly inside this page tree rather than via a
+   portal, so without this exclusion the rule below clobbers their intended
+   position: fixed full-viewport overlay with position: relative, collapsing
+   them into the page flow instead of floating above it. */
+.home-background > *:not(.confirm-backdrop) {
   position: relative;
   z-index: 1;
 }

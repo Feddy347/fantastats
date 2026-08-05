@@ -341,3 +341,11 @@ select:focus {
   border-color: var(--primary) !important;
   box-shadow: 0 0 8px rgba(22, 163, 74, 0.15);
 }
+
+/* Flop XI (reverse-scoring) tiles get a red border instead of green, so
+   they read as visually distinct even at a glance. Higher specificity than
+   .live-now so it wins if a Flop XI match is also currently live. */
+.live-tile.reverse {
+  border-color: var(--color-hype) !important;
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.15);
+}

@@ -79,7 +79,11 @@ export default function LiveCategoryDetail() {
       </Link>
 
       <div className="live-detail-header card">
-        <h1>{category.name}</h1>
+        <h1>
+          {category.is_reverse_scoring && <span aria-hidden="true">🔄 </span>}
+          {category.name}
+        </h1>
+        {category.is_reverse_scoring && <span className="badge-tag reverse">Flop XI</span>}
         <div className="live-detail-stats">
           <div className="summary-item">
             <span className="summary-label">Punteggio</span>
@@ -96,7 +100,12 @@ export default function LiveCategoryDetail() {
 
       <section>
         <h2>Classifica di giornata</h2>
-        <GameweekLeaderboard categoryId={category.id} gameweek={gameweek} currentUserId={user.id} />
+        <GameweekLeaderboard
+          categoryId={category.id}
+          gameweek={gameweek}
+          currentUserId={user.id}
+          isReverse={category.is_reverse_scoring}
+        />
       </section>
     </div>
   )

@@ -192,9 +192,12 @@ export default function CategoriesList() {
                 <Link to={`/categories/${category.slug}`} className="category-card-link">
                   <div
                     className="category-card-colorhead"
-                    style={{ background: `var(${getCategoryColorVar(category.slug)})` }}
+                    style={{ background: `var(${getCategoryColorVar(category.is_reverse_scoring)})` }}
                   >
-                    <span className="category-card-name">{category.name}</span>
+                    <span className="category-card-name">
+                      {category.is_reverse_scoring && <span aria-hidden="true">🔄 </span>}
+                      {category.name}
+                    </span>
                     {gameweek && <span className="category-card-gw">GW {gameweek.number}</span>}
                   </div>
 

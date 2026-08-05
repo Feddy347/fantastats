@@ -56,11 +56,15 @@ function splitRoles(roleValue) {
  * @param {boolean} [params.useStoredScores] - reuse player_match_scores for
  *   starters who played normally (categories only — league scores are never
  *   stored with the right slot_role context, see leagueScoring.js)
+ * @param {boolean} [params.isReverse] - Flop XI reverse-scoring mode, only used
+ *   for the fresh-compute path (substituted players, or useStoredScores:false):
+ *   the stored-score path always trusts whatever's in player_match_scores,
+ *   which was already written with the right sign at poll time.
  * @returns {Promise<{totalScore:number, contributions:Array}>}
  */
 export async function resolveLineupScore(
   supabase,
-  { starters, bench, gameweekId, roleField = 'role_fantastats', modules, useStoredScores = true }
+  { starters, bench, gameweekId, roleField = 'role_fantastats', modules, useStoredScores = true, isReverse = false }
 ) {
   const allPlayerIds = [...new Set([...starters.map((s) => s.playerId), ...bench.map((b) => b.playerId)])]
 
@@ -149,7 +153,9 @@ export async function resolveLineupScore(
       slotScore = scoreById.get(effectivePlayerId).total_score
     } else {
       const statsRow = statsById.get(effectivePlayerId)
-      slotScore = statsRow ? calculateScore(statsRow, roleById.get(effectivePlayerId), effectiveRole).totalScore : 0
+      slotScore = statsRow
+        ? calculateScore(statsRow, roleById.get(effectivePlayerId), effectiveRole, isReverse).totalScore
+        : 0
     }
 
     totalScore += slotScore ?? 0

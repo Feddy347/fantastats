@@ -36,6 +36,7 @@ export default function LiveLeagueLeaderboard({ league, gameweek, currentUserId 
           gameweekId: gameweek.id,
           roleField,
           matchByTeam,
+          isReverse: league.is_reverse_scoring,
         })
         computed.push({
           userId: m.user_id,
@@ -106,6 +107,7 @@ export default function LiveLeagueLeaderboard({ league, gameweek, currentUserId 
           role={selectedPlayer.role}
           totalScore={selectedPlayer.score}
           breakdown={selectedPlayer.breakdown ?? {}}
+          isReverse={league.is_reverse_scoring}
           onClose={() => setSelectedPlayer(null)}
         />
       )}

@@ -33,6 +33,7 @@ export default function LiveLeagueTile({ league, gameweek, userId, onOpen }) {
         gameweekId: gameweek.id,
         roleField,
         matchByTeam,
+        isReverse: league.is_reverse_scoring,
       })
 
       if (cancelled) return
@@ -66,6 +67,7 @@ export default function LiveLeagueTile({ league, gameweek, userId, onOpen }) {
               gameweekId: gameweek.id,
               roleField,
               matchByTeam,
+              isReverse: league.is_reverse_scoring,
             })
             if (!cancelled) setBadge({ text: `${mine.total.toFixed(1)} - ${opp.total.toFixed(1)}` })
           }
@@ -81,6 +83,7 @@ export default function LiveLeagueTile({ league, gameweek, userId, onOpen }) {
               gameweekId: gameweek.id,
               roleField,
               matchByTeam,
+              isReverse: league.is_reverse_scoring,
             })
           )
         )
@@ -114,9 +117,16 @@ export default function LiveLeagueTile({ league, gameweek, userId, onOpen }) {
   const isLiveNow = myResult.players.some((p) => p.isLive)
 
   return (
-    <button type="button" className={'live-tile card' + (isLiveNow ? ' live-now' : '')} onClick={onOpen}>
+    <button
+      type="button"
+      className={'live-tile card' + (isLiveNow ? ' live-now' : '') + (league.is_reverse_scoring ? ' reverse' : '')}
+      onClick={onOpen}
+    >
       <div className="live-tile-header">
-        <h2>{league.name}</h2>
+        <h2>
+          {league.is_reverse_scoring && <span aria-hidden="true">🔄 </span>}
+          {league.name}
+        </h2>
         {badge && <span className="live-tile-rank">{badge.text}</span>}
       </div>
 

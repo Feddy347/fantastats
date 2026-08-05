@@ -117,6 +117,7 @@ async function consolidateCategory(supabase, category, gameweek) {
         gameweekId: gameweek.id,
         roleField: 'role_fantastats',
         modules: FANTASTATS_MODULES,
+        isReverse: category.is_reverse_scoring,
       })
       totalScore = resolved.totalScore
     }

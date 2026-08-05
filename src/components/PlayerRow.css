@@ -75,6 +75,10 @@
   color: var(--on-primary);
 }
 
+.badge-tag.reverse {
+  background: var(--color-hype);
+}
+
 .player-meta {
   display: flex;
   flex-wrap: wrap;

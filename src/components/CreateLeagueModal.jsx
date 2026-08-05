@@ -23,6 +23,7 @@ export default function CreateLeagueModal({ onClose }) {
   const [formationType, setFormationType] = useState('7')
   const [roleSystem, setRoleSystem] = useState('fantastats')
   const [competitionFormat, setCompetitionFormat] = useState('royal_rumble_seria')
+  const [isReverseScoring, setIsReverseScoring] = useState(false)
   const [marketType, setMarketType] = useState('auction')
   const [rosterSize, setRosterSize] = useState(18)
   const [startingCredits, setStartingCredits] = useState(500)
@@ -79,6 +80,7 @@ export default function CreateLeagueModal({ onClose }) {
           roster_size: rosterSize,
           starting_credits: startingCredits,
           season_start_gameweek: Number(seasonStartGameweek),
+          is_reverse_scoring: isReverseScoring,
         })
         .select()
         .single()
@@ -195,6 +197,30 @@ export default function CreateLeagueModal({ onClose }) {
                 </option>
               ))}
             </select>
+          </div>
+
+          <div className="form-field">
+            <span className="form-label">Modalità di gioco</span>
+            <div className="mode-options">
+              <label className={'mode-option' + (!isReverseScoring ? ' selected' : '')}>
+                <input type="radio" checked={!isReverseScoring} onChange={() => setIsReverseScoring(false)} />
+                <span className="mode-option-text">
+                  <span className="mode-option-title">⚽ Normale</span>
+                  <span className="mode-option-desc">
+                    Più gol, assist e giocate fanno i tuoi giocatori, più punti fai
+                  </span>
+                </span>
+              </label>
+              <label className={'mode-option mode-option-reverse' + (isReverseScoring ? ' selected' : '')}>
+                <input type="radio" checked={isReverseScoring} onChange={() => setIsReverseScoring(true)} />
+                <span className="mode-option-text">
+                  <span className="mode-option-title">🔄 Flop XI</span>
+                  <span className="mode-option-desc">
+                    Al contrario! Cartellini, falli e errori ti fanno salire in classifica
+                  </span>
+                </span>
+              </label>
+            </div>
           </div>
 
           <div className="form-field">

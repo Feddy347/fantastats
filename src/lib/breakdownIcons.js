@@ -47,6 +47,19 @@ export const BREAKDOWN_ICONS = {
   goalkeeperMalus: { icon: ArrowDownCircle, color: 'var(--danger)' },
 }
 
+// In Flop XI (reverse-scoring), the curated per-key palette above would be
+// misleading (goals colored green even though a goal is now a malus). The
+// breakdown VALUE itself is already correctly signed by scoreEngine, so in
+// reverse mode the icon just follows that sign instead of the fixed
+// per-key color; normal mode is untouched.
+export function getIconColor(key, value, isReverse) {
+  const def = BREAKDOWN_ICONS[key]
+  if (!isReverse) return def?.color
+  if (value > 0) return 'var(--success)'
+  if (value < 0) return 'var(--danger)'
+  return def?.color
+}
+
 export const BREAKDOWN_LABELS = {
   participation: 'Partecipazione',
   goals: 'Gol',

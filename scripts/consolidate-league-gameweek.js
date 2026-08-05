@@ -59,7 +59,7 @@ function toStartersAndBench(lineupPlayers) {
   return { starters, bench }
 }
 
-async function computeUserTotalScore(supabase, { userId, leagueId, gameweekId, roleField, modules }) {
+async function computeUserTotalScore(supabase, { userId, leagueId, gameweekId, roleField, modules, isReverse }) {
   const { data: lineup } = await supabase
     .from('league_lineups')
     .select('*, league_lineup_players(*)')
@@ -80,6 +80,7 @@ async function computeUserTotalScore(supabase, { userId, leagueId, gameweekId, r
     roleField,
     modules,
     useStoredScores: false,
+    isReverse,
   })
 
   return resolved.totalScore
@@ -139,6 +140,7 @@ async function consolidateLeague(supabase, league, gameweek) {
       gameweekId: gameweek.id,
       roleField: moduleSystem.roleField,
       modules: moduleSystem.modules,
+      isReverse: league.is_reverse_scoring,
     })
     totalsByUser.set(m.user_id, total)
   }

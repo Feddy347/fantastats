@@ -11,6 +11,9 @@
 //   delete from matches where sorare_game_id = 'simulated-test';
 //
 // Usage: npm run simulate:match
+// Pass --reverse to run every scenario through Flop XI (reverse-scoring)
+// math instead, to sanity-check that path end-to-end without a real
+// Flop XI lineup.
 
 import { getSupabaseAdmin, getCurrentGameweekAdmin } from './lib/env.js'
 import { calculateScore } from '../src/lib/scoreEngine.js'
@@ -142,6 +145,7 @@ async function findScenarioPlayer(supabase, scenario) {
 
 async function main() {
   const supabase = getSupabaseAdmin()
+  const isReverse = process.argv.includes('--reverse')
 
   const gameweek = await getCurrentGameweekAdmin(supabase)
   if (!gameweek) throw new Error('No current gameweek found (seed the gameweeks table first).')
@@ -182,7 +186,7 @@ async function main() {
       .upsert(statsRow, { onConflict: 'player_id,match_id' })
     if (statsError) throw statsError
 
-    const score = calculateScore(statsRow, player.role_fantastats, slotRole)
+    const score = calculateScore(statsRow, player.role_fantastats, slotRole, isReverse)
 
     const { error: scoreError } = await supabase.from('player_match_scores').upsert(
       {
@@ -216,6 +220,7 @@ async function main() {
   }
 
   console.table(results)
+  if (isReverse) console.log('(Flop XI / reverse-scoring mode)')
   console.log(
     `\nSimulated match #${match.id} inserted. Delete it (and its stats/scores) with:\n` +
       `  delete from player_match_scores where match_id = ${match.id};\n` +

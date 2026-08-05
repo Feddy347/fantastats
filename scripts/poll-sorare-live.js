@@ -112,23 +112,31 @@ async function main() {
     return
   }
 
-  const [{ data: categoryStarters }, { data: leagueStarters }, { data: mappings }] = await Promise.all([
-    supabase
-      .from('lineup_players')
-      .select('player_id, slot_role')
-      .eq('slot_type', 'starter')
-      .eq('gameweek_id', gameweek.id),
-    supabase
-      .from('league_lineup_players')
-      .select('player_id, league_lineups!inner(gameweek_id)')
-      .eq('slot_type', 'starter')
-      .eq('league_lineups.gameweek_id', gameweek.id),
-    supabase.from('sorare_player_mapping').select('player_id, sorare_slug'),
-  ])
+  const [{ data: categoryStarters }, { data: leagueStarters }, { data: mappings }, { data: categories }] =
+    await Promise.all([
+      supabase
+        .from('lineup_players')
+        .select('player_id, slot_role, lineups!inner(category_id)')
+        .eq('slot_type', 'starter')
+        .eq('gameweek_id', gameweek.id),
+      supabase
+        .from('league_lineup_players')
+        .select('player_id, league_lineups!inner(gameweek_id)')
+        .eq('slot_type', 'starter')
+        .eq('league_lineups.gameweek_id', gameweek.id),
+      supabase.from('sorare_player_mapping').select('player_id, sorare_slug'),
+      supabase.from('categories').select('id, is_reverse_scoring'),
+    ])
+
+  const reverseByCategoryId = new Map((categories ?? []).map((c) => [c.id, c.is_reverse_scoring]))
 
   const slotRoleByPlayerId = new Map()
+  const categoryIdByPlayerId = new Map()
   ;(categoryStarters ?? []).forEach((s) => {
-    if (!slotRoleByPlayerId.has(s.player_id)) slotRoleByPlayerId.set(s.player_id, s.slot_role)
+    if (!slotRoleByPlayerId.has(s.player_id)) {
+      slotRoleByPlayerId.set(s.player_id, s.slot_role)
+      categoryIdByPlayerId.set(s.player_id, s.lineups.category_id)
+    }
   })
 
   const playerIds = new Set([
@@ -239,7 +247,8 @@ async function main() {
       const slotRole = slotRoleByPlayerId.get(playerId)
       if (slotRole !== undefined) {
         const role = roleByPlayerId.get(playerId)?.role_fantastats
-        const score = calculateScore(statsRow, role, slotRole)
+        const isReverse = reverseByCategoryId.get(categoryIdByPlayerId.get(playerId)) ?? false
+        const score = calculateScore(statsRow, role, slotRole, isReverse)
         const { error: scoreError } = await supabase.from('player_match_scores').upsert(
           {
             player_id: playerId,
