@@ -33,7 +33,7 @@
 
 import { pathToFileURL } from 'node:url'
 import { getSupabaseAdmin } from './lib/env.js'
-import { resolveLineupScore } from './lib/lineupResolver.js'
+import { resolveLineupScore } from '../src/lib/lineupResolver.js'
 import { isPlayerEligible } from '../src/lib/categoryPool.js'
 import { getLeagueModuleSystem } from '../src/lib/leagueModules.js'
 

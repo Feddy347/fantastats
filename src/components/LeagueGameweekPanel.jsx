@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabaseClient'
+import { resolveLineupScore } from '../lib/lineupResolver'
+import { getLeagueModuleSystem } from '../lib/leagueModules'
+import LeagueFormationDetail from './LeagueFormationDetail'
 import './Leaderboard.css'
 import './LeagueGameweekPanel.css'
 
@@ -66,6 +69,15 @@ export default function LeagueGameweekPanel({ league, calendarId, gameweekId }) 
     }
   }, [calendarId, gameweekId, league.id, isDirect])
 
+  // Builds the full "who actually played, what did they score, who was
+  // subbed in for whom" picture for one member's GW lineup — not just
+  // role+name. Scores are always computed fresh (never read from
+  // player_match_scores): a league lineup can field a player in a
+  // different slot/role than any category lineup, which changes the
+  // scoring multiplier (see leagueScoring.js's header comment), and
+  // resolveLineupScore also applies the same automatic role-for-role
+  // substitution the final "Calcola giornata" consolidation uses, so this
+  // view matches the real result instead of a simplified approximation.
   async function toggleFormation(userId) {
     if (expandedUserId === userId) {
       setExpandedUserId(null)
@@ -82,22 +94,85 @@ export default function LeagueGameweekPanel({ league, calendarId, gameweekId }) 
       .eq('gameweek_id', gameweekId)
       .maybeSingle()
 
-    const starters = (lineup?.league_lineup_players ?? [])
+    if (!lineup) {
+      setFormationsByUserId((prev) => ({ ...prev, [userId]: { moduleId: null, totalScore: 0, starters: [], bench: [] } }))
+      return
+    }
+
+    const lineupPlayers = lineup.league_lineup_players ?? []
+    const starterRows = lineupPlayers
       .filter((lp) => lp.slot_type === 'starter')
       .sort((a, b) => (a.slot_position ?? 0) - (b.slot_position ?? 0))
+    const benchRows = lineupPlayers
+      .filter((lp) => lp.slot_type === 'bench')
+      .sort((a, b) => (a.slot_position ?? 0) - (b.slot_position ?? 0))
 
-    const playerIds = starters.map((lp) => lp.player_id)
-    const { data: players } =
-      playerIds.length > 0 ? await supabase.from('players').select('id, name').in('id', playerIds) : { data: [] }
+    const starters = starterRows.map((lp, idx) => ({ slotIndex: idx, slotRole: lp.slot_role, playerId: lp.player_id }))
+    const bench = benchRows.map((lp) => ({ playerId: lp.player_id }))
 
-    const nameByPlayerId = {}
-    ;(players ?? []).forEach((p) => {
-      nameByPlayerId[p.id] = p.name
+    const moduleSystem = getLeagueModuleSystem(league)
+
+    const [resolved, playersResult, benchStatsResult] = await Promise.all([
+      resolveLineupScore(supabase, {
+        starters,
+        bench,
+        gameweekId,
+        roleField: moduleSystem.roleField,
+        modules: moduleSystem.modules,
+        useStoredScores: false,
+        isReverse: league.is_reverse_scoring,
+      }),
+      supabase
+        .from('players')
+        .select('id, name')
+        .in('id', lineupPlayers.map((lp) => lp.player_id)),
+      bench.length > 0
+        ? supabase
+            .from('player_match_stats')
+            .select('player_id, mins_played, matches!inner(gameweek_id)')
+            .eq('matches.gameweek_id', gameweekId)
+            .in('player_id', bench.map((b) => b.playerId))
+        : Promise.resolve({ data: [] }),
+    ])
+
+    const nameByPlayerId = new Map((playersResult.data ?? []).map((p) => [p.id, p.name]))
+    const contributionBySlot = new Map(resolved.contributions.map((c) => [c.slotIndex, c]))
+    const usedAsSubIds = new Set(
+      resolved.contributions.filter((c) => c.subApplied && c.playerId != null).map((c) => c.playerId)
+    )
+    const minsByPlayerId = new Map((benchStatsResult.data ?? []).map((s) => [s.player_id, s.mins_played]))
+
+    const starterSlots = starters.map((s) => {
+      const contribution = contributionBySlot.get(s.slotIndex)
+      const subApplied = contribution?.subApplied ?? false
+      const isEmpty = !contribution || contribution.playerId == null
+
+      return {
+        slotPosition: s.slotIndex + 1,
+        slotRole: s.slotRole,
+        originalPlayerId: s.playerId,
+        originalPlayerName: nameByPlayerId.get(s.playerId) ?? '?',
+        subApplied,
+        isEmpty,
+        effectivePlayerId: subApplied ? contribution.playerId : null,
+        effectivePlayerName: subApplied ? (nameByPlayerId.get(contribution.playerId) ?? '?') : null,
+        effectiveRole: subApplied ? contribution.role : null,
+        score: contribution?.score ?? null,
+        breakdown: contribution?.breakdown ?? null,
+      }
     })
+
+    const benchPlayers = bench.map((b, idx) => ({
+      order: idx + 1,
+      playerId: b.playerId,
+      playerName: nameByPlayerId.get(b.playerId) ?? '?',
+      usedAsSub: usedAsSubIds.has(b.playerId),
+      played: (minsByPlayerId.get(b.playerId) ?? 0) > 0,
+    }))
 
     setFormationsByUserId((prev) => ({
       ...prev,
-      [userId]: starters.map((lp) => ({ role: lp.slot_role, name: nameByPlayerId[lp.player_id] ?? '?' })),
+      [userId]: { moduleId: lineup.module, totalScore: resolved.totalScore, starters: starterSlots, bench: benchPlayers },
     }))
   }
 
@@ -134,22 +209,10 @@ export default function LeagueGameweekPanel({ league, calendarId, gameweekId }) 
               </div>
 
               {expandedUserId === m.home_user_id && (
-                <ul className="leaderboard-detail">
-                  {(formationsByUserId[m.home_user_id] ?? []).map((p, i) => (
-                    <li key={i}>
-                      <span className="role-tag">{p.role}</span> {p.name}
-                    </li>
-                  ))}
-                </ul>
+                <LeagueFormationDetail formation={formationsByUserId[m.home_user_id]} isReverse={league.is_reverse_scoring} />
               )}
               {expandedUserId === m.away_user_id && (
-                <ul className="leaderboard-detail">
-                  {(formationsByUserId[m.away_user_id] ?? []).map((p, i) => (
-                    <li key={i}>
-                      <span className="role-tag">{p.role}</span> {p.name}
-                    </li>
-                  ))}
-                </ul>
+                <LeagueFormationDetail formation={formationsByUserId[m.away_user_id]} isReverse={league.is_reverse_scoring} />
               )}
             </li>
           )
@@ -170,13 +233,7 @@ export default function LeagueGameweekPanel({ league, calendarId, gameweekId }) 
               <span className="gw-league-points">+{row.league_points} pt</span>
             </button>
             {expandedUserId === row.user_id && (
-              <ul className="leaderboard-detail">
-                {(formationsByUserId[row.user_id] ?? []).map((p, i) => (
-                  <li key={i}>
-                    <span className="role-tag">{p.role}</span> {p.name}
-                  </li>
-                ))}
-              </ul>
+              <LeagueFormationDetail formation={formationsByUserId[row.user_id]} isReverse={league.is_reverse_scoring} />
             )}
           </li>
         ))}
@@ -196,17 +253,7 @@ export default function LeagueGameweekPanel({ league, calendarId, gameweekId }) 
             <span className="leaderboard-username">{m.profiles?.username ?? '—'}</span>
           </button>
           {expandedUserId === m.user_id && (
-            <ul className="leaderboard-detail">
-              {(formationsByUserId[m.user_id] ?? []).length === 0 ? (
-                <li className="status-text">Nessuna formazione schierata.</li>
-              ) : (
-                (formationsByUserId[m.user_id] ?? []).map((p, i) => (
-                  <li key={i}>
-                    <span className="role-tag">{p.role}</span> {p.name}
-                  </li>
-                ))
-              )}
-            </ul>
+            <LeagueFormationDetail formation={formationsByUserId[m.user_id]} isReverse={league.is_reverse_scoring} />
           )}
         </li>
       ))}

@@ -21,11 +21,16 @@
 // line up in SOME recognized shape," not "which exact module," and the
 // league's saved `module` field is never rewritten by a substitution.
 //
-// Used only by the consolidation scripts (categories and leagues): this is
-// the FINAL score, computed once a gameweek is fully played out. The live
-// views intentionally ignore substitutions.
+// Lives under src/lib/ (not scripts/lib/) because it's used both
+// server-side (the consolidation scripts, which compute the FINAL score
+// once a gameweek is fully played out) and client-side
+// (LeagueGameweekPanel.jsx, to show the same starter/substitute/score
+// picture — including who was subbed in for whom — in the league
+// Calendario tab). Both call sites must apply the exact same substitution
+// decisions, so this is the single shared implementation rather than two
+// copies that could drift.
 
-import { calculateScore } from '../../src/lib/scoreEngine.js'
+import { calculateScore } from './scoreEngine.js'
 
 function lineKey(slots) {
   return slots
@@ -46,7 +51,7 @@ function splitRoles(roleValue) {
 }
 
 /**
- * @param {object} supabase - service-role client
+ * @param {object} supabase - service-role client (server) or anon/authenticated client (browser)
  * @param {object} params
  * @param {Array<{slotIndex:number, slotRole:string, playerId:number}>} params.starters - one per module slot
  * @param {Array<{playerId:number}>} params.bench - in substitution-priority order
@@ -60,7 +65,10 @@ function splitRoles(roleValue) {
  *   for the fresh-compute path (substituted players, or useStoredScores:false):
  *   the stored-score path always trusts whatever's in player_match_scores,
  *   which was already written with the right sign at poll time.
- * @returns {Promise<{totalScore:number, contributions:Array}>}
+ * @returns {Promise<{totalScore:number, contributions:Array}>} contributions:
+ *   one entry per starter slot, always in starter order:
+ *   {slotIndex, playerId, role, score, breakdown, minsPlayed, subApplied}.
+ *   playerId is null (slotEmpty) if no valid sub was found either.
  */
 export async function resolveLineupScore(
   supabase,
@@ -84,8 +92,11 @@ export async function resolveLineupScore(
   const scoreById = new Map((scoresResult.data ?? []).map((s) => [s.player_id, s]))
   const statsById = new Map((stats ?? []).map((s) => [s.player_id, s]))
 
+  function minsPlayed(playerId) {
+    return statsById.get(playerId)?.mins_played ?? 0
+  }
   function played(playerId) {
-    return (statsById.get(playerId)?.mins_played ?? 0) > 0
+    return minsPlayed(playerId) > 0
   }
 
   const usedBenchIds = new Set()
@@ -144,22 +155,45 @@ export async function resolveLineupScore(
     }
 
     if (slotEmpty) {
-      contributions.push({ slotIndex: starter.slotIndex, playerId: null, score: 0, subApplied: false })
+      contributions.push({
+        slotIndex: starter.slotIndex,
+        playerId: null,
+        role: starter.slotRole,
+        score: 0,
+        breakdown: null,
+        minsPlayed: 0,
+        subApplied: false,
+      })
       continue
     }
 
     let slotScore
+    let breakdown = null
     if (!subApplied && scoreById.has(effectivePlayerId)) {
-      slotScore = scoreById.get(effectivePlayerId).total_score
+      const stored = scoreById.get(effectivePlayerId)
+      slotScore = stored.total_score
+      breakdown = stored.score_breakdown ?? null
     } else {
       const statsRow = statsById.get(effectivePlayerId)
-      slotScore = statsRow
-        ? calculateScore(statsRow, roleById.get(effectivePlayerId), effectiveRole, isReverse).totalScore
-        : 0
+      if (statsRow) {
+        const result = calculateScore(statsRow, roleById.get(effectivePlayerId), effectiveRole, isReverse)
+        slotScore = result.totalScore
+        breakdown = result.breakdown
+      } else {
+        slotScore = 0
+      }
     }
 
     totalScore += slotScore ?? 0
-    contributions.push({ slotIndex: starter.slotIndex, playerId: effectivePlayerId, score: slotScore, subApplied })
+    contributions.push({
+      slotIndex: starter.slotIndex,
+      playerId: effectivePlayerId,
+      role: effectiveRole,
+      score: slotScore,
+      breakdown,
+      minsPlayed: minsPlayed(effectivePlayerId),
+      subApplied,
+    })
   }
 
   return { totalScore, contributions }
