@@ -30,6 +30,7 @@
 // Meant to be run periodically (every 2-3 minutes) while a gameweek is live:
 // `node scripts/poll-sorare-live.js`.
 
+import { pathToFileURL } from 'node:url'
 import { getSupabaseAdmin } from './lib/env.js'
 import {
   sorareQuery,
@@ -103,13 +104,17 @@ query PlayerGameStats($slug: String!, $last: Int!) {
 }
 `
 
-async function main() {
-  const supabase = getSupabaseAdmin()
-
+// Exported so api/calculate-gameweek.js can run this in-process (as the
+// admin-only "Calcola giornata" button) without shelling out to `node
+// scripts/poll-sorare-live.js` — a Vercel function's filesystem doesn't
+// include files outside its own import graph. The `main()` CLI entrypoint
+// below is a thin wrapper that keeps `node scripts/poll-sorare-live.js`
+// working unchanged.
+export async function pollSorareLive(supabase) {
   const { data: gameweek } = await supabase.from('gameweeks').select('*').eq('status', 'live').maybeSingle()
   if (!gameweek) {
     console.log('No live gameweek right now.')
-    return
+    return { polled: false, reason: 'no-live-gameweek' }
   }
 
   const [{ data: categoryStarters }, { data: leagueStarters }, { data: mappings }, { data: categories }] =
@@ -146,7 +151,7 @@ async function main() {
 
   if (playerIds.size === 0) {
     console.log('No starters fielded (category or league) for this gameweek.')
-    return
+    return { polled: false, reason: 'no-starters', gameweekNumber: gameweek.number }
   }
 
   const slugByPlayerId = new Map((mappings ?? []).map((m) => [m.player_id, m.sorare_slug]))
@@ -286,9 +291,25 @@ async function main() {
   console.log(
     `Done. Stats updated: ${statsUpdated}. Scores updated: ${scoresUpdated}. No mapping: ${noMapping}. No Serie A game found: ${noSerieAGame}.`
   )
+
+  return {
+    polled: true,
+    gameweekNumber: gameweek.number,
+    startersConsidered: playerIds.size,
+    statsUpdated,
+    scoresUpdated,
+    noMapping,
+    noSerieAGame,
+  }
 }
 
-main().catch((err) => {
-  console.error('poll-sorare-live failed:', err.message || err)
-  process.exit(1)
-})
+async function main() {
+  return pollSorareLive(getSupabaseAdmin())
+}
+
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  main().catch((err) => {
+    console.error('poll-sorare-live failed:', err.message || err)
+    process.exit(1)
+  })
+}

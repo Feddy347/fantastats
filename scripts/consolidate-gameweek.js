@@ -4,6 +4,7 @@
 //
 // Usage: node scripts/consolidate-gameweek.js
 
+import { pathToFileURL } from 'node:url'
 import { getSupabaseAdmin } from './lib/env.js'
 import { resolveLineupScore } from './lib/lineupResolver.js'
 import { isPlayerEligible } from '../src/lib/categoryPool.js'
@@ -175,6 +176,23 @@ async function consolidateCategory(supabase, category, gameweek) {
     if (error) console.error(`    [error] upserting scores: ${error.message}`)
   }
 
+  // rewards has no unique(user_id,category_id,gameweek_id) — re-running
+  // consolidation for a gameweek that already granted rewards would
+  // duplicate credits/players. This was harmless when the script only ever
+  // ran once by hand; now that "Calcola giornata" can be clicked more than
+  // once for the same gameweek (e.g. to refresh mid-day), skip the grant
+  // step entirely if this category/gameweek was already rewarded.
+  const { count: existingRewardCount } = await supabase
+    .from('rewards')
+    .select('*', { count: 'exact', head: true })
+    .eq('category_id', category.id)
+    .eq('gameweek_id', gameweek.id)
+
+  if (existingRewardCount > 0) {
+    console.log(`    rewards already granted for this gameweek — skipping (would duplicate credits/players)`)
+    return
+  }
+
   for (const row of rows) {
     const tier = rewardForRank(row.rank)
     if (!tier) continue
@@ -215,13 +233,13 @@ async function consolidateCategory(supabase, category, gameweek) {
   }
 }
 
-async function main() {
-  const supabase = getSupabaseAdmin()
-
+// Exported so api/calculate-gameweek.js can call this in-process (admin-only
+// "Calcola giornata" button). The CLI entrypoint below wraps it unchanged.
+export async function consolidateGameweek(supabase) {
   const gameweek = await findTargetGameweek(supabase)
   if (!gameweek) {
     console.log('No live or completed gameweek found to consolidate.')
-    return
+    return { consolidated: false, reason: 'no-target-gameweek' }
   }
 
   console.log(`Consolidating gameweek ${gameweek.number} (id ${gameweek.id})...`)
@@ -235,9 +253,17 @@ async function main() {
 
   await supabase.from('gameweeks').update({ status: 'completed' }).eq('id', gameweek.id)
   console.log(`Gameweek ${gameweek.number} consolidated and marked completed.`)
+
+  return { consolidated: true, gameweekNumber: gameweek.number, categoriesConsolidated: (categories ?? []).length }
 }
 
-main().catch((err) => {
-  console.error('consolidate-gameweek failed:', err.message || err)
-  process.exit(1)
-})
+async function main() {
+  return consolidateGameweek(getSupabaseAdmin())
+}
+
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  main().catch((err) => {
+    console.error('consolidate-gameweek failed:', err.message || err)
+    process.exit(1)
+  })
+}

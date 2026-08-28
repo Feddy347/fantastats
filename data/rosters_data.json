@@ -1,0 +1,1286 @@
+{
+  "team_to_uid": {
+    "Schiaffield Wednesday": "af83a8b9-fc91-4f5c-b820-e7fe2b9efd39",
+    "Falarsenal": "03a80aa8-63c6-43a7-b630-47124d4cff1c",
+    "Liverpollio": "f0145352-6101-4785-aa9a-59a4c38df247",
+    "Ostia Liedholm": "cf0d2bd4-2145-430a-99b3-2864bdb07118",
+    "Ejaculazio": "1bc25cc0-36ea-4a4c-aede-1fbc9c812b79",
+    "Real Canil": "9a91ce74-610f-4b33-bbf3-72430868b523",
+    "Rotten Wreck Squad": "84bf9437-4832-4922-af1d-003d4c6920e7",
+    "Parmigian Buongrado": "79504a26-debf-4a9b-8c0e-fe168551f3de",
+    "Malencastro": "e9bd5267-3a70-44f2-8f0a-8d4b43982d90",
+    "Hellas Madonna 7 Sorelle": "77e2ac11-32cc-44d2-8d1f-2b78bb11ec69"
+  },
+  "rosters": {
+    "Schiaffield Wednesday": [
+      {
+        "player_id": 6462,
+        "name": "Okoye",
+        "cost": 2
+      },
+      {
+        "player_id": 2134,
+        "name": "Falcone",
+        "cost": 2
+      },
+      {
+        "player_id": 7557,
+        "name": "Penev",
+        "cost": 1
+      },
+      {
+        "player_id": 4998,
+        "name": "Molina N.",
+        "cost": 41
+      },
+      {
+        "player_id": 6956,
+        "name": "Solet",
+        "cost": 16
+      },
+      {
+        "player_id": 7413,
+        "name": "Puczka",
+        "cost": 1
+      },
+      {
+        "player_id": 7329,
+        "name": "Obrador",
+        "cost": 1
+      },
+      {
+        "player_id": 6496,
+        "name": "Bartesaghi",
+        "cost": 1
+      },
+      {
+        "player_id": 6426,
+        "name": "Pedersen",
+        "cost": 1
+      },
+      {
+        "player_id": 5862,
+        "name": "Valeri",
+        "cost": 1
+      },
+      {
+        "player_id": 4952,
+        "name": "Monterisi",
+        "cost": 1
+      },
+      {
+        "player_id": 2517,
+        "name": "De Bruyne",
+        "cost": 61
+      },
+      {
+        "player_id": 7436,
+        "name": "Alajbegovic",
+        "cost": 32
+      },
+      {
+        "player_id": 536,
+        "name": "Politano",
+        "cost": 21
+      },
+      {
+        "player_id": 6908,
+        "name": "Atta",
+        "cost": 16
+      },
+      {
+        "player_id": 6678,
+        "name": "Liberali",
+        "cost": 1
+      },
+      {
+        "player_id": 6666,
+        "name": "Bernabè",
+        "cost": 1
+      },
+      {
+        "player_id": 2766,
+        "name": "Zaniolo",
+        "cost": 1
+      },
+      {
+        "player_id": 827,
+        "name": "Locatelli",
+        "cost": 1
+      },
+      {
+        "player_id": 6435,
+        "name": "Krstovic",
+        "cost": 31
+      },
+      {
+        "player_id": 7023,
+        "name": "Pellegrino M.",
+        "cost": 12
+      },
+      {
+        "player_id": 6229,
+        "name": "Tourè E.",
+        "cost": 2
+      },
+      {
+        "player_id": 7484,
+        "name": "Adams A.",
+        "cost": 1
+      },
+      {
+        "player_id": 4896,
+        "name": "Maldini",
+        "cost": 1
+      },
+      {
+        "player_id": 531,
+        "name": "Berardi",
+        "cost": 1
+      }
+    ],
+    "Hellas Madonna 7 Sorelle": [
+      {
+        "player_id": 7411,
+        "name": "Daffara",
+        "cost": 3
+      },
+      {
+        "player_id": 133,
+        "name": "Skorupski",
+        "cost": 3
+      },
+      {
+        "player_id": 7172,
+        "name": "Pessina Mas.",
+        "cost": 1
+      },
+      {
+        "player_id": 7181,
+        "name": "Wesley",
+        "cost": 50
+      },
+      {
+        "player_id": 4317,
+        "name": "N'Dicka",
+        "cost": 11
+      },
+      {
+        "player_id": 5833,
+        "name": "Gila",
+        "cost": 8
+      },
+      {
+        "player_id": 6042,
+        "name": "Lucumì",
+        "cost": 7
+      },
+      {
+        "player_id": 5010,
+        "name": "Ismajli",
+        "cost": 5
+      },
+      {
+        "player_id": 6320,
+        "name": "Doekhi",
+        "cost": 4
+      },
+      {
+        "player_id": 4433,
+        "name": "Zortea",
+        "cost": 3
+      },
+      {
+        "player_id": 7253,
+        "name": "Bella-Kotchap",
+        "cost": 1
+      },
+      {
+        "player_id": 7078,
+        "name": "Mastantuono",
+        "cost": 16
+      },
+      {
+        "player_id": 6884,
+        "name": "Conceicao",
+        "cost": 14
+      },
+      {
+        "player_id": 5687,
+        "name": "Vlasic",
+        "cost": 8
+      },
+      {
+        "player_id": 6151,
+        "name": "Perrone",
+        "cost": 7
+      },
+      {
+        "player_id": 7464,
+        "name": "Oulai",
+        "cost": 5
+      },
+      {
+        "player_id": 6020,
+        "name": "Ellertsson",
+        "cost": 1
+      },
+      {
+        "player_id": 5507,
+        "name": "Busio",
+        "cost": 1
+      },
+      {
+        "player_id": 530,
+        "name": "Pellegrini Lo.",
+        "cost": 1
+      },
+      {
+        "player_id": 5951,
+        "name": "Kolo Muani",
+        "cost": 88
+      },
+      {
+        "player_id": 7351,
+        "name": "Santos A.",
+        "cost": 6
+      },
+      {
+        "player_id": 7342,
+        "name": "Elphege",
+        "cost": 1
+      },
+      {
+        "player_id": 6981,
+        "name": "Vaz",
+        "cost": 1
+      },
+      {
+        "player_id": 2832,
+        "name": "Boga",
+        "cost": 1
+      },
+      {
+        "player_id": 608,
+        "name": "Zapata D.",
+        "cost": 1
+      }
+    ],
+    "Falarsenal": [
+      {
+        "player_id": 6482,
+        "name": "Mandas",
+        "cost": 2
+      },
+      {
+        "player_id": 5320,
+        "name": "Paleari",
+        "cost": 2
+      },
+      {
+        "player_id": 7337,
+        "name": "Motta",
+        "cost": 1
+      },
+      {
+        "player_id": 2296,
+        "name": "Mancini",
+        "cost": 16
+      },
+      {
+        "player_id": 6202,
+        "name": "Beukema",
+        "cost": 5
+      },
+      {
+        "player_id": 5555,
+        "name": "Kamara H.",
+        "cost": 5
+      },
+      {
+        "player_id": 6642,
+        "name": "Coco",
+        "cost": 3
+      },
+      {
+        "player_id": 6896,
+        "name": "Van Der Brempt",
+        "cost": 2
+      },
+      {
+        "player_id": 6631,
+        "name": "Ghilardi",
+        "cost": 2
+      },
+      {
+        "player_id": 5701,
+        "name": "Obert",
+        "cost": 2
+      },
+      {
+        "player_id": 5838,
+        "name": "Birindelli",
+        "cost": 1
+      },
+      {
+        "player_id": 2423,
+        "name": "Pulisic",
+        "cost": 38
+      },
+      {
+        "player_id": 2194,
+        "name": "Calhanoglu",
+        "cost": 37
+      },
+      {
+        "player_id": 4220,
+        "name": "Zambo Anguissa",
+        "cost": 11
+      },
+      {
+        "player_id": 7070,
+        "name": "Sucic P.",
+        "cost": 9
+      },
+      {
+        "player_id": 4287,
+        "name": "Lobotka",
+        "cost": 8
+      },
+      {
+        "player_id": 6677,
+        "name": "Adzic",
+        "cost": 3
+      },
+      {
+        "player_id": 4364,
+        "name": "Gaetano",
+        "cost": 2
+      },
+      {
+        "player_id": 7551,
+        "name": "Schmid",
+        "cost": 1
+      },
+      {
+        "player_id": 6052,
+        "name": "Hojlund",
+        "cost": 81
+      },
+      {
+        "player_id": 5436,
+        "name": "Raimondo",
+        "cost": 6
+      },
+      {
+        "player_id": 5029,
+        "name": "Geubbels",
+        "cost": 5
+      },
+      {
+        "player_id": 2137,
+        "name": "Scamacca",
+        "cost": 3
+      },
+      {
+        "player_id": 6164,
+        "name": "Vitinha O.",
+        "cost": 2
+      },
+      {
+        "player_id": 4923,
+        "name": "Colombo",
+        "cost": 1
+      }
+    ],
+    "Liverpollio": [
+      {
+        "player_id": 4431,
+        "name": "Carnesecchi",
+        "cost": 15
+      },
+      {
+        "player_id": 4312,
+        "name": "Maignan",
+        "cost": 9
+      },
+      {
+        "player_id": 6813,
+        "name": "Torriani",
+        "cost": 1
+      },
+      {
+        "player_id": 4159,
+        "name": "Akanji",
+        "cost": 7
+      },
+      {
+        "player_id": 7219,
+        "name": "Bernasconi",
+        "cost": 5
+      },
+      {
+        "player_id": 4994,
+        "name": "Vojvoda",
+        "cost": 5
+      },
+      {
+        "player_id": 6727,
+        "name": "Couto",
+        "cost": 3
+      },
+      {
+        "player_id": 6217,
+        "name": "Bisseck",
+        "cost": 3
+      },
+      {
+        "player_id": 4409,
+        "name": "Rrahmani",
+        "cost": 3
+      },
+      {
+        "player_id": 7212,
+        "name": "Heggem",
+        "cost": 2
+      },
+      {
+        "player_id": 6660,
+        "name": "Marcandalli",
+        "cost": 2
+      },
+      {
+        "player_id": 632,
+        "name": "Zaccagni",
+        "cost": 19
+      },
+      {
+        "player_id": 5119,
+        "name": "Samardzic",
+        "cost": 7
+      },
+      {
+        "player_id": 2765,
+        "name": "Odgaard",
+        "cost": 5
+      },
+      {
+        "player_id": 2606,
+        "name": "Modric",
+        "cost": 5
+      },
+      {
+        "player_id": 6503,
+        "name": "Stankovic A.",
+        "cost": 2
+      },
+      {
+        "player_id": 6294,
+        "name": "Ndour",
+        "cost": 2
+      },
+      {
+        "player_id": 5888,
+        "name": "Casadei",
+        "cost": 2
+      },
+      {
+        "player_id": 5858,
+        "name": "Ferguson",
+        "cost": 1
+      },
+      {
+        "player_id": 5585,
+        "name": "Malen",
+        "cost": 51
+      },
+      {
+        "player_id": 7347,
+        "name": "Bowie",
+        "cost": 9
+      },
+      {
+        "player_id": 6669,
+        "name": "Bonny",
+        "cost": 9
+      },
+      {
+        "player_id": 7071,
+        "name": "Esposito F.P.",
+        "cost": 5
+      },
+      {
+        "player_id": 6904,
+        "name": "Yeboah J.",
+        "cost": 2
+      },
+      {
+        "player_id": 6204,
+        "name": "Kvernadze",
+        "cost": 1
+      }
+    ],
+    "Ostia Liedholm": [
+      {
+        "player_id": 6966,
+        "name": "Butez",
+        "cost": 21
+      },
+      {
+        "player_id": 7301,
+        "name": "Tornqvist",
+        "cost": 1
+      },
+      {
+        "player_id": 2809,
+        "name": "Vigorito",
+        "cost": 1
+      },
+      {
+        "player_id": 7414,
+        "name": "Kaiki",
+        "cost": 2
+      },
+      {
+        "player_id": 2724,
+        "name": "Buongiorno",
+        "cost": 2
+      },
+      {
+        "player_id": 6867,
+        "name": "Valle",
+        "cost": 1
+      },
+      {
+        "player_id": 6814,
+        "name": "Norton-Cuffy",
+        "cost": 1
+      },
+      {
+        "player_id": 6632,
+        "name": "Gaspar K.",
+        "cost": 1
+      },
+      {
+        "player_id": 5820,
+        "name": "Bertola",
+        "cost": 1
+      },
+      {
+        "player_id": 4807,
+        "name": "Hermoso",
+        "cost": 1
+      },
+      {
+        "player_id": 4263,
+        "name": "Kabasele",
+        "cost": 1
+      },
+      {
+        "player_id": 7126,
+        "name": "Baturina",
+        "cost": 36
+      },
+      {
+        "player_id": 2379,
+        "name": "Rabiot",
+        "cost": 36
+      },
+      {
+        "player_id": 6684,
+        "name": "Ekkelenkamp",
+        "cost": 4
+      },
+      {
+        "player_id": 7060,
+        "name": "Cacciamani",
+        "cost": 3
+      },
+      {
+        "player_id": 6190,
+        "name": "Pisilli",
+        "cost": 3
+      },
+      {
+        "player_id": 7129,
+        "name": "Rodriguez Je.",
+        "cost": 2
+      },
+      {
+        "player_id": 5800,
+        "name": "Gudmundsson A.",
+        "cost": 1
+      },
+      {
+        "player_id": 779,
+        "name": "Cristante",
+        "cost": 1
+      },
+      {
+        "player_id": 2764,
+        "name": "Martinez L.",
+        "cost": 133
+      },
+      {
+        "player_id": 6060,
+        "name": "Laurientè",
+        "cost": 8
+      },
+      {
+        "player_id": 5734,
+        "name": "Soulè",
+        "cost": 3
+      },
+      {
+        "player_id": 7554,
+        "name": "Romero D.",
+        "cost": 1
+      },
+      {
+        "player_id": 6556,
+        "name": "Noslin",
+        "cost": 1
+      },
+      {
+        "player_id": 309,
+        "name": "Dybala",
+        "cost": 1
+      }
+    ],
+    "Ejaculazio": [
+      {
+        "player_id": 572,
+        "name": "Meret",
+        "cost": 23
+      },
+      {
+        "player_id": 2845,
+        "name": "Contini",
+        "cost": 1
+      },
+      {
+        "player_id": 2170,
+        "name": "Milinkovic-Savic V.",
+        "cost": 1
+      },
+      {
+        "player_id": 5022,
+        "name": "Pavlovic",
+        "cost": 17
+      },
+      {
+        "player_id": 5526,
+        "name": "Scalvini",
+        "cost": 7
+      },
+      {
+        "player_id": 5365,
+        "name": "Dragusin",
+        "cost": 6
+      },
+      {
+        "player_id": 6766,
+        "name": "Kelly L.",
+        "cost": 2
+      },
+      {
+        "player_id": 5641,
+        "name": "Chalobah T.",
+        "cost": 2
+      },
+      {
+        "player_id": 2816,
+        "name": "Di Lorenzo",
+        "cost": 2
+      },
+      {
+        "player_id": 554,
+        "name": "Zappacosta",
+        "cost": 2
+      },
+      {
+        "player_id": 6495,
+        "name": "Comuzzo",
+        "cost": 1
+      },
+      {
+        "player_id": 4973,
+        "name": "McKennie",
+        "cost": 32
+      },
+      {
+        "player_id": 5792,
+        "name": "Ederson D.S.",
+        "cost": 11
+      },
+      {
+        "player_id": 152,
+        "name": "Zielinski",
+        "cost": 7
+      },
+      {
+        "player_id": 4465,
+        "name": "Fagioli",
+        "cost": 4
+      },
+      {
+        "player_id": 2741,
+        "name": "Pessina",
+        "cost": 4
+      },
+      {
+        "player_id": 4349,
+        "name": "Nicolussi Caviglia",
+        "cost": 3
+      },
+      {
+        "player_id": 2528,
+        "name": "Matic",
+        "cost": 2
+      },
+      {
+        "player_id": 5791,
+        "name": "Frendrup",
+        "cost": 1
+      },
+      {
+        "player_id": 2097,
+        "name": "Kean",
+        "cost": 109
+      },
+      {
+        "player_id": 2061,
+        "name": "Simeone",
+        "cost": 42
+      },
+      {
+        "player_id": 4371,
+        "name": "Raspadori",
+        "cost": 11
+      },
+      {
+        "player_id": 5637,
+        "name": "Davis K.",
+        "cost": 4
+      },
+      {
+        "player_id": 2155,
+        "name": "Cutrone",
+        "cost": 2
+      },
+      {
+        "player_id": 2038,
+        "name": "Pinamonti",
+        "cost": 2
+      }
+    ],
+    "Real Canil": [
+      {
+        "player_id": 5116,
+        "name": "Martinez Jo.",
+        "cost": 18
+      },
+      {
+        "player_id": 2521,
+        "name": "De Gea",
+        "cost": 9
+      },
+      {
+        "player_id": 2814,
+        "name": "Provedel",
+        "cost": 1
+      },
+      {
+        "player_id": 2514,
+        "name": "Stones",
+        "cost": 15
+      },
+      {
+        "player_id": 4401,
+        "name": "Gabbia",
+        "cost": 12
+      },
+      {
+        "player_id": 5982,
+        "name": "Spence",
+        "cost": 11
+      },
+      {
+        "player_id": 5885,
+        "name": "Dodò",
+        "cost": 8
+      },
+      {
+        "player_id": 5750,
+        "name": "Ostigard",
+        "cost": 8
+      },
+      {
+        "player_id": 5877,
+        "name": "Carlos Augusto",
+        "cost": 6
+      },
+      {
+        "player_id": 4210,
+        "name": "Mina",
+        "cost": 3
+      },
+      {
+        "player_id": 4976,
+        "name": "Kalulu",
+        "cost": 1
+      },
+      {
+        "player_id": 5589,
+        "name": "Konè M.",
+        "cost": 20
+      },
+      {
+        "player_id": 2167,
+        "name": "Orsolini",
+        "cost": 20
+      },
+      {
+        "player_id": 5562,
+        "name": "Thuram K.",
+        "cost": 18
+      },
+      {
+        "player_id": 6398,
+        "name": "Isaksen",
+        "cost": 13
+      },
+      {
+        "player_id": 2848,
+        "name": "Frattesi",
+        "cost": 12
+      },
+      {
+        "player_id": 2077,
+        "name": "Pasalic",
+        "cost": 6
+      },
+      {
+        "player_id": 7314,
+        "name": "Taylor K.",
+        "cost": 1
+      },
+      {
+        "player_id": 1933,
+        "name": "Mandragora",
+        "cost": 1
+      },
+      {
+        "player_id": 6831,
+        "name": "Neres",
+        "cost": 32
+      },
+      {
+        "player_id": 6675,
+        "name": "Dovbyk",
+        "cost": 21
+      },
+      {
+        "player_id": 4463,
+        "name": "Esposito Se.",
+        "cost": 13
+      },
+      {
+        "player_id": 7547,
+        "name": "Kevin Carlos",
+        "cost": 12
+      },
+      {
+        "player_id": 6530,
+        "name": "Ghedjemis",
+        "cost": 8
+      },
+      {
+        "player_id": 5995,
+        "name": "De Ketelaere",
+        "cost": 3
+      }
+    ],
+    "Rotten Wreck Squad": [
+      {
+        "player_id": 7603,
+        "name": "Grabara",
+        "cost": 27
+      },
+      {
+        "player_id": 4964,
+        "name": "Vicario",
+        "cost": 1
+      },
+      {
+        "player_id": 1930,
+        "name": "Pinsoglio",
+        "cost": 1
+      },
+      {
+        "player_id": 6664,
+        "name": "Delprato",
+        "cost": 20
+      },
+      {
+        "player_id": 2788,
+        "name": "Bremer",
+        "cost": 17
+      },
+      {
+        "player_id": 6046,
+        "name": "Hien",
+        "cost": 7
+      },
+      {
+        "player_id": 5514,
+        "name": "Vasquez",
+        "cost": 3
+      },
+      {
+        "player_id": 4734,
+        "name": "Miranda J.",
+        "cost": 3
+      },
+      {
+        "player_id": 4657,
+        "name": "Celik",
+        "cost": 3
+      },
+      {
+        "player_id": 5739,
+        "name": "De Winter",
+        "cost": 1
+      },
+      {
+        "player_id": 4751,
+        "name": "Tomori",
+        "cost": 1
+      },
+      {
+        "player_id": 4777,
+        "name": "McTominay",
+        "cost": 38
+      },
+      {
+        "player_id": 6717,
+        "name": "Konè I.",
+        "cost": 7
+      },
+      {
+        "player_id": 7223,
+        "name": "Vergara",
+        "cost": 3
+      },
+      {
+        "player_id": 6274,
+        "name": "Diouf",
+        "cost": 3
+      },
+      {
+        "player_id": 5500,
+        "name": "Cancellieri",
+        "cost": 2
+      },
+      {
+        "player_id": 5823,
+        "name": "Baldanzi",
+        "cost": 1
+      },
+      {
+        "player_id": 5685,
+        "name": "Koopmeiners",
+        "cost": 1
+      },
+      {
+        "player_id": 4911,
+        "name": "Douglas Luiz",
+        "cost": 1
+      },
+      {
+        "player_id": 5672,
+        "name": "Dia",
+        "cost": 7
+      },
+      {
+        "player_id": 5882,
+        "name": "Mota",
+        "cost": 3
+      },
+      {
+        "player_id": 7449,
+        "name": "Rrahmani Al.",
+        "cost": 1
+      },
+      {
+        "player_id": 7313,
+        "name": "Ratkov",
+        "cost": 1
+      },
+      {
+        "player_id": 7252,
+        "name": "Stulic",
+        "cost": 1
+      },
+      {
+        "player_id": 6519,
+        "name": "Camarda",
+        "cost": 1
+      }
+    ],
+    "Parmigian Buongrado": [
+      {
+        "player_id": 5841,
+        "name": "Svilar",
+        "cost": 2
+      },
+      {
+        "player_id": 7048,
+        "name": "De Marzi",
+        "cost": 1
+      },
+      {
+        "player_id": 610,
+        "name": "Gollini",
+        "cost": 1
+      },
+      {
+        "player_id": 2120,
+        "name": "Bastoni",
+        "cost": 18
+      },
+      {
+        "player_id": 5520,
+        "name": "Cambiaso",
+        "cost": 10
+      },
+      {
+        "player_id": 6485,
+        "name": "Kristensen T.",
+        "cost": 7
+      },
+      {
+        "player_id": 1852,
+        "name": "Spinazzola",
+        "cost": 6
+      },
+      {
+        "player_id": 7014,
+        "name": "Smolcic I.",
+        "cost": 5
+      },
+      {
+        "player_id": 4887,
+        "name": "Bellanova",
+        "cost": 5
+      },
+      {
+        "player_id": 2188,
+        "name": "Marusic",
+        "cost": 5
+      },
+      {
+        "player_id": 4502,
+        "name": "Gallo",
+        "cost": 2
+      },
+      {
+        "player_id": 4892,
+        "name": "Saelemaekers",
+        "cost": 18
+      },
+      {
+        "player_id": 1870,
+        "name": "Barella",
+        "cost": 16
+      },
+      {
+        "player_id": 5422,
+        "name": "Zalewski",
+        "cost": 15
+      },
+      {
+        "player_id": 5559,
+        "name": "Da Cunha",
+        "cost": 9
+      },
+      {
+        "player_id": 5844,
+        "name": "Thorstvedt",
+        "cost": 7
+      },
+      {
+        "player_id": 6680,
+        "name": "Karlstrom",
+        "cost": 4
+      },
+      {
+        "player_id": 5735,
+        "name": "Volpato",
+        "cost": 3
+      },
+      {
+        "player_id": 6010,
+        "name": "Fazzini",
+        "cost": 2
+      },
+      {
+        "player_id": 4510,
+        "name": "Leao",
+        "cost": 69
+      },
+      {
+        "player_id": 5544,
+        "name": "David",
+        "cost": 45
+      },
+      {
+        "player_id": 6434,
+        "name": "Yildiz",
+        "cost": 24
+      },
+      {
+        "player_id": 6646,
+        "name": "Adams C.",
+        "cost": 15
+      },
+      {
+        "player_id": 7017,
+        "name": "Douvikas",
+        "cost": 13
+      },
+      {
+        "player_id": 7162,
+        "name": "Giovane",
+        "cost": 3
+      }
+    ],
+    "Malencastro": [
+      {
+        "player_id": 7332,
+        "name": "Bijlow",
+        "cost": 13
+      },
+      {
+        "player_id": 4360,
+        "name": "Caprile",
+        "cost": 8
+      },
+      {
+        "player_id": 219,
+        "name": "Sommariva",
+        "cost": 1
+      },
+      {
+        "player_id": 254,
+        "name": "Dimarco",
+        "cost": 36
+      },
+      {
+        "player_id": 6869,
+        "name": "Ramon",
+        "cost": 10
+      },
+      {
+        "player_id": 7529,
+        "name": "Koulierakis",
+        "cost": 3
+      },
+      {
+        "player_id": 6531,
+        "name": "Jimenez A.",
+        "cost": 3
+      },
+      {
+        "player_id": 7410,
+        "name": "Viery",
+        "cost": 1
+      },
+      {
+        "player_id": 7294,
+        "name": "Valdepenas",
+        "cost": 1
+      },
+      {
+        "player_id": 6672,
+        "name": "Idzes",
+        "cost": 1
+      },
+      {
+        "player_id": 2640,
+        "name": "Kolasinac",
+        "cost": 1
+      },
+      {
+        "player_id": 6875,
+        "name": "Paz N.",
+        "cost": 63
+      },
+      {
+        "player_id": 4199,
+        "name": "Loftus-Cheek",
+        "cost": 3
+      },
+      {
+        "player_id": 7203,
+        "name": "Jashari",
+        "cost": 2
+      },
+      {
+        "player_id": 6844,
+        "name": "Rowe",
+        "cost": 1
+      },
+      {
+        "player_id": 5878,
+        "name": "Colpani",
+        "cost": 1
+      },
+      {
+        "player_id": 4970,
+        "name": "Messias",
+        "cost": 1
+      },
+      {
+        "player_id": 4856,
+        "name": "Chukwueze",
+        "cost": 1
+      },
+      {
+        "player_id": 184,
+        "name": "Bernardeschi",
+        "cost": 1
+      },
+      {
+        "player_id": 6397,
+        "name": "Ramos G.",
+        "cost": 58
+      },
+      {
+        "player_id": 4871,
+        "name": "Thuram",
+        "cost": 33
+      },
+      {
+        "player_id": 6572,
+        "name": "Castro S.",
+        "cost": 6
+      },
+      {
+        "player_id": 4359,
+        "name": "Piccoli",
+        "cost": 4
+      },
+      {
+        "player_id": 6981,
+        "name": "Vaz",
+        "cost": 1
+      },
+      {
+        "player_id": 6967,
+        "name": "Diao",
+        "cost": 1
+      }
+    ]
+  }
+}

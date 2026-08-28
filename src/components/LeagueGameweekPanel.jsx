@@ -12,6 +12,7 @@ export default function LeagueGameweekPanel({ league, calendarId, gameweekId }) 
   const [loading, setLoading] = useState(true)
   const [matchups, setMatchups] = useState([])
   const [gwScores, setGwScores] = useState([])
+  const [members, setMembers] = useState([])
   const [expandedUserId, setExpandedUserId] = useState(null)
   const [formationsByUserId, setFormationsByUserId] = useState({})
 
@@ -35,14 +36,25 @@ export default function LeagueGameweekPanel({ league, calendarId, gameweekId }) 
 
         if (!cancelled) setMatchups(data ?? [])
       } else {
-        const { data } = await supabase
-          .from('league_gameweek_scores')
-          .select('user_id, total_score, league_points, rank_in_gameweek, profiles(username)')
-          .eq('league_id', league.id)
-          .eq('gameweek_id', gameweekId)
-          .order('rank_in_gameweek', { ascending: true })
+        // Ranked list only exists once the gameweek's been consolidated
+        // (Calcola giornata). Before that, league_gameweek_scores is empty
+        // for the whole league — fall back to a plain, unranked member list
+        // so formations are still visible pre-consolidation instead of
+        // showing nothing for anyone.
+        const [{ data: scores }, { data: memberRows }] = await Promise.all([
+          supabase
+            .from('league_gameweek_scores')
+            .select('user_id, total_score, league_points, rank_in_gameweek, profiles(username)')
+            .eq('league_id', league.id)
+            .eq('gameweek_id', gameweekId)
+            .order('rank_in_gameweek', { ascending: true }),
+          supabase.from('league_members').select('user_id, profiles(username)').eq('league_id', league.id),
+        ])
 
-        if (!cancelled) setGwScores(data ?? [])
+        if (!cancelled) {
+          setGwScores(scores ?? [])
+          setMembers(memberRows ?? [])
+        }
       }
 
       if (!cancelled) setLoading(false)
@@ -146,25 +158,54 @@ export default function LeagueGameweekPanel({ league, calendarId, gameweekId }) 
     )
   }
 
-  if (gwScores.length === 0) return <p className="status-text">Nessun punteggio disponibile per questa giornata.</p>
+  if (gwScores.length > 0) {
+    return (
+      <ul className="leaderboard">
+        {gwScores.map((row) => (
+          <li key={row.user_id} className="leaderboard-row card">
+            <button type="button" className="leaderboard-summary" onClick={() => toggleFormation(row.user_id)}>
+              <span className="leaderboard-rank">{row.rank_in_gameweek}°</span>
+              <span className="leaderboard-username">{row.profiles?.username ?? '—'}</span>
+              <span className="leaderboard-score">{row.total_score.toFixed(1)}</span>
+              <span className="gw-league-points">+{row.league_points} pt</span>
+            </button>
+            {expandedUserId === row.user_id && (
+              <ul className="leaderboard-detail">
+                {(formationsByUserId[row.user_id] ?? []).map((p, i) => (
+                  <li key={i}>
+                    <span className="role-tag">{p.role}</span> {p.name}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+    )
+  }
+
+  // Not consolidated yet: no ranking/scores, but formations are already
+  // saved — show them via the plain member list instead of nothing.
+  if (members.length === 0) return <p className="status-text">Nessun punteggio disponibile per questa giornata.</p>
 
   return (
     <ul className="leaderboard">
-      {gwScores.map((row) => (
-        <li key={row.user_id} className="leaderboard-row card">
-          <button type="button" className="leaderboard-summary" onClick={() => toggleFormation(row.user_id)}>
-            <span className="leaderboard-rank">{row.rank_in_gameweek}°</span>
-            <span className="leaderboard-username">{row.profiles?.username ?? '—'}</span>
-            <span className="leaderboard-score">{row.total_score.toFixed(1)}</span>
-            <span className="gw-league-points">+{row.league_points} pt</span>
+      {members.map((m) => (
+        <li key={m.user_id} className="leaderboard-row card">
+          <button type="button" className="leaderboard-summary" onClick={() => toggleFormation(m.user_id)}>
+            <span className="leaderboard-username">{m.profiles?.username ?? '—'}</span>
           </button>
-          {expandedUserId === row.user_id && (
+          {expandedUserId === m.user_id && (
             <ul className="leaderboard-detail">
-              {(formationsByUserId[row.user_id] ?? []).map((p, i) => (
-                <li key={i}>
-                  <span className="role-tag">{p.role}</span> {p.name}
-                </li>
-              ))}
+              {(formationsByUserId[m.user_id] ?? []).length === 0 ? (
+                <li className="status-text">Nessuna formazione schierata.</li>
+              ) : (
+                (formationsByUserId[m.user_id] ?? []).map((p, i) => (
+                  <li key={i}>
+                    <span className="role-tag">{p.role}</span> {p.name}
+                  </li>
+                ))
+              )}
             </ul>
           )}
         </li>

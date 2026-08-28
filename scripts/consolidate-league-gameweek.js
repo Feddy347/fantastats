@@ -13,6 +13,7 @@
 //
 // Usage: node scripts/consolidate-league-gameweek.js
 
+import { pathToFileURL } from 'node:url'
 import { getSupabaseAdmin } from './lib/env.js'
 import { resolveLineupScore } from './lib/lineupResolver.js'
 import { getLeagueModuleSystem } from '../src/lib/leagueModules.js'
@@ -258,13 +259,13 @@ async function consolidateLeague(supabase, league, gameweek) {
   }
 }
 
-async function main() {
-  const supabase = getSupabaseAdmin()
-
+// Exported so api/calculate-gameweek.js can call this in-process (admin-only
+// "Calcola giornata" button). The CLI entrypoint below wraps it unchanged.
+export async function consolidateLeagueGameweek(supabase) {
   const gameweek = await findTargetGameweek(supabase)
   if (!gameweek) {
     console.log('No live or completed gameweek found to consolidate.')
-    return
+    return { consolidated: false, reason: 'no-target-gameweek' }
   }
   console.log(`Consolidating leagues for gameweek ${gameweek.number} (id ${gameweek.id})...`)
 
@@ -276,9 +277,16 @@ async function main() {
   }
 
   console.log('Done.')
+  return { consolidated: true, gameweekNumber: gameweek.number, leaguesConsolidated: (leagues ?? []).length }
 }
 
-main().catch((err) => {
-  console.error('consolidate-league-gameweek failed:', err.message || err)
-  process.exit(1)
-})
+async function main() {
+  return consolidateLeagueGameweek(getSupabaseAdmin())
+}
+
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  main().catch((err) => {
+    console.error('consolidate-league-gameweek failed:', err.message || err)
+    process.exit(1)
+  })
+}

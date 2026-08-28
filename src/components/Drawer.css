@@ -97,6 +97,29 @@
   color: var(--color-danger);
 }
 
+.drawer-nav-item:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.drawer-calc-feedback {
+  margin: 0 12px 8px;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.drawer-calc-success {
+  background: var(--success-bg);
+  color: var(--success);
+}
+
+.drawer-calc-error {
+  background: var(--danger-bg);
+  color: var(--color-danger);
+}
+
 .drawer-nav-icon {
   display: flex;
   align-items: center;

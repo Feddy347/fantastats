@@ -4,9 +4,9 @@
 //   - formation_type '11' + mantra -> Mantra system (11 modules, 11 starters)
 //   - formation_type '11' + classic -> Classic system (7 modules, 11 starters)
 
-import { MODULES as FANTASTATS_MODULES, DEFAULT_MODULE_ID as FANTASTATS_DEFAULT_ID } from './modules'
-import { MANTRA_MODULES, DEFAULT_MANTRA_MODULE_ID } from './mantraModules'
-import { CLASSIC_MODULES, DEFAULT_CLASSIC_MODULE_ID } from './classicModules'
+import { MODULES as FANTASTATS_MODULES, DEFAULT_MODULE_ID as FANTASTATS_DEFAULT_ID } from './modules.js'
+import { MANTRA_MODULES, DEFAULT_MANTRA_MODULE_ID } from './mantraModules.js'
+import { CLASSIC_MODULES, DEFAULT_CLASSIC_MODULE_ID } from './classicModules.js'
 
 function normalizeFantastatsModules() {
   return FANTASTATS_MODULES.map((m) => ({

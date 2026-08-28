@@ -1,0 +1,1856 @@
+{
+  "team_to_uid": {
+    "Schiaffield Wednesday": "af83a8b9-fc91-4f5c-b820-e7fe2b9efd39",
+    "Falarsenal": "03a80aa8-63c6-43a7-b630-47124d4cff1c",
+    "Liverpollio": "f0145352-6101-4785-aa9a-59a4c38df247",
+    "Ostia Liedholm": "cf0d2bd4-2145-430a-99b3-2864bdb07118",
+    "Ejaculazio": "1bc25cc0-36ea-4a4c-aede-1fbc9c812b79",
+    "Real Canil": "9a91ce74-610f-4b33-bbf3-72430868b523",
+    "Rotten Wreck Squad": "84bf9437-4832-4922-af1d-003d4c6920e7",
+    "Parmigian Buongrado": "79504a26-debf-4a9b-8c0e-fe168551f3de",
+    "Malencastro": "e9bd5267-3a70-44f2-8f0a-8d4b43982d90",
+    "Hellas Madonna 7 Sorelle": "77e2ac11-32cc-44d2-8d1f-2b78bb11ec69"
+  },
+  "formations": {
+    "Rotten Wreck Squad": {
+      "module": "4-4-2",
+      "starters": [
+        {
+          "name": "Vicario",
+          "player_id": 4964,
+          "classic": "P",
+          "mantra": "Por"
+        },
+        {
+          "name": "Celik",
+          "player_id": 4657,
+          "classic": "D",
+          "mantra": "B;Dd;E"
+        },
+        {
+          "name": "Delprato",
+          "player_id": 6664,
+          "classic": "D",
+          "mantra": "B;Dd;E"
+        },
+        {
+          "name": "Bremer",
+          "player_id": 2788,
+          "classic": "D",
+          "mantra": "Dc"
+        },
+        {
+          "name": "De Winter",
+          "player_id": 5739,
+          "classic": "D",
+          "mantra": "Dd;Dc"
+        },
+        {
+          "name": "Baldanzi",
+          "player_id": 5823,
+          "classic": "C",
+          "mantra": "T"
+        },
+        {
+          "name": "Koopmeiners",
+          "player_id": 5685,
+          "classic": "C",
+          "mantra": "C;T"
+        },
+        {
+          "name": "McTominay",
+          "player_id": 4777,
+          "classic": "C",
+          "mantra": "C;T"
+        },
+        {
+          "name": "Diouf",
+          "player_id": 6274,
+          "classic": "C",
+          "mantra": "E;C"
+        },
+        {
+          "name": "Dia",
+          "player_id": 5672,
+          "classic": "A",
+          "mantra": "A"
+        },
+        {
+          "name": "Camarda",
+          "player_id": 6519,
+          "classic": "A",
+          "mantra": "Pc"
+        }
+      ],
+      "bench": [
+        {
+          "name": "Grabara",
+          "player_id": 7603,
+          "classic": "P",
+          "mantra": "Por"
+        },
+        {
+          "name": "Pinsoglio",
+          "player_id": 1930,
+          "classic": "P",
+          "mantra": "Por"
+        },
+        {
+          "name": "Ratkov",
+          "player_id": 7313,
+          "classic": "A",
+          "mantra": "Pc"
+        },
+        {
+          "name": "Douglas Luiz",
+          "player_id": 4911,
+          "classic": "C",
+          "mantra": "C"
+        },
+        {
+          "name": "Cancellieri",
+          "player_id": 5500,
+          "classic": "C",
+          "mantra": "W;A"
+        },
+        {
+          "name": "Vergara",
+          "player_id": 7223,
+          "classic": "C",
+          "mantra": "W;T"
+        },
+        {
+          "name": "Rrahmani Al.",
+          "player_id": 7449,
+          "classic": "A",
+          "mantra": "Pc"
+        },
+        {
+          "name": "Stulic",
+          "player_id": 7252,
+          "classic": "A",
+          "mantra": "Pc"
+        },
+        {
+          "name": "Miranda J.",
+          "player_id": 4734,
+          "classic": "D",
+          "mantra": "Ds;E"
+        },
+        {
+          "name": "Mota",
+          "player_id": 5882,
+          "classic": "A",
+          "mantra": "A"
+        },
+        {
+          "name": "Vasquez",
+          "player_id": 5514,
+          "classic": "D",
+          "mantra": "Ds;Dc"
+        },
+        {
+          "name": "Tomori",
+          "player_id": 4751,
+          "classic": "D",
+          "mantra": "Dc"
+        },
+        {
+          "name": "Hien",
+          "player_id": 6046,
+          "classic": "D",
+          "mantra": "Dc"
+        },
+        {
+          "name": "Konè I.",
+          "player_id": 6717,
+          "classic": "C",
+          "mantra": "C"
+        }
+      ]
+    },
+    "Parmigian Buongrado": {
+      "module": "3-4-3",
+      "starters": [
+        {
+          "name": "Svilar",
+          "player_id": 5841,
+          "classic": "P",
+          "mantra": "Por"
+        },
+        {
+          "name": "Kristensen T.",
+          "player_id": 6485,
+          "classic": "D",
+          "mantra": "Dd;Dc"
+        },
+        {
+          "name": "Marusic",
+          "player_id": 2188,
+          "classic": "D",
+          "mantra": "Dd;Ds;E"
+        },
+        {
+          "name": "Bastoni",
+          "player_id": 2120,
+          "classic": "D",
+          "mantra": "Dc"
+        },
+        {
+          "name": "Zalewski",
+          "player_id": 5422,
+          "classic": "C",
+          "mantra": "W"
+        },
+        {
+          "name": "Da Cunha",
+          "player_id": 5559,
+          "classic": "C",
+          "mantra": "C;T"
+        },
+        {
+          "name": "Saelemaekers",
+          "player_id": 4892,
+          "classic": "C",
+          "mantra": "E;W"
+        },
+        {
+          "name": "Barella",
+          "player_id": 1870,
+          "classic": "C",
+          "mantra": "C"
+        },
+        {
+          "name": "Adams C.",
+          "player_id": 6646,
+          "classic": "A",
+          "mantra": "A"
+        },
+        {
+          "name": "Douvikas",
+          "player_id": 7017,
+          "classic": "A",
+          "mantra": "Pc"
+        },
+        {
+          "name": "Yildiz",
+          "player_id": 6434,
+          "classic": "A",
+          "mantra": "A"
+        }
+      ],
+      "bench": [
+        {
+          "name": "De Marzi",
+          "player_id": 7048,
+          "classic": "P",
+          "mantra": "Por"
+        },
+        {
+          "name": "Gollini",
+          "player_id": 610,
+          "classic": "P",
+          "mantra": "Por"
+        },
+        {
+          "name": "Cambiaso",
+          "player_id": 5520,
+          "classic": "D",
+          "mantra": "Dd;Ds;E"
+        },
+        {
+          "name": "Spinazzola",
+          "player_id": 1852,
+          "classic": "D",
+          "mantra": "Ds;E"
+        },
+        {
+          "name": "Gallo",
+          "player_id": 4502,
+          "classic": "D",
+          "mantra": "Ds;E"
+        },
+        {
+          "name": "Karlstrom",
+          "player_id": 6680,
+          "classic": "C",
+          "mantra": "M;C"
+        },
+        {
+          "name": "Volpato",
+          "player_id": 5735,
+          "classic": "C",
+          "mantra": "W;T"
+        },
+        {
+          "name": "Fazzini",
+          "player_id": 6010,
+          "classic": "C",
+          "mantra": "C;T"
+        },
+        {
+          "name": "David",
+          "player_id": 5544,
+          "classic": "A",
+          "mantra": "Pc"
+        },
+        {
+          "name": "Giovane",
+          "player_id": 7162,
+          "classic": "A",
+          "mantra": "A"
+        },
+        {
+          "name": "Leao",
+          "player_id": 4510,
+          "classic": "A",
+          "mantra": "A"
+        },
+        {
+          "name": "Bellanova",
+          "player_id": 4887,
+          "classic": "D",
+          "mantra": "Dd;E"
+        },
+        {
+          "name": "Smolcic I.",
+          "player_id": 7014,
+          "classic": "D",
+          "mantra": "Dd;E"
+        },
+        {
+          "name": "Thorstvedt",
+          "player_id": 5844,
+          "classic": "C",
+          "mantra": "C;T"
+        }
+      ]
+    },
+    "Ejaculazio": {
+      "module": "3-4-3",
+      "starters": [
+        {
+          "name": "Meret",
+          "player_id": 572,
+          "classic": "P",
+          "mantra": "Por"
+        },
+        {
+          "name": "Pavlovic",
+          "player_id": 5022,
+          "classic": "D",
+          "mantra": "Dc"
+        },
+        {
+          "name": "Chalobah T.",
+          "player_id": 5641,
+          "classic": "D",
+          "mantra": "Dd;Dc"
+        },
+        {
+          "name": "Di Lorenzo",
+          "player_id": 2816,
+          "classic": "D",
+          "mantra": "Dd;E"
+        },
+        {
+          "name": "Frendrup",
+          "player_id": 5791,
+          "classic": "C",
+          "mantra": "M;C"
+        },
+        {
+          "name": "Zielinski",
+          "player_id": 152,
+          "classic": "C",
+          "mantra": "C"
+        },
+        {
+          "name": "McKennie",
+          "player_id": 4973,
+          "classic": "C",
+          "mantra": "C"
+        },
+        {
+          "name": "Ederson D.S.",
+          "player_id": 5792,
+          "classic": "C",
+          "mantra": "M;C"
+        },
+        {
+          "name": "Simeone",
+          "player_id": 2061,
+          "classic": "A",
+          "mantra": "Pc"
+        },
+        {
+          "name": "Kean",
+          "player_id": 2097,
+          "classic": "A",
+          "mantra": "Pc"
+        },
+        {
+          "name": "Raspadori",
+          "player_id": 4371,
+          "classic": "A",
+          "mantra": "A"
+        }
+      ],
+      "bench": [
+        {
+          "name": "Milinkovic-Savic V.",
+          "player_id": 2170,
+          "classic": "P",
+          "mantra": "Por"
+        },
+        {
+          "name": "Contini",
+          "player_id": 2845,
+          "classic": "P",
+          "mantra": "Por"
+        },
+        {
+          "name": "Kelly L.",
+          "player_id": 6766,
+          "classic": "D",
+          "mantra": "Ds;Dc"
+        },
+        {
+          "name": "Zappacosta",
+          "player_id": 554,
+          "classic": "D",
+          "mantra": "Dd;E"
+        },
+        {
+          "name": "Dragusin",
+          "player_id": 5365,
+          "classic": "D",
+          "mantra": "Dc"
+        },
+        {
+          "name": "Comuzzo",
+          "player_id": 6495,
+          "classic": "D",
+          "mantra": "Dc"
+        },
+        {
+          "name": "Fagioli",
+          "player_id": 4465,
+          "classic": "C",
+          "mantra": "M;C"
+        },
+        {
+          "name": "Matic",
+          "player_id": 2528,
+          "classic": "C",
+          "mantra": "M;C"
+        },
+        {
+          "name": "Davis K.",
+          "player_id": 5637,
+          "classic": "A",
+          "mantra": "Pc"
+        },
+        {
+          "name": "Cutrone",
+          "player_id": 2155,
+          "classic": "A",
+          "mantra": "Pc"
+        },
+        {
+          "name": "Pinamonti",
+          "player_id": 2038,
+          "classic": "A",
+          "mantra": "Pc"
+        },
+        {
+          "name": "Neres",
+          "player_id": 6831,
+          "classic": "A",
+          "mantra": "W;A"
+        },
+        {
+          "name": "Esposito Se.",
+          "player_id": 4463,
+          "classic": "A",
+          "mantra": "A"
+        },
+        {
+          "name": "Ghedjemis",
+          "player_id": 6530,
+          "classic": "A",
+          "mantra": "W;A"
+        },
+        {
+          "name": "Frattesi",
+          "player_id": 2848,
+          "classic": "C",
+          "mantra": "C;T"
+        },
+        {
+          "name": "Mandragora",
+          "player_id": 1933,
+          "classic": "C",
+          "mantra": "C"
+        },
+        {
+          "name": "Dodò",
+          "player_id": 5885,
+          "classic": "D",
+          "mantra": "Dd;E"
+        },
+        {
+          "name": "Mina",
+          "player_id": 4210,
+          "classic": "D",
+          "mantra": "Dc"
+        },
+        {
+          "name": "Gabbia",
+          "player_id": 4401,
+          "classic": "D",
+          "mantra": "Dc"
+        },
+        {
+          "name": "Spence",
+          "player_id": 5982,
+          "classic": "D",
+          "mantra": "E"
+        },
+        {
+          "name": "Ostigard",
+          "player_id": 5750,
+          "classic": "D",
+          "mantra": "Dc"
+        },
+        {
+          "name": "De Gea",
+          "player_id": 2521,
+          "classic": "P",
+          "mantra": "Por"
+        },
+        {
+          "name": "Provedel",
+          "player_id": 2814,
+          "classic": "P",
+          "mantra": "Por"
+        }
+      ]
+    },
+    "Real Canil": {
+      "module": "4-5-1",
+      "starters": [
+        {
+          "name": "Martinez Jo.",
+          "player_id": 5116,
+          "classic": "P",
+          "mantra": "Por"
+        },
+        {
+          "name": "Kalulu",
+          "player_id": 4976,
+          "classic": "D",
+          "mantra": "Dd;Dc"
+        },
+        {
+          "name": "Stones",
+          "player_id": 2514,
+          "classic": "D",
+          "mantra": "Dc"
+        },
+        {
+          "name": "Carlos Augusto",
+          "player_id": 5877,
+          "classic": "D",
+          "mantra": "B;Ds;E"
+        },
+        {
+          "name": "Orsolini",
+          "player_id": 2167,
+          "classic": "C",
+          "mantra": "W;A"
+        },
+        {
+          "name": "Konè M.",
+          "player_id": 5589,
+          "classic": "C",
+          "mantra": "M;C"
+        },
+        {
+          "name": "Thuram K.",
+          "player_id": 5562,
+          "classic": "C",
+          "mantra": "C"
+        },
+        {
+          "name": "Pasalic",
+          "player_id": 2077,
+          "classic": "C",
+          "mantra": "C;T"
+        },
+        {
+          "name": "Taylor K.",
+          "player_id": 7314,
+          "classic": "C",
+          "mantra": "C;T"
+        },
+        {
+          "name": "Dovbyk",
+          "player_id": 6675,
+          "classic": "A",
+          "mantra": "Pc"
+        },
+        {
+          "name": "Kevin Carlos",
+          "player_id": 7547,
+          "classic": "A",
+          "mantra": "Pc"
+        }
+      ],
+      "bench": [
+        {
+          "name": "Neres",
+          "player_id": 6831,
+          "classic": "A",
+          "mantra": "W;A"
+        },
+        {
+          "name": "Esposito Se.",
+          "player_id": 4463,
+          "classic": "A",
+          "mantra": "A"
+        },
+        {
+          "name": "Ghedjemis",
+          "player_id": 6530,
+          "classic": "A",
+          "mantra": "W;A"
+        },
+        {
+          "name": "Frattesi",
+          "player_id": 2848,
+          "classic": "C",
+          "mantra": "C;T"
+        },
+        {
+          "name": "Mandragora",
+          "player_id": 1933,
+          "classic": "C",
+          "mantra": "C"
+        },
+        {
+          "name": "Dodò",
+          "player_id": 5885,
+          "classic": "D",
+          "mantra": "Dd;E"
+        },
+        {
+          "name": "Mina",
+          "player_id": 4210,
+          "classic": "D",
+          "mantra": "Dc"
+        },
+        {
+          "name": "Gabbia",
+          "player_id": 4401,
+          "classic": "D",
+          "mantra": "Dc"
+        },
+        {
+          "name": "Spence",
+          "player_id": 5982,
+          "classic": "D",
+          "mantra": "E"
+        },
+        {
+          "name": "Ostigard",
+          "player_id": 5750,
+          "classic": "D",
+          "mantra": "Dc"
+        },
+        {
+          "name": "De Gea",
+          "player_id": 2521,
+          "classic": "P",
+          "mantra": "Por"
+        },
+        {
+          "name": "Provedel",
+          "player_id": 2814,
+          "classic": "P",
+          "mantra": "Por"
+        }
+      ]
+    },
+    "Hellas Madonna 7 Sorelle": {
+      "module": "4-3-3",
+      "starters": [
+        {
+          "name": "Skorupski",
+          "player_id": 133,
+          "classic": "P",
+          "mantra": "Por"
+        },
+        {
+          "name": "Lucumì",
+          "player_id": 6042,
+          "classic": "D",
+          "mantra": "Dc"
+        },
+        {
+          "name": "Wesley",
+          "player_id": 7181,
+          "classic": "D",
+          "mantra": "E"
+        },
+        {
+          "name": "N'Dicka",
+          "player_id": 4317,
+          "classic": "D",
+          "mantra": "Dc"
+        },
+        {
+          "name": "Bella-Kotchap",
+          "player_id": 7253,
+          "classic": "D",
+          "mantra": "Dc"
+        },
+        {
+          "name": "Vlasic",
+          "player_id": 5687,
+          "classic": "C",
+          "mantra": "T"
+        },
+        {
+          "name": "Busio",
+          "player_id": 5507,
+          "classic": "C",
+          "mantra": "M;C"
+        },
+        {
+          "name": "Conceicao",
+          "player_id": 6884,
+          "classic": "C",
+          "mantra": "W;A"
+        },
+        {
+          "name": "Boga",
+          "player_id": 2832,
+          "classic": "A",
+          "mantra": "W;A"
+        },
+        {
+          "name": "Santos A.",
+          "player_id": 7351,
+          "classic": "A",
+          "mantra": "W;A"
+        },
+        {
+          "name": "Kolo Muani",
+          "player_id": 5951,
+          "classic": "A",
+          "mantra": "Pc"
+        }
+      ],
+      "bench": [
+        {
+          "name": "Zortea",
+          "player_id": 4433,
+          "classic": "D",
+          "mantra": "Dd;E"
+        },
+        {
+          "name": "Gila",
+          "player_id": 5833,
+          "classic": "D",
+          "mantra": "Dc"
+        },
+        {
+          "name": "Mastantuono",
+          "player_id": 7078,
+          "classic": "C",
+          "mantra": "W;T"
+        },
+        {
+          "name": "Perrone",
+          "player_id": 6151,
+          "classic": "C",
+          "mantra": "M;C"
+        },
+        {
+          "name": "Pellegrini Lo.",
+          "player_id": 530,
+          "classic": "C",
+          "mantra": "C;T"
+        },
+        {
+          "name": "Elphege",
+          "player_id": 7342,
+          "classic": "A",
+          "mantra": "Pc"
+        },
+        {
+          "name": "Oulai",
+          "player_id": 7464,
+          "classic": "C",
+          "mantra": "M;C"
+        },
+        {
+          "name": "Ellertsson",
+          "player_id": 6020,
+          "classic": "C",
+          "mantra": "E;C"
+        },
+        {
+          "name": "Doekhi",
+          "player_id": 6320,
+          "classic": "D",
+          "mantra": "Dc"
+        },
+        {
+          "name": "Ismajli",
+          "player_id": 5010,
+          "classic": "D",
+          "mantra": "Dc"
+        },
+        {
+          "name": "Pessina Mas.",
+          "player_id": 7172,
+          "classic": "P",
+          "mantra": "Por"
+        },
+        {
+          "name": "Daffara",
+          "player_id": 7411,
+          "classic": "P",
+          "mantra": "Por"
+        },
+        {
+          "name": "Bijlow",
+          "player_id": 7332,
+          "classic": "P",
+          "mantra": "Por"
+        },
+        {
+          "name": "Sommariva",
+          "player_id": 219,
+          "classic": "P",
+          "mantra": "Por"
+        },
+        {
+          "name": "Valdepenas",
+          "player_id": 7294,
+          "classic": "D",
+          "mantra": "Ds;Dc"
+        },
+        {
+          "name": "Viery",
+          "player_id": 7410,
+          "classic": "D",
+          "mantra": "Ds;Dc"
+        },
+        {
+          "name": "Jimenez A.",
+          "player_id": 6531,
+          "classic": "D",
+          "mantra": "Dd;Ds;E"
+        },
+        {
+          "name": "Idzes",
+          "player_id": 6672,
+          "classic": "D",
+          "mantra": "Dc"
+        },
+        {
+          "name": "Kolasinac",
+          "player_id": 2640,
+          "classic": "D",
+          "mantra": "Ds;Dc"
+        },
+        {
+          "name": "Bernardeschi",
+          "player_id": 184,
+          "classic": "C",
+          "mantra": "W;T"
+        },
+        {
+          "name": "Jashari",
+          "player_id": 7203,
+          "classic": "C",
+          "mantra": "C"
+        },
+        {
+          "name": "Colpani",
+          "player_id": 5878,
+          "classic": "C",
+          "mantra": "T"
+        },
+        {
+          "name": "Messias",
+          "player_id": 4970,
+          "classic": "C",
+          "mantra": "W;T"
+        },
+        {
+          "name": "Diao",
+          "player_id": 6967,
+          "classic": "A",
+          "mantra": "W;A"
+        },
+        {
+          "name": "Piccoli",
+          "player_id": 4359,
+          "classic": "A",
+          "mantra": "Pc"
+        }
+      ]
+    },
+    "Malencastro": {
+      "module": "3-4-3",
+      "starters": [
+        {
+          "name": "Caprile",
+          "player_id": 4360,
+          "classic": "P",
+          "mantra": "Por"
+        },
+        {
+          "name": "Koulierakis",
+          "player_id": 7529,
+          "classic": "D",
+          "mantra": "Dc"
+        },
+        {
+          "name": "Ramon",
+          "player_id": 6869,
+          "classic": "D",
+          "mantra": "Dc"
+        },
+        {
+          "name": "Dimarco",
+          "player_id": 254,
+          "classic": "D",
+          "mantra": "E;W"
+        },
+        {
+          "name": "Chukwueze",
+          "player_id": 4856,
+          "classic": "C",
+          "mantra": "W"
+        },
+        {
+          "name": "Loftus-Cheek",
+          "player_id": 4199,
+          "classic": "C",
+          "mantra": "C;T"
+        },
+        {
+          "name": "Rowe",
+          "player_id": 6844,
+          "classic": "C",
+          "mantra": "W;T"
+        },
+        {
+          "name": "Paz N.",
+          "player_id": 6875,
+          "classic": "C",
+          "mantra": "T;A"
+        },
+        {
+          "name": "Castro S.",
+          "player_id": 6572,
+          "classic": "A",
+          "mantra": "Pc"
+        },
+        {
+          "name": "Thuram",
+          "player_id": 4871,
+          "classic": "A",
+          "mantra": "Pc"
+        },
+        {
+          "name": "Ramos G.",
+          "player_id": 6397,
+          "classic": "A",
+          "mantra": "Pc"
+        }
+      ],
+      "bench": [
+        {
+          "name": "Bijlow",
+          "player_id": 7332,
+          "classic": "P",
+          "mantra": "Por"
+        },
+        {
+          "name": "Sommariva",
+          "player_id": 219,
+          "classic": "P",
+          "mantra": "Por"
+        },
+        {
+          "name": "Valdepenas",
+          "player_id": 7294,
+          "classic": "D",
+          "mantra": "Ds;Dc"
+        },
+        {
+          "name": "Viery",
+          "player_id": 7410,
+          "classic": "D",
+          "mantra": "Ds;Dc"
+        },
+        {
+          "name": "Jimenez A.",
+          "player_id": 6531,
+          "classic": "D",
+          "mantra": "Dd;Ds;E"
+        },
+        {
+          "name": "Idzes",
+          "player_id": 6672,
+          "classic": "D",
+          "mantra": "Dc"
+        },
+        {
+          "name": "Kolasinac",
+          "player_id": 2640,
+          "classic": "D",
+          "mantra": "Ds;Dc"
+        },
+        {
+          "name": "Bernardeschi",
+          "player_id": 184,
+          "classic": "C",
+          "mantra": "W;T"
+        },
+        {
+          "name": "Jashari",
+          "player_id": 7203,
+          "classic": "C",
+          "mantra": "C"
+        },
+        {
+          "name": "Colpani",
+          "player_id": 5878,
+          "classic": "C",
+          "mantra": "T"
+        },
+        {
+          "name": "Messias",
+          "player_id": 4970,
+          "classic": "C",
+          "mantra": "W;T"
+        },
+        {
+          "name": "Diao",
+          "player_id": 6967,
+          "classic": "A",
+          "mantra": "W;A"
+        },
+        {
+          "name": "Piccoli",
+          "player_id": 4359,
+          "classic": "A",
+          "mantra": "Pc"
+        },
+        {
+          "name": "Vaz",
+          "player_id": 6981,
+          "classic": "A",
+          "mantra": "Pc"
+        }
+      ]
+    },
+    "Falarsenal": {
+      "module": "3-4-3",
+      "starters": [
+        {
+          "name": "Mandas",
+          "player_id": 6482,
+          "classic": "P",
+          "mantra": "Por"
+        },
+        {
+          "name": "Obert",
+          "player_id": 5701,
+          "classic": "D",
+          "mantra": "B;Ds;E"
+        },
+        {
+          "name": "Mancini",
+          "player_id": 2296,
+          "classic": "D",
+          "mantra": "Dc"
+        },
+        {
+          "name": "Kamara H.",
+          "player_id": 5555,
+          "classic": "D",
+          "mantra": "Ds;E"
+        },
+        {
+          "name": "Pulisic",
+          "player_id": 2423,
+          "classic": "C",
+          "mantra": "T;A"
+        },
+        {
+          "name": "Zambo Anguissa",
+          "player_id": 4220,
+          "classic": "C",
+          "mantra": "C"
+        },
+        {
+          "name": "Gaetano",
+          "player_id": 4364,
+          "classic": "C",
+          "mantra": "M;C"
+        },
+        {
+          "name": "Calhanoglu",
+          "player_id": 2194,
+          "classic": "C",
+          "mantra": "M;C"
+        },
+        {
+          "name": "Geubbels",
+          "player_id": 5029,
+          "classic": "A",
+          "mantra": "Pc"
+        },
+        {
+          "name": "Hojlund",
+          "player_id": 6052,
+          "classic": "A",
+          "mantra": "Pc"
+        },
+        {
+          "name": "Scamacca",
+          "player_id": 2137,
+          "classic": "A",
+          "mantra": "Pc"
+        }
+      ],
+      "bench": [
+        {
+          "name": "Motta",
+          "player_id": 7337,
+          "classic": "P",
+          "mantra": "Por"
+        },
+        {
+          "name": "Paleari",
+          "player_id": 5320,
+          "classic": "P",
+          "mantra": "Por"
+        },
+        {
+          "name": "Ghilardi",
+          "player_id": 6631,
+          "classic": "D",
+          "mantra": "Dc"
+        },
+        {
+          "name": "Van Der Brempt",
+          "player_id": 6896,
+          "classic": "D",
+          "mantra": "Dd;E"
+        },
+        {
+          "name": "Coco",
+          "player_id": 6642,
+          "classic": "D",
+          "mantra": "Dc"
+        },
+        {
+          "name": "Birindelli",
+          "player_id": 5838,
+          "classic": "D",
+          "mantra": "Dd;Ds;E"
+        },
+        {
+          "name": "Beukema",
+          "player_id": 6202,
+          "classic": "D",
+          "mantra": "Dc"
+        },
+        {
+          "name": "Lobotka",
+          "player_id": 4287,
+          "classic": "C",
+          "mantra": "M;C"
+        },
+        {
+          "name": "Sucic P.",
+          "player_id": 7070,
+          "classic": "C",
+          "mantra": "C"
+        },
+        {
+          "name": "Adzic",
+          "player_id": 6677,
+          "classic": "C",
+          "mantra": "C;T"
+        },
+        {
+          "name": "Schmid",
+          "player_id": 7551,
+          "classic": "C",
+          "mantra": "W;T"
+        },
+        {
+          "name": "Colombo",
+          "player_id": 4923,
+          "classic": "A",
+          "mantra": "Pc"
+        },
+        {
+          "name": "Vitinha O.",
+          "player_id": 6164,
+          "classic": "A",
+          "mantra": "A"
+        },
+        {
+          "name": "Raimondo",
+          "player_id": 5436,
+          "classic": "A",
+          "mantra": "Pc"
+        },
+        {
+          "name": "Maignan",
+          "player_id": 4312,
+          "classic": "P",
+          "mantra": "Por"
+        },
+        {
+          "name": "Terracciano",
+          "player_id": 2815,
+          "classic": "P",
+          "mantra": "Por"
+        },
+        {
+          "name": "Bonny",
+          "player_id": 6669,
+          "classic": "A",
+          "mantra": "Pc"
+        },
+        {
+          "name": "Kvernadze",
+          "player_id": 6204,
+          "classic": "A",
+          "mantra": "W;A"
+        },
+        {
+          "name": "Bowie",
+          "player_id": 7347,
+          "classic": "A",
+          "mantra": "Pc"
+        },
+        {
+          "name": "Odgaard",
+          "player_id": 2765,
+          "classic": "C",
+          "mantra": "T"
+        },
+        {
+          "name": "Ferguson",
+          "player_id": 5858,
+          "classic": "C",
+          "mantra": "M;C"
+        },
+        {
+          "name": "Stankovic A.",
+          "player_id": 6503,
+          "classic": "C",
+          "mantra": "M;C"
+        },
+        {
+          "name": "Casadei",
+          "player_id": 5888,
+          "classic": "C",
+          "mantra": "C;T"
+        },
+        {
+          "name": "Ndour",
+          "player_id": 6294,
+          "classic": "C",
+          "mantra": "C"
+        },
+        {
+          "name": "Bernasconi",
+          "player_id": 7219,
+          "classic": "D",
+          "mantra": "Ds;E"
+        },
+        {
+          "name": "Couto",
+          "player_id": 6727,
+          "classic": "D",
+          "mantra": "Dd;E"
+        },
+        {
+          "name": "Heggem",
+          "player_id": 7212,
+          "classic": "D",
+          "mantra": "Ds;Dc"
+        },
+        {
+          "name": "Marcandalli",
+          "player_id": 6660,
+          "classic": "D",
+          "mantra": "Dc"
+        }
+      ]
+    },
+    "Liverpollio": {
+      "module": "4-3-3",
+      "starters": [
+        {
+          "name": "Carnesecchi",
+          "player_id": 4431,
+          "classic": "P",
+          "mantra": "Por"
+        },
+        {
+          "name": "Bisseck",
+          "player_id": 6217,
+          "classic": "D",
+          "mantra": "Dc"
+        },
+        {
+          "name": "Rrahmani",
+          "player_id": 4409,
+          "classic": "D",
+          "mantra": "Dc"
+        },
+        {
+          "name": "Akanji",
+          "player_id": 4159,
+          "classic": "D",
+          "mantra": "Dc"
+        },
+        {
+          "name": "Vojvoda",
+          "player_id": 4994,
+          "classic": "D",
+          "mantra": "Dd;E"
+        },
+        {
+          "name": "Zaccagni",
+          "player_id": 632,
+          "classic": "C",
+          "mantra": "W;A"
+        },
+        {
+          "name": "Modric",
+          "player_id": 2606,
+          "classic": "C",
+          "mantra": "M;C"
+        },
+        {
+          "name": "Samardzic",
+          "player_id": 5119,
+          "classic": "C",
+          "mantra": "C;T"
+        },
+        {
+          "name": "Malen",
+          "player_id": 5585,
+          "classic": "A",
+          "mantra": "Pc"
+        },
+        {
+          "name": "Esposito F.P.",
+          "player_id": 7071,
+          "classic": "A",
+          "mantra": "Pc"
+        },
+        {
+          "name": "Yeboah J.",
+          "player_id": 6904,
+          "classic": "A",
+          "mantra": "A"
+        }
+      ],
+      "bench": [
+        {
+          "name": "Maignan",
+          "player_id": 4312,
+          "classic": "P",
+          "mantra": "Por"
+        },
+        {
+          "name": "Terracciano",
+          "player_id": 2815,
+          "classic": "P",
+          "mantra": "Por"
+        },
+        {
+          "name": "Bonny",
+          "player_id": 6669,
+          "classic": "A",
+          "mantra": "Pc"
+        },
+        {
+          "name": "Kvernadze",
+          "player_id": 6204,
+          "classic": "A",
+          "mantra": "W;A"
+        },
+        {
+          "name": "Bowie",
+          "player_id": 7347,
+          "classic": "A",
+          "mantra": "Pc"
+        },
+        {
+          "name": "Odgaard",
+          "player_id": 2765,
+          "classic": "C",
+          "mantra": "T"
+        },
+        {
+          "name": "Ferguson",
+          "player_id": 5858,
+          "classic": "C",
+          "mantra": "M;C"
+        },
+        {
+          "name": "Stankovic A.",
+          "player_id": 6503,
+          "classic": "C",
+          "mantra": "M;C"
+        },
+        {
+          "name": "Casadei",
+          "player_id": 5888,
+          "classic": "C",
+          "mantra": "C;T"
+        },
+        {
+          "name": "Ndour",
+          "player_id": 6294,
+          "classic": "C",
+          "mantra": "C"
+        },
+        {
+          "name": "Bernasconi",
+          "player_id": 7219,
+          "classic": "D",
+          "mantra": "Ds;E"
+        },
+        {
+          "name": "Couto",
+          "player_id": 6727,
+          "classic": "D",
+          "mantra": "Dd;E"
+        },
+        {
+          "name": "Heggem",
+          "player_id": 7212,
+          "classic": "D",
+          "mantra": "Ds;Dc"
+        },
+        {
+          "name": "Marcandalli",
+          "player_id": 6660,
+          "classic": "D",
+          "mantra": "Dc"
+        }
+      ]
+    },
+    "Schiaffield Wednesday": {
+      "module": "3-5-2",
+      "starters": [
+        {
+          "name": "Penev",
+          "player_id": 7557,
+          "classic": "P",
+          "mantra": "Por"
+        },
+        {
+          "name": "Valeri",
+          "player_id": 5862,
+          "classic": "D",
+          "mantra": "Ds;E"
+        },
+        {
+          "name": "Solet",
+          "player_id": 6956,
+          "classic": "D",
+          "mantra": "Dc"
+        },
+        {
+          "name": "Molina N.",
+          "player_id": 4998,
+          "classic": "D",
+          "mantra": "E"
+        },
+        {
+          "name": "Alajbegovic",
+          "player_id": 7436,
+          "classic": "C",
+          "mantra": "W;T"
+        },
+        {
+          "name": "Atta",
+          "player_id": 6908,
+          "classic": "C",
+          "mantra": "C;T"
+        },
+        {
+          "name": "De Bruyne",
+          "player_id": 2517,
+          "classic": "C",
+          "mantra": "T"
+        },
+        {
+          "name": "Zaniolo",
+          "player_id": 2766,
+          "classic": "C",
+          "mantra": "T;A"
+        },
+        {
+          "name": "Politano",
+          "player_id": 536,
+          "classic": "C",
+          "mantra": "W"
+        },
+        {
+          "name": "Krstovic",
+          "player_id": 6435,
+          "classic": "A",
+          "mantra": "Pc"
+        },
+        {
+          "name": "Adams A.",
+          "player_id": 7484,
+          "classic": "A",
+          "mantra": "Pc"
+        }
+      ],
+      "bench": [
+        {
+          "name": "Falcone",
+          "player_id": 2134,
+          "classic": "P",
+          "mantra": "Por"
+        },
+        {
+          "name": "Okoye",
+          "player_id": 6462,
+          "classic": "P",
+          "mantra": "Por"
+        },
+        {
+          "name": "Bartesaghi",
+          "player_id": 6496,
+          "classic": "D",
+          "mantra": "Ds;E"
+        },
+        {
+          "name": "Pedersen",
+          "player_id": 6426,
+          "classic": "D",
+          "mantra": "Dd;E"
+        },
+        {
+          "name": "Monterisi",
+          "player_id": 4952,
+          "classic": "D",
+          "mantra": "Dc"
+        },
+        {
+          "name": "Obrador",
+          "player_id": 7329,
+          "classic": "D",
+          "mantra": "Ds;E"
+        },
+        {
+          "name": "Puczka",
+          "player_id": 7413,
+          "classic": "D",
+          "mantra": "Ds;E"
+        },
+        {
+          "name": "Bernabè",
+          "player_id": 6666,
+          "classic": "C",
+          "mantra": "C"
+        },
+        {
+          "name": "Locatelli",
+          "player_id": 827,
+          "classic": "C",
+          "mantra": "M;C"
+        },
+        {
+          "name": "Liberali",
+          "player_id": 6678,
+          "classic": "C",
+          "mantra": "T"
+        },
+        {
+          "name": "Tourè E.",
+          "player_id": 6229,
+          "classic": "A",
+          "mantra": "Pc"
+        },
+        {
+          "name": "Maldini",
+          "player_id": 4896,
+          "classic": "A",
+          "mantra": "T;A"
+        },
+        {
+          "name": "Pellegrino M.",
+          "player_id": 7023,
+          "classic": "A",
+          "mantra": "Pc"
+        },
+        {
+          "name": "Vigorito",
+          "player_id": 2809,
+          "classic": "P",
+          "mantra": "Por"
+        },
+        {
+          "name": "Tornqvist",
+          "player_id": 7301,
+          "classic": "P",
+          "mantra": "Por"
+        },
+        {
+          "name": "Kaiki",
+          "player_id": 7414,
+          "classic": "D",
+          "mantra": "Ds;E"
+        },
+        {
+          "name": "Bertola",
+          "player_id": 5820,
+          "classic": "D",
+          "mantra": "Dd;Ds;Dc"
+        },
+        {
+          "name": "Kabasele",
+          "player_id": 4263,
+          "classic": "D",
+          "mantra": "Dc"
+        },
+        {
+          "name": "Gaspar K.",
+          "player_id": 6632,
+          "classic": "D",
+          "mantra": "Dc"
+        },
+        {
+          "name": "Buongiorno",
+          "player_id": 2724,
+          "classic": "D",
+          "mantra": "Dc"
+        },
+        {
+          "name": "Cristante",
+          "player_id": 779,
+          "classic": "C",
+          "mantra": "M;C"
+        },
+        {
+          "name": "Pisilli",
+          "player_id": 6190,
+          "classic": "C",
+          "mantra": "C"
+        },
+        {
+          "name": "Ekkelenkamp",
+          "player_id": 6684,
+          "classic": "C",
+          "mantra": "C;T"
+        },
+        {
+          "name": "Cacciamani",
+          "player_id": 7060,
+          "classic": "C",
+          "mantra": "E;W"
+        },
+        {
+          "name": "Soulè",
+          "player_id": 5734,
+          "classic": "A",
+          "mantra": "A"
+        },
+        {
+          "name": "Laurientè",
+          "player_id": 6060,
+          "classic": "A",
+          "mantra": "A"
+        },
+        {
+          "name": "Noslin",
+          "player_id": 6556,
+          "classic": "A",
+          "mantra": "A"
+        }
+      ]
+    },
+    "Ostia Liedholm": {
+      "module": "3-4-3",
+      "starters": [
+        {
+          "name": "Butez",
+          "player_id": 6966,
+          "classic": "P",
+          "mantra": "Por"
+        },
+        {
+          "name": "Valle",
+          "player_id": 6867,
+          "classic": "D",
+          "mantra": "Ds;E"
+        },
+        {
+          "name": "Hermoso",
+          "player_id": 4807,
+          "classic": "D",
+          "mantra": "Dc"
+        },
+        {
+          "name": "Norton-Cuffy",
+          "player_id": 6814,
+          "classic": "D",
+          "mantra": "Dd;E"
+        },
+        {
+          "name": "Rodriguez Je.",
+          "player_id": 7129,
+          "classic": "C",
+          "mantra": "W;A"
+        },
+        {
+          "name": "Rabiot",
+          "player_id": 2379,
+          "classic": "C",
+          "mantra": "C;T"
+        },
+        {
+          "name": "Baturina",
+          "player_id": 7126,
+          "classic": "C",
+          "mantra": "T"
+        },
+        {
+          "name": "Gudmundsson A.",
+          "player_id": 5800,
+          "classic": "C",
+          "mantra": "T;A"
+        },
+        {
+          "name": "Romero D.",
+          "player_id": 7554,
+          "classic": "A",
+          "mantra": "Pc"
+        },
+        {
+          "name": "Martinez L.",
+          "player_id": 2764,
+          "classic": "A",
+          "mantra": "Pc"
+        },
+        {
+          "name": "Dybala",
+          "player_id": 309,
+          "classic": "A",
+          "mantra": "A"
+        }
+      ],
+      "bench": [
+        {
+          "name": "Vigorito",
+          "player_id": 2809,
+          "classic": "P",
+          "mantra": "Por"
+        },
+        {
+          "name": "Tornqvist",
+          "player_id": 7301,
+          "classic": "P",
+          "mantra": "Por"
+        },
+        {
+          "name": "Kaiki",
+          "player_id": 7414,
+          "classic": "D",
+          "mantra": "Ds;E"
+        },
+        {
+          "name": "Bertola",
+          "player_id": 5820,
+          "classic": "D",
+          "mantra": "Dd;Ds;Dc"
+        },
+        {
+          "name": "Kabasele",
+          "player_id": 4263,
+          "classic": "D",
+          "mantra": "Dc"
+        },
+        {
+          "name": "Gaspar K.",
+          "player_id": 6632,
+          "classic": "D",
+          "mantra": "Dc"
+        },
+        {
+          "name": "Buongiorno",
+          "player_id": 2724,
+          "classic": "D",
+          "mantra": "Dc"
+        },
+        {
+          "name": "Cristante",
+          "player_id": 779,
+          "classic": "C",
+          "mantra": "M;C"
+        },
+        {
+          "name": "Pisilli",
+          "player_id": 6190,
+          "classic": "C",
+          "mantra": "C"
+        },
+        {
+          "name": "Ekkelenkamp",
+          "player_id": 6684,
+          "classic": "C",
+          "mantra": "C;T"
+        },
+        {
+          "name": "Cacciamani",
+          "player_id": 7060,
+          "classic": "C",
+          "mantra": "E;W"
+        },
+        {
+          "name": "Soulè",
+          "player_id": 5734,
+          "classic": "A",
+          "mantra": "A"
+        },
+        {
+          "name": "Laurientè",
+          "player_id": 6060,
+          "classic": "A",
+          "mantra": "A"
+        },
+        {
+          "name": "Noslin",
+          "player_id": 6556,
+          "classic": "A",
+          "mantra": "A"
+        }
+      ]
+    }
+  }
+}

@@ -1,7 +1,8 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import { Home, Zap, Goal, BarChart3, User, LogOut } from 'lucide-react'
+import { Home, Zap, Goal, BarChart3, User, LogOut, Calculator } from 'lucide-react'
 import { useAuth } from '../lib/useAuth'
+import { supabase } from '../lib/supabaseClient'
 import './Drawer.css'
 
 const NAV_ITEMS = [
@@ -12,17 +13,52 @@ const NAV_ITEMS = [
   { to: '/profile', label: 'Profilo', icon: User },
 ]
 
+// Single hardcoded admin account — the only one allowed to trigger gameweek
+// calculation. Matches api/calculate-gameweek.js's own server-side check
+// (the button being hidden here is just UX, not the real gate).
+const GAMEWEEK_ADMIN_USER_ID = '77e2ac11-32cc-44d2-8d1f-2b78bb11ec69'
+
 // Swipe-right-to-close, since a drawer sliding in from the right is closed
 // by swiping back the way it came.
 const SWIPE_CLOSE_THRESHOLD = 60
 
 export default function Drawer({ open, onClose }) {
-  const { profile, signOut } = useAuth()
+  const { user, profile, signOut } = useAuth()
   const touchStartX = useRef(null)
+  const [calculating, setCalculating] = useState(false)
+  const [calcResult, setCalcResult] = useState(null)
+  const [calcError, setCalcError] = useState(null)
 
   async function handleSignOut() {
     onClose()
     await signOut()
+  }
+
+  async function handleCalculateGameweek() {
+    setCalculating(true)
+    setCalcResult(null)
+    setCalcError(null)
+    try {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession()
+      const response = await fetch('/api/calculate-gameweek', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${session?.access_token ?? ''}` },
+      })
+      const body = await response.json()
+      if (!response.ok || !body.ok) throw new Error(body.error || 'Calcolo non riuscito')
+
+      const gwNumber = body.categories?.gameweekNumber ?? body.leagues?.gameweekNumber ?? body.poll?.gameweekNumber
+      setCalcResult(
+        `Giornata ${gwNumber ?? '?'} calcolata: ${body.poll?.statsUpdated ?? 0} statistiche, ` +
+          `${body.categories?.categoriesConsolidated ?? 0} categorie, ${body.leagues?.leaguesConsolidated ?? 0} leghe aggiornate.`
+      )
+    } catch (err) {
+      setCalcError(err.message || 'Calcolo non riuscito. Riprova.')
+    } finally {
+      setCalculating(false)
+    }
   }
 
   function handleTouchStart(e) {
@@ -68,6 +104,23 @@ export default function Drawer({ open, onClose }) {
               </NavLink>
             </li>
           ))}
+          {user?.id === GAMEWEEK_ADMIN_USER_ID && (
+            <li>
+              <button
+                type="button"
+                className="drawer-nav-item"
+                onClick={handleCalculateGameweek}
+                disabled={calculating}
+              >
+                <span className="drawer-nav-icon" aria-hidden="true">
+                  <Calculator size={20} strokeWidth={2} />
+                </span>
+                {calculating ? 'Calcolo in corso…' : 'Calcola giornata'}
+              </button>
+              {calcResult && <p className="drawer-calc-feedback drawer-calc-success">{calcResult}</p>}
+              {calcError && <p className="drawer-calc-feedback drawer-calc-error">{calcError}</p>}
+            </li>
+          )}
           <li>
             <button type="button" className="drawer-nav-item drawer-nav-signout" onClick={handleSignOut}>
               <span className="drawer-nav-icon" aria-hidden="true">
