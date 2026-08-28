@@ -5,17 +5,19 @@
 // fielded players easily exceeds a serverless function's max duration.
 // No such limit running locally.
 //
-// Runs the same 3 steps, in order, against an explicit gameweek number
+// Runs the same 4 steps, in order, against an explicit gameweek number
 // (rather than "whichever gameweek is currently live", which is what the
 // button and the underlying scripts default to when run standalone):
-//   1. poll-sorare-live.js       -> real player stats + category scores
-//   2. consolidate-gameweek.js   -> category standings/rewards, marks
+//   1. sync-gameweek-fixtures.js -> matches reflects one coherent real
+//                                    matchday from serie_a_fixtures
+//   2. poll-sorare-live.js       -> real player stats + category scores
+//   3. consolidate-gameweek.js   -> category standings/rewards, marks
 //                                    the gameweek completed
-//   3. consolidate-league-gameweek.js -> league standings/matchups
+//   4. consolidate-league-gameweek.js -> league standings/matchups
 //
-// All three are idempotent to re-running on the same gameweek: standings/
-// scores upsert by (user,category|league,gameweek), and rewards are
-// skipped entirely if that category/gameweek was already rewarded (see
+// All four are idempotent to re-running on the same gameweek: matches/
+// standings/scores upsert by their natural composite key, and rewards are
+// only ever adjusted by the delta needed to reach the correct amount (see
 // consolidate-gameweek.js) — so re-running after a partial/timed-out
 // attempt is safe and won't double-grant credits or players.
 //
@@ -23,6 +25,7 @@
 //   e.g. node scripts/calculate-gameweek.js 1
 
 import { getSupabaseAdmin } from './lib/env.js'
+import { syncGameweekFixtures } from './sync-gameweek-fixtures.js'
 import { pollSorareLive } from './poll-sorare-live.js'
 import { consolidateGameweek } from './consolidate-gameweek.js'
 import { consolidateLeagueGameweek } from './consolidate-league-gameweek.js'
@@ -39,15 +42,19 @@ async function main() {
 
   console.log(`=== Calcolo giornata ${gameweekNumber} ===`)
 
-  console.log('\n--- 1/3 Poll Sorare (stats + punteggi categorie) ---')
+  console.log('\n--- 1/4 Sync fixture Serie A ---')
+  const sync = await syncGameweekFixtures(supabase, gameweekNumber)
+  console.log('Sync result:', sync)
+
+  console.log('\n--- 2/4 Poll Sorare (stats + punteggi categorie) ---')
   const poll = await pollSorareLive(supabase, { gameweekNumber })
   console.log('Poll result:', poll)
 
-  console.log('\n--- 2/3 Consolidamento categorie ---')
+  console.log('\n--- 3/4 Consolidamento categorie ---')
   const categories = await consolidateGameweek(supabase, { gameweekNumber })
   console.log('Categories result:', categories)
 
-  console.log('\n--- 3/3 Consolidamento leghe ---')
+  console.log('\n--- 4/4 Consolidamento leghe ---')
   const leagues = await consolidateLeagueGameweek(supabase, { gameweekNumber })
   console.log('Leagues result:', leagues)
 

@@ -15,17 +15,21 @@
 // (GAME_LOOKBACK) and picks the first entry whose anyGame.competition.slug
 // is Serie A's ("serie-a-it").
 //
-// Doesn't require a matches row to already exist for the fetched game (i.e.
-// doesn't depend on fetch-sorare-games.js having run first): if a fielded
-// player's latest Serie A game has no corresponding local `matches` row for
-// this gameweek, one is created on the fly from Sorare's own game data. This
-// is what makes "the live tiles always show a score, based on whatever the
-// player's latest Sorare game actually is" work even when the gameweek's
-// real fixtures were never fetched (or, as during preseason testing, the
-// only matches row for the gameweek is a fake/simulated one — confirmed
-// live: a gameweek marked 'live' with only a "Squadra Test A vs Squadra
-// Test B" row meant every real player's real game came back "unmatched" and
-// got skipped, hence every score staying 0).
+// Requires `matches` to already be synced for this gameweek — via
+// scripts/sync-gameweek-fixtures.js, which seeds it from serie_a_fixtures
+// (the real Serie A calendar) — rather than creating a `matches` row on
+// the fly from whatever game a fielded player's own Sorare history
+// happens to return. That used to be how this script worked, and it
+// produced an incoherent "gameweek" fixture list: two different fielded
+// players' most-recent-game data can point at two different real
+// gameweeks (e.g. after a postponement, or simply because polling ran on
+// different days), so `matches` for one internal gameweek ended up with
+// the same team appearing in two different fixture rows (see
+// AUDIT_REPORT.md §4.2). A player whose resolved game doesn't match any
+// synced fixture is now skipped (see findSyncedMatch) rather than getting
+// a fabricated match row — their score for this gameweek simply doesn't
+// update until the underlying data issue (usually a stale `players.team`)
+// is fixed, instead of silently corrupting the fixture list.
 //
 // Meant to be run periodically (every 2-3 minutes) while a gameweek is live:
 // `node scripts/poll-sorare-live.js`.
@@ -170,10 +174,11 @@ export async function pollSorareLive(supabase, { gameweekNumber } = {}) {
   const roleByPlayerId = new Map((rosterPlayers ?? []).map((p) => [p.id, p]))
 
   const [{ data: gwMatches }, { data: teams }] = await Promise.all([
-    supabase.from('matches').select('id, sorare_game_id').eq('gameweek_id', gameweek.id).not('sorare_game_id', 'is', null),
+    supabase.from('matches').select('id, sorare_game_id, home_team, away_team').eq('gameweek_id', gameweek.id),
     supabase.from('teams').select('name'),
   ])
-  const matchIdBySorareId = new Map((gwMatches ?? []).map((m) => [m.sorare_game_id, m.id]))
+  const matchIdBySorareId = new Map((gwMatches ?? []).filter((m) => m.sorare_game_id).map((m) => [m.sorare_game_id, m.id]))
+  const matchIdByTeamPair = new Map((gwMatches ?? []).map((m) => [`${m.home_team}|${m.away_team}`, m.id]))
 
   // Sorare's club names ("AS Roma") never exactly match ours ("Roma") — see
   // src/lib/teamNames.js's header comment. Resolves to our own name when a
@@ -183,30 +188,26 @@ export async function pollSorareLive(supabase, { gameweekNumber } = {}) {
     return (teams ?? []).find((t) => teamNamesMatch(t.name, sorareName))?.name ?? sorareName
   }
 
-  async function findOrCreateMatch(entry) {
+  // Looks up the pre-synced match for this gameweek (see
+  // sync-gameweek-fixtures.js) by Sorare game id first, falling back to a
+  // team-name match — and opportunistically backfills sorare_game_id onto
+  // that row once resolved, same as fetch-sorare-games.js would. Returns
+  // null (never creates a row) when no synced fixture corresponds; the
+  // caller skips that player's stats for this run instead.
+  async function findSyncedMatch(entry) {
     const gameId = bareGameId(entry.anyGame.id)
-    const existing = matchIdBySorareId.get(gameId)
-    if (existing) return existing
+    const bySorareId = matchIdBySorareId.get(gameId)
+    if (bySorareId) return bySorareId
 
-    const { data: created, error } = await supabase
-      .from('matches')
-      .insert({
-        gameweek_id: gameweek.id,
-        home_team: resolveTeamName(entry.anyGame.homeTeam?.name),
-        away_team: resolveTeamName(entry.anyGame.awayTeam?.name),
-        home_score: entry.anyGame.homeScore,
-        away_score: entry.anyGame.awayScore,
-        status: mapMatchStatus(entry.anyGame.statusTyped),
-        sorare_game_id: gameId,
-        starts_at: entry.anyGame.date,
-      })
-      .select('id')
-      .single()
+    const home = resolveTeamName(entry.anyGame.homeTeam?.name)
+    const away = resolveTeamName(entry.anyGame.awayTeam?.name)
+    const matchId = matchIdByTeamPair.get(`${home}|${away}`)
+    if (!matchId) return null
 
-    if (error) throw new Error(`creating match for game ${gameId}: ${error.message}`)
-
-    matchIdBySorareId.set(gameId, created.id)
-    return created.id
+    const { error } = await supabase.from('matches').update({ sorare_game_id: gameId }).eq('id', matchId)
+    if (error) console.error(`[error] backfilling sorare_game_id for match ${matchId}: ${error.message}`)
+    matchIdBySorareId.set(gameId, matchId)
+    return matchId
   }
 
   console.log(`Polling ${playerIds.size} starter(s) for GW${gameweek.number}...`)
@@ -215,6 +216,7 @@ export async function pollSorareLive(supabase, { gameweekNumber } = {}) {
   let scoresUpdated = 0
   let noMapping = 0
   let noSerieAGame = 0
+  let noSyncedMatch = 0
   const matchUpdates = new Map()
 
   for (const playerId of playerIds) {
@@ -238,7 +240,15 @@ export async function pollSorareLive(supabase, { gameweekNumber } = {}) {
         continue
       }
 
-      const matchId = await findOrCreateMatch(entry)
+      const matchId = await findSyncedMatch(entry)
+      if (!matchId) {
+        console.warn(
+          `[no synced match] ${roleByPlayerId.get(playerId)?.name ?? slug} — ${entry.anyGame.homeTeam?.name} vs ${entry.anyGame.awayTeam?.name} isn't in this gameweek's synced fixtures (run sync-gameweek-fixtures.js, or check players.team)`
+        )
+        noSyncedMatch += 1
+        await sleep(SORARE_REQUEST_DELAY_MS)
+        continue
+      }
 
       const statsRow = statsRowFromSorare(entry, playerId, matchId)
       const { error: statsError } = await supabase
@@ -296,7 +306,7 @@ export async function pollSorareLive(supabase, { gameweekNumber } = {}) {
   }
 
   console.log(
-    `Done. Stats updated: ${statsUpdated}. Scores updated: ${scoresUpdated}. No mapping: ${noMapping}. No Serie A game found: ${noSerieAGame}.`
+    `Done. Stats updated: ${statsUpdated}. Scores updated: ${scoresUpdated}. No mapping: ${noMapping}. No Serie A game found: ${noSerieAGame}. No synced match: ${noSyncedMatch}.`
   )
 
   return {
@@ -307,6 +317,7 @@ export async function pollSorareLive(supabase, { gameweekNumber } = {}) {
     scoresUpdated,
     noMapping,
     noSerieAGame,
+    noSyncedMatch,
   }
 }
 

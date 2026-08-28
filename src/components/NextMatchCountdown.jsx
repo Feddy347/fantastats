@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Timer } from 'lucide-react'
-import { supabase } from '../lib/supabaseClient'
+import { getCurrentGameweek } from '../lib/gameweek'
 import './NextMatchCountdown.css'
 
 function timeParts(targetMs, nowMs) {
@@ -14,25 +14,29 @@ function timeParts(targetMs, nowMs) {
   }
 }
 
+// Counts down to the CURRENT fantasy gameweek's own lineup deadline (the
+// same `gameweeks` row and `deadline` field isLineupLocked() checks
+// against — see src/lib/gameweek.js), not the next real Serie A kickoff
+// from serie_a_fixtures like this used to (AUDIT_REPORT.md §9.1). Those
+// two calendars can drift apart — nothing currently advances
+// gameweeks.status automatically, so gameweeks can sit well past their
+// deadline while serie_a_fixtures keeps ticking along on the real
+// calendar — and showing a real-match countdown under a "prossima
+// gameweek" label was misleading about how much time was actually left to
+// set a lineup.
 export default function NextMatchCountdown() {
-  const [nextMatchDate, setNextMatchDate] = useState(null)
+  const [deadline, setDeadline] = useState(null)
+  const [gwNumber, setGwNumber] = useState(null)
   const [now, setNow] = useState(() => Date.now())
 
   useEffect(() => {
     let cancelled = false
 
     async function load() {
-      const { data } = await supabase
-        .from('serie_a_fixtures')
-        .select('match_date')
-        .neq('status', 'finished')
-        .not('match_date', 'is', null)
-        .gte('match_date', new Date().toISOString())
-        .order('match_date', { ascending: true })
-        .limit(1)
-        .maybeSingle()
-
-      if (!cancelled) setNextMatchDate(data?.match_date ?? null)
+      const gw = await getCurrentGameweek()
+      if (cancelled) return
+      setGwNumber(gw?.number ?? null)
+      setDeadline(gw?.deadline ?? gw?.starts_at ?? null)
     }
 
     load()
@@ -46,9 +50,9 @@ export default function NextMatchCountdown() {
     return () => clearInterval(id)
   }, [])
 
-  if (!nextMatchDate) return null
+  if (!deadline) return null
 
-  const parts = timeParts(new Date(nextMatchDate).getTime(), now)
+  const parts = timeParts(new Date(deadline).getTime(), now)
   if (!parts) return null
 
   return (
@@ -57,7 +61,7 @@ export default function NextMatchCountdown() {
         <span className="next-match-countdown-icon">
           <Timer size={18} strokeWidth={2.5} />
         </span>
-        <span className="next-match-countdown-label">Prossima gameweek in</span>
+        <span className="next-match-countdown-label">Giornata {gwNumber} — chiusura formazioni tra</span>
       </div>
 
       <div className="next-match-countdown-digits">
