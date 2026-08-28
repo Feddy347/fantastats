@@ -1,7 +1,7 @@
 // Consolidates one gameweek for every active league: computes each
 // member's total_score (with automatic substitutions, same rule as
-// categories — see lineupResolver.js), updates matchups/standings per the
-// league's competition_format, and recomputes rank.
+// categories — see lineupResolver.js), updates matchups per the league's
+// competition_format, and rebuilds league_standings from scratch.
 //
 // Scores are computed FRESH here (via resolveLineupScore/calculateScore)
 // rather than reused from player_match_scores, because that table holds one
@@ -11,7 +11,18 @@
 // re-derives the number from raw player_match_stats every time
 // (useStoredScores: false below).
 //
+// Idempotency: league_gameweek_scores is upserted by its unique
+// (league_id, user_id, gameweek_id) key, so re-running this for a gameweek
+// always overwrites that gameweek's row rather than adding another one.
+// league_standings is never written to directly with a running total —
+// it's fully recomputed by summing every league_gameweek_scores row for
+// the league (see recomputeLeagueStandings). This makes the whole script
+// safe to run any number of times for the same gameweek: played/won/
+// drawn/lost/points/total_fantasy_score always reflect exactly the set of
+// gameweeks actually consolidated, never double- or triple-counted.
+//
 // Usage: node scripts/consolidate-league-gameweek.js
+// Usage: node scripts/consolidate-league-gameweek.js -- <gameweekNumber>
 
 import { pathToFileURL } from 'node:url'
 import { getSupabaseAdmin } from './lib/env.js'
@@ -26,7 +37,15 @@ function resultPoints(myScore, otherScore) {
   return 0
 }
 
-async function findTargetGameweek(supabase) {
+// gameweekNumber is optional: pass it to target a specific gameweek
+// regardless of its status; omit it to keep the original live-or-most-
+// recently-completed lookup.
+async function findTargetGameweek(supabase, gameweekNumber) {
+  if (gameweekNumber) {
+    const { data } = await supabase.from('gameweeks').select('*').eq('number', gameweekNumber).maybeSingle()
+    return data ?? null
+  }
+
   const { data: live } = await supabase
     .from('gameweeks')
     .select('*')
@@ -102,27 +121,50 @@ function rankByPointsThenScore(rows) {
   return sorted
 }
 
-async function upsertStanding(supabase, leagueId, userId, delta) {
-  const { data: existing } = await supabase
-    .from('league_standings')
-    .select('*')
+// Rebuilds league_standings for one league entirely from
+// league_gameweek_scores (summed across every gameweek consolidated so
+// far), instead of nudging existing totals by a delta. Safe to call after
+// every consolidation run, for any number of runs, on the same gameweek.
+async function recomputeLeagueStandings(supabase, leagueId) {
+  const { data: gwScores, error } = await supabase
+    .from('league_gameweek_scores')
+    .select('user_id, total_score, league_points, won, drawn, lost')
     .eq('league_id', leagueId)
-    .eq('user_id', userId)
-    .maybeSingle()
+  if (error) throw error
 
-  const next = {
-    league_id: leagueId,
-    user_id: userId,
-    points: (existing?.points ?? 0) + (delta.points ?? 0),
-    played: (existing?.played ?? 0) + 1,
-    won: (existing?.won ?? 0) + (delta.won ?? 0),
-    drawn: (existing?.drawn ?? 0) + (delta.drawn ?? 0),
-    lost: (existing?.lost ?? 0) + (delta.lost ?? 0),
-    total_fantasy_score: (existing?.total_fantasy_score ?? 0) + (delta.totalScore ?? 0),
-    updated_at: new Date().toISOString(),
+  const aggByUser = new Map()
+  for (const row of gwScores ?? []) {
+    const agg = aggByUser.get(row.user_id) ?? {
+      played: 0,
+      won: 0,
+      drawn: 0,
+      lost: 0,
+      points: 0,
+      total_fantasy_score: 0,
+    }
+    agg.played += 1
+    agg.won += row.won ?? 0
+    agg.drawn += row.drawn ?? 0
+    agg.lost += row.lost ?? 0
+    agg.points += row.league_points ?? 0
+    agg.total_fantasy_score += row.total_score ?? 0
+    aggByUser.set(row.user_id, agg)
   }
 
-  await supabase.from('league_standings').upsert(next, { onConflict: 'league_id,user_id' })
+  const rows = [...aggByUser.entries()].map(([user_id, agg]) => ({
+    league_id: leagueId,
+    user_id,
+    ...agg,
+    updated_at: new Date().toISOString(),
+  }))
+
+  const ranked = rankByPointsThenScore(rows)
+  if (ranked.length > 0) {
+    const { error: upsertError } = await supabase
+      .from('league_standings')
+      .upsert(ranked, { onConflict: 'league_id,user_id' })
+    if (upsertError) throw upsertError
+  }
 }
 
 async function consolidateLeague(supabase, league, gameweek) {
@@ -155,7 +197,13 @@ async function consolidateLeague(supabase, league, gameweek) {
   )
   const rankInGwByUser = new Map(rankedThisGw.map((r) => [r.user_id, r.rank]))
 
+  // Per-user result for THIS gameweek only — written into
+  // league_gameweek_scores below, then summed across all gameweeks by
+  // recomputeLeagueStandings. Not written to league_standings directly.
   const leaguePointsByUser = new Map()
+  const wonByUser = new Map()
+  const drawnByUser = new Map()
+  const lostByUser = new Map()
 
   if (league.competition_format.startsWith('direct_')) {
     const { data: calendarRow } = await supabase
@@ -174,7 +222,7 @@ async function consolidateLeague(supabase, league, gameweek) {
         const homeResult = resultPoints(homeScore, awayScore)
         const awayResult = resultPoints(awayScore, homeScore)
 
-        await supabase
+        const { error: matchupError } = await supabase
           .from('league_matchups')
           .update({
             home_score: homeScore,
@@ -184,26 +232,18 @@ async function consolidateLeague(supabase, league, gameweek) {
             is_played: true,
           })
           .eq('id', matchup.id)
+        if (matchupError) throw new Error(`league_matchups update failed for matchup ${matchup.id}: ${matchupError.message}`)
 
         const isVoteSum = league.competition_format === 'direct_vote_sum'
 
-        await upsertStanding(supabase, league.id, matchup.home_user_id, {
-          points: isVoteSum ? homeScore : homeResult,
-          won: homeResult === 3 ? 1 : 0,
-          drawn: homeResult === 1 ? 1 : 0,
-          lost: homeResult === 0 ? 1 : 0,
-          totalScore: homeScore,
-        })
-        await upsertStanding(supabase, league.id, matchup.away_user_id, {
-          points: isVoteSum ? awayScore : awayResult,
-          won: awayResult === 3 ? 1 : 0,
-          drawn: awayResult === 1 ? 1 : 0,
-          lost: awayResult === 0 ? 1 : 0,
-          totalScore: awayScore,
-        })
-
         leaguePointsByUser.set(matchup.home_user_id, isVoteSum ? homeScore : homeResult)
         leaguePointsByUser.set(matchup.away_user_id, isVoteSum ? awayScore : awayResult)
+        wonByUser.set(matchup.home_user_id, homeResult === 3 ? 1 : 0)
+        drawnByUser.set(matchup.home_user_id, homeResult === 1 ? 1 : 0)
+        lostByUser.set(matchup.home_user_id, homeResult === 0 ? 1 : 0)
+        wonByUser.set(matchup.away_user_id, awayResult === 3 ? 1 : 0)
+        drawnByUser.set(matchup.away_user_id, awayResult === 1 ? 1 : 0)
+        lostByUser.set(matchup.away_user_id, awayResult === 0 ? 1 : 0)
       }
     } else {
       console.warn(`    [warning] no calendar row for gameweek ${gameweek.number} — was the calendar generated?`)
@@ -224,16 +264,15 @@ async function consolidateLeague(supabase, league, gameweek) {
         else lost += 1
       }
       leaguePointsByUser.set(userId, points)
-      await upsertStanding(supabase, league.id, userId, { points, won, drawn, lost, totalScore: totalsByUser.get(userId) })
+      wonByUser.set(userId, won)
+      drawnByUser.set(userId, drawn)
+      lostByUser.set(userId, lost)
     }
   } else if (league.competition_format === 'royal_rumble_f1') {
+    // No win/drawn/lost concept for F1 — points come purely from rank.
     for (const row of rankedThisGw) {
       const f1Points = F1_POINTS[row.rank - 1] ?? 0
       leaguePointsByUser.set(row.user_id, f1Points)
-      await upsertStanding(supabase, league.id, row.user_id, {
-        points: f1Points,
-        totalScore: totalsByUser.get(row.user_id),
-      })
     }
   }
 
@@ -243,26 +282,28 @@ async function consolidateLeague(supabase, league, gameweek) {
     gameweek_id: gameweek.id,
     total_score,
     league_points: leaguePointsByUser.get(user_id) ?? 0,
+    won: wonByUser.get(user_id) ?? 0,
+    drawn: drawnByUser.get(user_id) ?? 0,
+    lost: lostByUser.get(user_id) ?? 0,
     rank_in_gameweek: rankInGwByUser.get(user_id) ?? null,
     is_final: true,
     updated_at: new Date().toISOString(),
   }))
 
   if (gwScoreRows.length > 0) {
-    await supabase.from('league_gameweek_scores').upsert(gwScoreRows, { onConflict: 'league_id,user_id,gameweek_id' })
+    const { error: gwScoreError } = await supabase
+      .from('league_gameweek_scores')
+      .upsert(gwScoreRows, { onConflict: 'league_id,user_id,gameweek_id' })
+    if (gwScoreError) throw new Error(`league_gameweek_scores upsert failed for league ${league.id}: ${gwScoreError.message}`)
   }
 
-  const { data: standings } = await supabase.from('league_standings').select('*').eq('league_id', league.id)
-  const ranked = rankByPointsThenScore(standings ?? [])
-  for (const row of ranked) {
-    await supabase.from('league_standings').update({ rank: row.rank }).eq('id', row.id)
-  }
+  await recomputeLeagueStandings(supabase, league.id)
 }
 
 // Exported so api/calculate-gameweek.js can call this in-process (admin-only
 // "Calcola giornata" button). The CLI entrypoint below wraps it unchanged.
-export async function consolidateLeagueGameweek(supabase) {
-  const gameweek = await findTargetGameweek(supabase)
+export async function consolidateLeagueGameweek(supabase, { gameweekNumber } = {}) {
+  const gameweek = await findTargetGameweek(supabase, gameweekNumber)
   if (!gameweek) {
     console.log('No live or completed gameweek found to consolidate.')
     return { consolidated: false, reason: 'no-target-gameweek' }
@@ -281,7 +322,8 @@ export async function consolidateLeagueGameweek(supabase) {
 }
 
 async function main() {
-  return consolidateLeagueGameweek(getSupabaseAdmin())
+  const gameweekNumber = process.argv[2] ? Number(process.argv[2]) : undefined
+  return consolidateLeagueGameweek(getSupabaseAdmin(), { gameweekNumber })
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {

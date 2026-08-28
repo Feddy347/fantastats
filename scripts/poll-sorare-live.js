@@ -110,11 +110,18 @@ query PlayerGameStats($slug: String!, $last: Int!) {
 // include files outside its own import graph. The `main()` CLI entrypoint
 // below is a thin wrapper that keeps `node scripts/poll-sorare-live.js`
 // working unchanged.
-export async function pollSorareLive(supabase) {
-  const { data: gameweek } = await supabase.from('gameweeks').select('*').eq('status', 'live').maybeSingle()
+// gameweekNumber is optional: pass it to poll a specific gameweek
+// regardless of its status (e.g. a CLI run against a gameweek that's
+// already flipped to 'completed'); omit it to keep the original
+// "whichever gameweek is currently live" behavior the button/cron use.
+export async function pollSorareLive(supabase, { gameweekNumber } = {}) {
+  const { data: gameweek } = gameweekNumber
+    ? await supabase.from('gameweeks').select('*').eq('number', gameweekNumber).maybeSingle()
+    : await supabase.from('gameweeks').select('*').eq('status', 'live').maybeSingle()
+
   if (!gameweek) {
-    console.log('No live gameweek right now.')
-    return { polled: false, reason: 'no-live-gameweek' }
+    console.log(gameweekNumber ? `Gameweek ${gameweekNumber} not found.` : 'No live gameweek right now.')
+    return { polled: false, reason: gameweekNumber ? 'gameweek-not-found' : 'no-live-gameweek' }
   }
 
   const [{ data: categoryStarters }, { data: leagueStarters }, { data: mappings }, { data: categories }] =
